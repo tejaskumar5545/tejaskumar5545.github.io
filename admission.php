@@ -1,0 +1,340 @@
+<?php
+session_start();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#0d2240">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Admissions - ClassroomX</title>
+    <meta name="description" content="Apply for admission to ClassroomX. Fill out the online admission form for diploma courses.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admission-hero {
+            text-align: center;
+            padding: 48px 20px 32px;
+        }
+        .admission-hero h1 {
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .admission-hero p {
+            color: var(--gray-700);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        .admission-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 32px 0;
+        }
+        .admission-step {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 28px 20px;
+            text-align: center;
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+        }
+        .step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .admission-step h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--white);
+        }
+        .admission-step p {
+            font-size: 13px;
+            color: var(--gray-700);
+            line-height: 1.5;
+        }
+        .admission-form-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-glass-lg);
+            backdrop-filter: blur(var(--glass-blur-strong));
+            -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+            margin-bottom: 40px;
+        }
+        .admission-form-box h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .admission-form-box .subtitle {
+            color: var(--gray-700);
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent);
+            margin: 24px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 32px 0;
+        }
+        .info-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+        }
+        .info-card .info-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .info-card h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--white);
+        }
+        .info-card p {
+            font-size: 13px;
+            color: var(--gray-700);
+        }
+        .required-note {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 4px;
+        }
+        @media (max-width: 768px) {
+            .admission-steps { grid-template-columns: 1fr; }
+            .form-row-3 { grid-template-columns: 1fr; }
+            .info-cards { grid-template-columns: 1fr; }
+            .admission-form-box { padding: 24px 16px; }
+        }
+        @media (max-width: 480px) {
+            .form-row-3 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.php" class="logo">
+        <img src="images/logo.jpg" alt="ClassroomX" class="logo-img">
+        ClassroomX
+    </a>
+    <button class="menu-toggle">&#9776;</button>
+    <nav>
+        <a href="index.php">Home</a>
+        <a href="notes.php">Notes</a>
+        <a href="syllabus.php">Syllabus</a>
+        <a href="pyq.php">PYQ</a>
+        <a href="practical.php">Practical</a>
+        <a href="coding.php">Coding</a>
+        <a href="projects.php">Projects</a>
+        <a href="placement.php">Placement</a>
+        <a href="notices.php">Notices</a>
+        <a href="exams.php">Online Test</a>
+        <a href="about.php">About</a>
+        <a href="contact.php">Contact Us</a>
+        <?php if (isset($_SESSION['admin'])): ?>
+            <a href="dashboard.php">Dashboard</a>
+            <a href="logout.php">Logout</a>
+        <?php elseif (isset($_SESSION['student'])): ?>
+            <a href="student_dashboard.php">My Dashboard</a>
+            <a href="student_logout.php">Logout</a>
+        <?php else: ?>
+            <a href="login.php">Admin</a>
+            <a href="student_login.php" class="btn-login">Student Login</a>
+        <?php endif; ?>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="admission-hero fade-in">
+        <h1>&#127891; Admissions Open 2026-27</h1>
+        <p>Apply online for diploma programs at ClassroomX. Fill out the form below and our team will reach out to you with the next steps.</p>
+    </div>
+
+    <div class="admission-steps">
+        <div class="admission-step slide-up">
+            <div class="step-num">1</div>
+            <h3>Fill the Form</h3>
+            <p>Complete the online admission form with your personal and academic details.</p>
+        </div>
+        <div class="admission-step slide-up">
+            <div class="step-num">2</div>
+            <h3>Submit Documents</h3>
+            <p>Upload or submit your marksheets, ID proof, and passport-size photo.</p>
+        </div>
+        <div class="admission-step slide-up">
+            <div class="step-num">3</div>
+            <h3>Confirm Admission</h3>
+            <p>Receive confirmation and complete fee payment to secure your seat.</p>
+        </div>
+    </div>
+
+    <?php if (isset($_GET['success'])): ?>
+        <div class="alert alert-success">
+            &#10004; Your admission application has been submitted successfully! We will contact you soon.
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($_GET['error'])): ?>
+        <div class="alert alert-error">
+            <?php
+            switch($_GET['error']) {
+                case 'missing': echo 'Please fill in all required fields.'; break;
+                case 'invalid_email': echo 'Please enter a valid email address.'; break;
+                case 'invalid_phone': echo 'Please enter a valid 10-digit phone number.'; break;
+                default: echo 'Something went wrong. Please try again.';
+            }
+            ?>
+        </div>
+    <?php endif; ?>
+
+    <div class="admission-form-box fade-in">
+        <h2>Online Admission Form</h2>
+        <p class="subtitle">Fields marked with * are required</p>
+
+        <form method="POST" action="admission_process.php">
+            <div class="form-section-title">&#128100; Personal Information</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" name="full_name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" name="email" placeholder="Enter your email" required>
+                </div>
+            </div>
+            <div class="form-row-3">
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <input type="tel" name="phone" placeholder="10-digit number" pattern="[0-9]{10}" maxlength="10" required>
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth *</label>
+                    <input type="date" name="dob" required>
+                </div>
+                <div class="form-group">
+                    <label>Gender *</label>
+                    <select name="gender" required>
+                        <option value="">Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-section-title">&#128218; Course Details</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Course *</label>
+                    <select name="course" id="courseSelect" required>
+                        <option value="">Select Course</option>
+                        <option value=" Diploma in Engineering">Diploma in Engineering</option>
+                        <option value="Diploma in Computer Applications">Diploma in Computer Applications</option>
+                        <option value="Diploma in Business Management">Diploma in Business Management</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Branch *</label>
+                    <select name="branch" id="branchSelect" required>
+                        <option value="">Select Branch</option>
+                        <option value="Computer Engineering">Computer Engineering</option>
+                        <option value="Information Technology">Information Technology</option>
+                        <option value="Electronics Engineering">Electronics Engineering</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        <option value="Civil Engineering">Civil Engineering</option>
+                        <option value="Electrical Engineering">Electrical Engineering</option>
+                        <option value="Automobile Engineering">Automobile Engineering</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-section-title">&#127891; Academic Background</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Previous School / College</label>
+                    <input type="text" name="previous_school" placeholder="Name of last attended institution">
+                </div>
+                <div class="form-group">
+                    <label>Previous Percentage / CGPA</label>
+                    <input type="text" name="previous_marks" placeholder="e.g. 85% or 8.5 CGPA">
+                </div>
+            </div>
+
+            <div class="form-section-title">&#128205; Address</div>
+            <div class="form-group">
+                <label>Full Address</label>
+                <textarea name="address" rows="3" placeholder="Enter your full address" style="width:100%;padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--glass-border);background:rgba(13,34,64,0.3);color:var(--white);font-family:inherit;font-size:14px;resize:vertical;"></textarea>
+            </div>
+
+            <p class="required-note">By submitting this form, you agree to be contacted by the ClassroomX admissions team.</p>
+
+            <button type="submit" class="btn btn-primary btn-block" style="margin-top:20px;">Submit Application</button>
+        </form>
+    </div>
+
+    <div class="info-cards">
+        <div class="info-card slide-up">
+            <div class="info-icon">&#128222;</div>
+            <h4>Call Us</h4>
+            <p>+91 88606 95666</p>
+        </div>
+        <div class="info-card slide-up">
+            <div class="info-icon">&#128231;</div>
+            <h4>Email Us</h4>
+            <p>kumartejas884@gmail.com</p>
+        </div>
+        <div class="info-card slide-up">
+            <div class="info-icon">&#128205;</div>
+            <h4>Visit Us</h4>
+            <p>ClassroomX Campus, New Delhi</p>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 ClassroomX Portal. All rights reserved.</p>
+</footer>
+
+<a href="https://wa.me/918860695666?text=Hi%20ClassroomX%2C%20I%20have%20a%20question" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.132 6.744 3.058 9.374L1.054 31.2l6.064-1.97A15.912 15.912 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.31 22.608c-.39 1.096-1.932 2.01-3.162 2.274-.844.18-1.946.322-5.656-1.216-4.746-1.966-7.798-6.79-8.036-7.108-.23-.318-1.9-2.524-1.9-4.814 0-2.29 1.204-3.416 1.63-3.884.39-.428.924-.57 1.23-.57.31 0 .618.004.886.016.284.012.664-.106 1.036.79.39.932 1.33 3.24 1.446 3.478.116.238.194.516.038.834-.156.318-.232.516-.462.794-.23.278-.484.62-.692.832-.23.238-.47.496-.2.972.27.476 1.2 1.98 2.578 3.208 1.77 1.58 3.26 2.07 3.736 2.298.374.18.792.136 1.086-.23.374-.476.836-1.262 1.304-2.02.334-.542.756-.61 1.276-.414.53.196 3.364 1.586 3.94 1.87.576.284.96.428 1.102.664.14.236.14 1.37-.25 2.464z"/></svg>
+</a>
+<script src="js/main.js"></script>
+</body>
+</html>

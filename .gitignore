@@ -1,0 +1,11 @@
+# Uploaded user content (notes, PYQs, gallery images, etc.)
+uploads/
+
+# Windows / OS junk
+Thumbs.db
+Desktop.ini
+
+# PHPStorm / IDE
+.idea/
+.vscode/
+*.swp

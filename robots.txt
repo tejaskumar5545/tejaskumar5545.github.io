@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard.php
+Disallow: /student_dashboard.php
+Disallow: /upload.php
+Disallow: /login_process.php
+Disallow: /student_login_process.php
+Disallow: /student_register_process.php
+Disallow: /download.php
+Disallow: /logout.php
+Disallow: /student_logout.php
+
+Sitemap: http://classroomx.epizy.com/sitemap.xml
