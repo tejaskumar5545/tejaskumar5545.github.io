@@ -1,30 +1,3 @@
-<?php
-session_start();
-include 'db.php';
-
-$total_notes = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM notes"))['c'];
-$total_branches = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(DISTINCT branch) as c FROM notes"))['c'];
-$total_semesters = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(DISTINCT semester) as c FROM notes"))['c'];
-$total_pyq = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM pyq"))['c'];
-$total_assignments = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM assignments"))['c'];
-$total_syllabus = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM syllabus"))['c'];
-$total_practicals = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM practicals"))['c'];
-$total_coding = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM coding"))['c'];
-$total_projects = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM projects"))['c'];
-$total_placement = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM placement"))['c'];
-
-$notices = mysqli_query($conn, "SELECT * FROM notices ORDER BY is_important DESC, created_at DESC LIMIT 4");
-$gallery = mysqli_query($conn, "SELECT * FROM gallery_images ORDER BY created_at DESC LIMIT 6");
-
-$search = isset($_GET['search']) ? trim($_GET['search']) : '';
-if ($search !== '') {
-    $search_safe = mysqli_real_escape_string($conn, $search);
-    $notes_query = "SELECT * FROM notes WHERE title LIKE '%$search_safe%' OR branch LIKE '%$search_safe%' OR semester LIKE '%$search_safe%' ORDER BY upload_date DESC";
-} else {
-    $notes_query = "SELECT * FROM notes ORDER BY upload_date DESC LIMIT 6";
-}
-$notes_result = mysqli_query($conn, $notes_query);
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,32 +13,23 @@ $notes_result = mysqli_query($conn, $notes_query);
 <body>
 
 <header class="header-transparent" id="siteHeader">
-    <a href="index.php" class="logo">
+    <a href="index.html" class="logo">
 <img src="images/logo.jpg" alt="ClassroomX" class="logo-img">
     ClassroomX
     </a>
     <button class="menu-toggle">&#9776;</button>
     <nav>
-        <a href="index.php" class="active">Home</a>
-        <a href="subjects.php">Subjects</a>
-        <a href="notes.php">Notes</a>
-        <a href="pdfs.php">PDFs</a>
-        <a href="exams.php">MCQ Quiz</a>
-        <a href="pyq.php">Previous Papers</a>
-        <a href="syllabus.php">Syllabus</a>
-        <a href="notices.php">Notices</a>
-        <a href="profile.php">Profile</a>
-        <?php if (isset($_SESSION['admin'])): ?>
-            <a href="dashboard.php">Dashboard</a>
-            <a href="logout.php">Logout</a>
-        <?php elseif (isset($_SESSION['student'])): ?>
-            <a href="student_dashboard.php">My Dashboard</a>
-            <a href="student_logout.php">Logout</a>
-        <?php else: ?>
-            <a href="login.php">Admin Login</a>
-            <a href="student_login.php" class="btn-login">Student Login</a>
-            <a href="register.php" style="color:rgba(255,255,255,0.8);font-weight:600;">Register</a>
-        <?php endif; ?>
+        <a href="index.html" class="active">Home</a>
+        <a href="subjects.html">Subjects</a>
+        <a href="notes.html">Notes</a>
+        <a href="pdfs.html">PDFs</a>
+        <a href="exams.html">MCQ Quiz</a>
+        <a href="pyq.html">Previous Papers</a>
+        <a href="syllabus.html">Syllabus</a>
+        <a href="notices.html">Notices</a>
+        <a href="login.html">Admin Login</a>
+        <a href="student_login.html" class="btn-login">Student Login</a>
+        <a href="register.html" style="color:rgba(255,255,255,0.8);font-weight:600;">Register</a>
     </nav>
 </header>
 
@@ -75,43 +39,43 @@ $notes_result = mysqli_query($conn, $notes_query);
         <p>Your one-stop portal for notes, syllabus, previous year questions, practicals, coding practice, projects and placement updates - all organized by branch and semester.</p>
         <div class="hero-stats">
             <div class="hero-stat-glass">
-                <span class="stat-number"><?php echo $total_notes; ?></span>
+                <span class="stat-number">50+</span>
                 <span class="stat-label">Notes</span>
             </div>
             <div class="hero-stat-glass">
-                <span class="stat-number"><?php echo $total_branches; ?></span>
+                <span class="stat-number">7</span>
                 <span class="stat-label">Branches</span>
             </div>
             <div class="hero-stat-glass">
-                <span class="stat-number"><?php echo $total_semesters; ?></span>
+                <span class="stat-number">6</span>
                 <span class="stat-label">Semesters</span>
             </div>
             <div class="hero-stat-glass">
-                <span class="stat-number"><?php echo $total_pyq; ?></span>
+                <span class="stat-number">20+</span>
                 <span class="stat-label">PYQ Papers</span>
             </div>
             <div class="hero-stat-glass">
-                <span class="stat-number"><?php echo $total_assignments; ?></span>
+                <span class="stat-number">15+</span>
                 <span class="stat-label">Assignments</span>
             </div>
             <div class="hero-stat-glass">
-                <span class="stat-number"><?php echo $total_syllabus; ?></span>
+                <span class="stat-number">10+</span>
                 <span class="stat-label">Syllabus</span>
             </div>
             <div class="hero-stat-glass">
-                <span class="stat-number"><?php echo $total_practicals; ?></span>
+                <span class="stat-number">10+</span>
                 <span class="stat-label">Practicals</span>
             </div>
             <div class="hero-stat-glass">
-                <span class="stat-number"><?php echo $total_coding; ?></span>
+                <span class="stat-number">10+</span>
                 <span class="stat-label">Coding</span>
             </div>
             <div class="hero-stat-glass">
-                <span class="stat-number"><?php echo $total_projects; ?></span>
+                <span class="stat-number">5+</span>
                 <span class="stat-label">Projects</span>
             </div>
             <div class="hero-stat-glass">
-                <span class="stat-number"><?php echo $total_placement; ?></span>
+                <span class="stat-number">5+</span>
                 <span class="stat-label">Placements</span>
             </div>
         </div>
@@ -119,9 +83,9 @@ $notes_result = mysqli_query($conn, $notes_query);
 </section>
 
 <div class="search-section">
-    <form method="GET" action="index.php">
+    <form method="GET" action="notes.html">
         <div class="search-box">
-            <input type="text" name="search" placeholder="Search notes by title, branch, or semester..." value="<?php echo htmlspecialchars($search); ?>">
+            <input type="text" name="search" placeholder="Search notes by title, branch, or semester...">
             <button type="submit">Search</button>
         </div>
     </form>
@@ -152,123 +116,85 @@ $notes_result = mysqli_query($conn, $notes_query);
 
 <div class="container">
     <div class="section-header">
-        <h2><?php echo $search !== '' ? 'Search Results for "' . htmlspecialchars($search) . '"' : 'Recently Uploaded Notes'; ?></h2>
-        <?php if ($search === ''): ?>
-            <a href="notes.php">View All &rarr;</a>
-        <?php endif; ?>
+        <h2>Recently Uploaded Notes</h2>
+        <a href="notes.html">View All &rarr;</a>
     </div>
 
-    <?php if ($notes_result && mysqli_num_rows($notes_result) > 0): ?>
-        <div class="cards">
-            <?php while ($row = mysqli_fetch_assoc($notes_result)): ?>
-                <div class="card">
-                    <span class="card-badge badge-sem"><?php echo htmlspecialchars($row['semester']); ?></span>
-                    <span class="card-badge badge-branch"><?php echo htmlspecialchars($row['branch']); ?></span>
-                    <h3><?php echo htmlspecialchars($row['title']); ?></h3>
-                    <?php if (!empty($row['description'])): ?>
-                        <p class="card-desc"><?php echo htmlspecialchars($row['description']); ?></p>
-                    <?php endif; ?>
-                    <div class="card-meta">
-                        <span class="card-date"><?php echo date('d M Y', strtotime($row['upload_date'])); ?></span>
-                        <a href="download.php?id=<?php echo $row['id']; ?>" class="btn btn-primary btn-sm">Download</a>
-                    </div>
-                </div>
-            <?php endwhile; ?>
-        </div>
-    <?php else: ?>
-        <div class="empty-state">
-            <div class="empty-icon">&#128214;</div>
-            <h3><?php echo $search !== '' ? 'No notes found' : 'No notes uploaded yet'; ?></h3>
-            <p><?php echo $search !== '' ? 'Try a different search term.' : 'Admin can upload notes from the dashboard.'; ?></p>
-        </div>
-    <?php endif; ?>
+    <div class="empty-state">
+        <div class="empty-icon">&#128214;</div>
+        <h3>Notes coming soon</h3>
+        <p>Admin can upload notes from the dashboard. Check back later!</p>
+    </div>
 
     <div style="margin-top:48px;">
         <div class="section-header fade-in">
             <h2>Latest Notices</h2>
-            <a href="notices.php">View All &rarr;</a>
+            <a href="notices.html">View All &rarr;</a>
         </div>
         <div style="display:flex;flex-direction:column;gap:14px;">
-            <?php if ($notices && mysqli_num_rows($notices) > 0): ?>
-                <?php while ($n = mysqli_fetch_assoc($notices)): ?>
-                    <div class="notice-card <?php echo $n['is_important'] ? 'notice-important' : ''; ?> slide-up">
-                        <?php if ($n['is_important']): ?>
-                            <span class="notice-important-badge">&#128226; Important</span>
-                        <?php endif; ?>
-                        <div class="notice-head">
-                            <h3><?php echo htmlspecialchars($n['title']); ?></h3>
-                            <span class="notice-category"><?php echo htmlspecialchars($n['category']); ?></span>
-                        </div>
-                        <?php if (!empty($n['content'])): ?>
-                            <p class="notice-content"><?php echo nl2br(htmlspecialchars(mb_substr($n['content'], 0, 200))); ?><?php echo mb_strlen($n['content']) > 200 ? '...' : ''; ?></p>
-                        <?php endif; ?>
-                        <div class="notice-date">Posted on <?php echo date('d M Y', strtotime($n['created_at'])); ?></div>
-                    </div>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <div class="empty-state">
-                    <div class="empty-icon">&#128226;</div>
-                    <h3>No notices yet</h3>
-                    <p>Check back later for announcements.</p>
+            <div class="notice-card notice-important slide-up">
+                <span class="notice-important-badge">&#128226; Important</span>
+                <div class="notice-head">
+                    <h3>Welcome to the Study Portal!</h3>
+                    <span class="notice-category">General</span>
                 </div>
-            <?php endif; ?>
+                <p class="notice-content">All notes, PYQ papers, assignments, online tests and notices are now available in one place. Register as a student to get started.</p>
+                <div class="notice-date">Posted on 11 Aug 2026</div>
+            </div>
+            <div class="notice-card slide-up">
+                <div class="notice-head">
+                    <h3>Online Test Guidelines</h3>
+                    <span class="notice-category">Exam</span>
+                </div>
+                <p class="notice-content">Attempt online tests only after logging in as a student. Results are shown instantly after submission.</p>
+                <div class="notice-date">Posted on 11 Aug 2026</div>
+            </div>
         </div>
     </div>
 
     <div style="margin-top:48px;">
         <div class="section-header fade-in">
             <h2>Campus Gallery</h2>
-            <a href="gallery.php">View All &rarr;</a>
+            <a href="gallery.html">View All &rarr;</a>
         </div>
-        <?php if ($gallery && mysqli_num_rows($gallery) > 0): ?>
-            <div class="gallery-grid">
-                <?php while ($g = mysqli_fetch_assoc($gallery)): ?>
-                    <div class="gallery-item slide-up">
-                        <img src="uploads/gallery/<?php echo htmlspecialchars($g['image']); ?>" alt="<?php echo htmlspecialchars($g['title']); ?>" loading="lazy">
-                        <div class="gallery-overlay"><p><?php echo htmlspecialchars($g['title']); ?></p></div>
-                    </div>
-                <?php endwhile; ?>
+        <div class="gallery-grid">
+            <div class="gallery-item slide-up">
+                <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(77,166,255,0.35),rgba(13,34,64,0.85));">
+                    <span>&#127961; Campus View</span>
+                </div>
+                <div class="gallery-overlay"><p>Campus View</p></div>
             </div>
-        <?php else: ?>
-            <div class="gallery-grid">
-                <div class="gallery-item slide-up">
-                    <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(77,166,255,0.35),rgba(13,34,64,0.85));">
-                        <span>&#127961; Campus View</span>
-                    </div>
-                    <div class="gallery-overlay"><p>Campus View</p></div>
+            <div class="gallery-item slide-up">
+                <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(45,138,78,0.35),rgba(13,34,64,0.85));">
+                    <span>&#128218; Library</span>
                 </div>
-                <div class="gallery-item slide-up">
-                    <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(45,138,78,0.35),rgba(13,34,64,0.85));">
-                        <span>&#128218; Library</span>
-                    </div>
-                    <div class="gallery-overlay"><p>Library</p></div>
-                </div>
-                <div class="gallery-item slide-up">
-                    <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(212,168,67,0.35),rgba(13,34,64,0.85));">
-                        <span>&#128187; Computer Lab</span>
-                    </div>
-                    <div class="gallery-overlay"><p>Computer Lab</p></div>
-                </div>
-                <div class="gallery-item slide-up">
-                    <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(77,166,255,0.25),rgba(212,168,67,0.2));">
-                        <span>&#127891; Seminar Hall</span>
-                    </div>
-                    <div class="gallery-overlay"><p>Seminar Hall</p></div>
-                </div>
-                <div class="gallery-item slide-up">
-                    <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(45,138,78,0.25),rgba(212,168,67,0.2));">
-                        <span>&#128295; Workshop</span>
-                    </div>
-                    <div class="gallery-overlay"><p>Workshop</p></div>
-                </div>
-                <div class="gallery-item slide-up">
-                    <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(192,57,43,0.2),rgba(13,34,64,0.7));">
-                        <span>&#9917; Sports Area</span>
-                    </div>
-                    <div class="gallery-overlay"><p>Sports Area</p></div>
-                </div>
+                <div class="gallery-overlay"><p>Library</p></div>
             </div>
-        <?php endif; ?>
+            <div class="gallery-item slide-up">
+                <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(212,168,67,0.35),rgba(13,34,64,0.85));">
+                    <span>&#128187; Computer Lab</span>
+                </div>
+                <div class="gallery-overlay"><p>Computer Lab</p></div>
+            </div>
+            <div class="gallery-item slide-up">
+                <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(77,166,255,0.25),rgba(212,168,67,0.2));">
+                    <span>&#127891; Seminar Hall</span>
+                </div>
+                <div class="gallery-overlay"><p>Seminar Hall</p></div>
+            </div>
+            <div class="gallery-item slide-up">
+                <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(45,138,78,0.25),rgba(212,168,67,0.2));">
+                    <span>&#128295; Workshop</span>
+                </div>
+                <div class="gallery-overlay"><p>Workshop</p></div>
+            </div>
+            <div class="gallery-item slide-up">
+                <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(192,57,43,0.2),rgba(13,34,64,0.7));">
+                    <span>&#9917; Sports Area</span>
+                </div>
+                <div class="gallery-overlay"><p>Sports Area</p></div>
+            </div>
+        </div>
     </div>
 
     <div style="margin-top:48px;">
@@ -276,47 +202,47 @@ $notes_result = mysqli_query($conn, $notes_query);
             <h2>Explore the Hub</h2>
         </div>
         <div class="user-account-grid">
-            <a href="notes.php" class="user-account-card">
+            <a href="notes.html" class="user-account-card">
                 <div class="user-account-icon">&#128196;</div>
                 <h3>Notes</h3>
                 <p>Semester-wise study notes</p>
             </a>
-            <a href="syllabus.php" class="user-account-card">
+            <a href="syllabus.html" class="user-account-card">
                 <div class="user-account-icon">&#128214;</div>
                 <h3>Syllabus</h3>
                 <p>Download latest syllabus</p>
             </a>
-            <a href="pyq.php" class="user-account-card">
+            <a href="pyq.html" class="user-account-card">
                 <div class="user-account-icon">&#128218;</div>
                 <h3>Previous Year Questions</h3>
                 <p>Practice old exam papers</p>
             </a>
-            <a href="practical.php" class="user-account-card">
+            <a href="practical.html" class="user-account-card">
                 <div class="user-account-icon">&#128196;</div>
                 <h3>Practical Files</h3>
                 <p>Practical lists &amp; manuals</p>
             </a>
-            <a href="coding.php" class="user-account-card">
+            <a href="coding.html" class="user-account-card">
                 <div class="user-account-icon">&#128187;</div>
                 <h3>Coding Practice</h3>
                 <p>Problems with solutions</p>
             </a>
-            <a href="projects.php" class="user-account-card">
+            <a href="projects.html" class="user-account-card">
                 <div class="user-account-icon">&#128736;</div>
                 <h3>Projects</h3>
                 <p>Project ideas &amp; reports</p>
             </a>
-            <a href="placement.php" class="user-account-card">
+            <a href="placement.html" class="user-account-card">
                 <div class="user-account-icon">&#128188;</div>
                 <h3>Placement Corner</h3>
                 <p>Drives &amp; job openings</p>
             </a>
-            <a href="assignments.php" class="user-account-card">
+            <a href="assignments.html" class="user-account-card">
                 <div class="user-account-icon">&#128221;</div>
                 <h3>Assignments</h3>
                 <p>Download &amp; submit</p>
             </a>
-            <a href="exams.php" class="user-account-card">
+            <a href="exams.html" class="user-account-card">
                 <div class="user-account-icon">&#127919;</div>
                 <h3>Online Tests</h3>
                 <p>MCQ exams &amp; results</p>
@@ -359,4 +285,3 @@ $notes_result = mysqli_query($conn, $notes_query);
 <script src="js/main.js"></script>
 </body>
 </html>
-<?php mysqli_close($conn); ?>

@@ -1,17 +1,5 @@
-RewriteEngine On
+DirectoryIndex index.php index.html
 
-# Redirect non-www to www (skip localhost)
-RewriteCond %{HTTP_HOST} ^localhost [NC]
-RewriteRule ^ - [L]
-
-RewriteCond %{HTTP_HOST} !^www\. [NC]
-RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
-
-# Force HTTPS (enable after SSL)
-# RewriteCond %{HTTPS} off
-# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-# Prevent directory listing
 Options -Indexes
 
 # Cache static files

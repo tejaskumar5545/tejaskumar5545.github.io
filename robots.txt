@@ -10,4 +10,4 @@ Disallow: /download.php
 Disallow: /logout.php
 Disallow: /student_logout.php
 
-Sitemap: http://classroomx.epizy.com/sitemap.xml
+Sitemap: http://collegehub.gt.tc/sitemap.xml

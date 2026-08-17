@@ -1,5 +1,17 @@
 # Uploaded user content (notes, PYQs, gallery images, etc.)
 uploads/
+!uploads/.gitkeep
+!uploads/gallery/.gitkeep
+!uploads/notes/.gitkeep
+
+# Environment & config (contains real credentials)
+.env
+config.php
+
+# SQL files with real user data / credentials
+college_notes.sql
+college_notes_import.sql
+add_new_tables.sql
 
 # Windows / OS junk
 Thumbs.db
@@ -9,3 +21,6 @@ Desktop.ini
 .idea/
 .vscode/
 *.swp
+
+# Test / debug files
+test.php

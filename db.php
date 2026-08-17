@@ -1,19 +1,12 @@
 <?php
-// === LOCAL DEVELOPMENT (XAMPP) ===
-// For live server, update the values below:
+if (!file_exists(__DIR__ . '/config.php')) {
+    die("config.php not found. Copy config.example.php to config.php and fill in your database credentials.");
+}
 
-$host = "localhost";
-$user = "root";
-$password = "";
-$database = "college_notes";
+require __DIR__ . '/config.php';
 
-// === LIVE SERVER EXAMPLE ===
-// $host = "sqlXXX.infinityfree.com";
-// $user = "if0_XXXXXXX";
-// $password = "your_db_password";
-// $database = "if0_XXXXXXX_college_notes";
-
-$conn = mysqli_connect($host, $user, $password, $database);
+mysqli_report(MYSQLI_REPORT_OFF);
+$conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
 
 if (!$conn) {
     die("Database Connection Failed: " . mysqli_connect_error());
