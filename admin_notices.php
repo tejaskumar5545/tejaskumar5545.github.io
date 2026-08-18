@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['admin'])) {
     header("Location: login.php");
@@ -57,15 +57,15 @@ $notices = mysqli_query($conn, "SELECT * FROM notices ORDER BY is_important DESC
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0d2240">
-    <title>Manage Notices - ClassroomX</title>
+    <title>Manage Notices - EngiHub</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
     <a href="index.php" class="logo">
-        <img src="images/logo.jpg" alt="ClassroomX" class="logo-img">
-        ClassroomX
+        <img src="images/logo.jpg" alt="EngiHub" class="logo-img">
+        EngiHub
     </a>
     <button class="menu-toggle">&#9776;</button>
     <nav>
@@ -172,7 +172,7 @@ $notices = mysqli_query($conn, "SELECT * FROM notices ORDER BY is_important DESC
     </div>
 </div>
 
-<footer><p>&copy; 2026 ClassroomX Portal</p></footer>
+<footer><p>&copy; 2026 EngiHub Portal</p></footer>
 <script src="js/main.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['student'])) {
     header("Location: student_login.php");
@@ -58,7 +58,7 @@ if ($existing) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0d2240">
-    <title><?php echo htmlspecialchars($exam['title']); ?> - ClassroomX</title>
+    <title><?php echo htmlspecialchars($exam['title']); ?> - EngiHub</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .exam-header {

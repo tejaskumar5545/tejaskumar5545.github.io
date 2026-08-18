@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 if (!isset($_SESSION['admin'])) {
     header("Location: login.php");
@@ -113,15 +113,15 @@ $assignments = mysqli_query($conn, "SELECT * FROM assignments ORDER BY created_a
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0d2240">
-    <title>Manage Assignments - ClassroomX</title>
+    <title>Manage Assignments - EngiHub</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
     <a href="index.php" class="logo">
-        <img src="images/logo.jpg" alt="ClassroomX" class="logo-img">
-        ClassroomX
+        <img src="images/logo.jpg" alt="EngiHub" class="logo-img">
+        EngiHub
     </a>
     <button class="menu-toggle">&#9776;</button>
     <nav>
@@ -253,7 +253,7 @@ $assignments = mysqli_query($conn, "SELECT * FROM assignments ORDER BY created_a
     </div>
 </div>
 
-<footer><p>&copy; 2026 ClassroomX Portal</p></footer>
+<footer><p>&copy; 2026 EngiHub Portal</p></footer>
 <script src="js/main.js"></script>
 </body>
 </html>
