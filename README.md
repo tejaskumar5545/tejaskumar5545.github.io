@@ -1,4 +1,4 @@
-# ClassroomX — Engineering Student Hub
+﻿# EngiHub — Engineering Student Hub
 
 A full-featured engineering student portal with a modern glassmorphism UI. Deploy as **GitHub Pages** (static) or as a **PHP + MySQL** web app with full admin panel, student authentication, MCQ exams, and file management.
 
@@ -30,7 +30,7 @@ GitHub Pages serves only static files (HTML, CSS, JS). All 20 public pages are p
 ### Step 1: Create GitHub Repository
 
 1. Go to [github.com/new](https://github.com/new)
-2. Repository name: `ClassroomX` (or any name you like)
+2. Repository name: `EngiHub` (or any name you like)
 3. Set to **Public**
 4. Click **Create repository**
 
@@ -41,8 +41,8 @@ cd H:\xampp\htdocs\CollageNotes
 
 git init
 git add .
-git commit -m "Initial commit: ClassroomX student portal"
-git remote add origin https://github.com/YOUR_USERNAME/ClassroomX.git
+git commit -m "Initial commit: EngiHub student portal"
+git remote add origin https://github.com/YOUR_USERNAME/EngiHub.git
 git branch -M main
 git push -u origin main
 ```
@@ -57,7 +57,7 @@ git push -u origin main
 6. Click **Save**
 7. Wait 1-2 minutes — your site will be live!
 
-**Your live URL:** `https://YOUR_USERNAME.github.io/ClassroomX/`
+**Your live URL:** `https://YOUR_USERNAME.github.io/EngiHub/`
 
 ### What Works on GitHub Pages
 
@@ -119,8 +119,8 @@ Same steps as InfinityFree — just use your hosting provider's database credent
 ```bash
 # On your VPS
 sudo apt update && sudo apt install php mysql-server apache2
-git clone https://github.com/YOUR_USERNAME/ClassroomX.git /var/www/html/ClassroomX
-cd /var/www/html/ClassroomX
+git clone https://github.com/YOUR_USERNAME/EngiHub.git /var/www/html/EngiHub
+cd /var/www/html/EngiHub
 cp config.example.php config.php
 # Edit config.php with your credentials
 mysql -u root -p < database/schema.sql
@@ -131,8 +131,8 @@ mysql -u root -p college_notes < database/seed.sql
 
 ```bash
 # 1. Clone
-git clone https://github.com/YOUR_USERNAME/ClassroomX.git
-# Or copy to C:\xampp\htdocs\ClassroomX\
+git clone https://github.com/YOUR_USERNAME/EngiHub.git
+# Or copy to C:\xampp\htdocs\EngiHub\
 
 # 2. Configure
 cp config.example.php config.php
@@ -143,7 +143,7 @@ mysql -u root -p -e "CREATE DATABASE college_notes"
 mysql -u root -p college_notes < database/schema.sql
 mysql -u root -p college_notes < database/seed.sql
 
-# 4. Start XAMPP, open http://localhost/ClassroomX/
+# 4. Start XAMPP, open http://localhost/EngiHub/
 ```
 
 ---
@@ -179,7 +179,7 @@ mysql -u root -p college_notes < database/seed.sql
 ## Project Structure
 
 ```
-ClassroomX/
+EngiHub/
 ├── index.html              # Homepage (GitHub Pages entry point)
 ├── about.html              # About page
 ├── notes.html              # Browse notes
@@ -236,10 +236,10 @@ git add .
 git status
 
 # Commit
-git commit -m "Initial commit: ClassroomX student portal"
+git commit -m "Initial commit: EngiHub student portal"
 
 # Add remote
-git remote add origin https://github.com/YOUR_USERNAME/ClassroomX.git
+git remote add origin https://github.com/YOUR_USERNAME/EngiHub.git
 
 # Push
 git branch -M main
