@@ -9,279 +9,872 @@
     <title>EngiHub - Everything an Engineering Student Needs.</title>
     <meta name="description" content="EngiHub - Everything an Engineering Student Needs. Notes, syllabus, PYQ, practicals, coding practice, projects and placement updates for all branches and semesters.">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .hero-slider {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            overflow: hidden;
+        }
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-slide.active { opacity: 1; }
+        .hero-slide-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.5);
+        }
+        .hero-slide-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(8,24,40,0.85) 0%, rgba(13,34,64,0.7) 40%, rgba(19,44,72,0.75) 70%, rgba(8,24,40,0.88) 100%);
+        }
+        .hero-slide-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 24px;
+            animation: slideUp 0.8s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-slide-content h1 {
+            font-size: 56px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 18px;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+        .hero-slide-content h1 .highlight {
+            background: linear-gradient(135deg, #4da6ff 0%, #80c4ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-slide-content p {
+            font-size: 19px;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 36px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            background: linear-gradient(135deg, #4da6ff 0%, #2b8ae6 100%);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: inherit;
+            box-shadow: 0 4px 24px rgba(77,166,255,0.35);
+        }
+        .hero-btn:hover {
+            background: linear-gradient(135deg, #2b8ae6 0%, #1a73e8 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(77,166,255,0.5);
+        }
+        .slider-arrows {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 5;
+            pointer-events: none;
+        }
+        .slider-arrow {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(13,34,64,0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            pointer-events: all;
+        }
+        .slider-arrow:hover {
+            background: rgba(77,166,255,0.4);
+            border-color: rgba(77,166,255,0.5);
+            transform: scale(1.1);
+        }
+        .slider-dots {
+            position: absolute;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 5;
+        }
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            border: 2px solid rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .slider-dot.active {
+            background: #4da6ff;
+            border-color: #4da6ff;
+            transform: scale(1.2);
+            box-shadow: 0 0 12px rgba(77,166,255,0.5);
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+        .feature-grid-card {
+            background: rgba(13,34,64,0.45);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 18px;
+            padding: 32px 20px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .feature-grid-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(77,166,255,0.15), 0 2px 8px rgba(0,0,0,0.2);
+            border-color: rgba(77,166,255,0.4);
+            background: rgba(13,34,64,0.6);
+        }
+        .feature-grid-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            background: rgba(77,166,255,0.12);
+            border: 1px solid rgba(77,166,255,0.2);
+        }
+        .feature-grid-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .feature-grid-card p {
+            font-size: 13px;
+            color: #8aa0c0;
+            line-height: 1.5;
+        }
+        .resource-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .resource-card {
+            background: rgba(13,34,64,0.45);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 18px;
+            padding: 28px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .resource-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(77,166,255,0.12);
+            border-color: rgba(77,166,255,0.35);
+        }
+        .resource-card-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            width: fit-content;
+        }
+        .tag-notes { background: rgba(77,166,255,0.15); color: #4da6ff; border: 1px solid rgba(77,166,255,0.2); }
+        .tag-pyq { background: rgba(212,168,67,0.15); color: #d4a843; border: 1px solid rgba(212,168,67,0.2); }
+        .tag-practical { background: rgba(45,138,78,0.15); color: #2d8a4e; border: 1px solid rgba(45,138,78,0.2); }
+        .resource-card h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #fff;
+        }
+        .resource-card p {
+            font-size: 13px;
+            color: #8aa0c0;
+            line-height: 1.6;
+        }
+        .resource-card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .resource-card-meta span {
+            font-size: 12px;
+            color: #6888aa;
+        }
+        .note-list-card {
+            background: rgba(13,34,64,0.45);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 16px;
+            padding: 22px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            gap: 16px;
+        }
+        .note-list-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(77,166,255,0.1);
+            border-color: rgba(77,166,255,0.3);
+        }
+        .note-info h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .note-info span {
+            font-size: 13px;
+            color: #6888aa;
+        }
+        .project-card {
+            background: rgba(13,34,64,0.45);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 18px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(77,166,255,0.12);
+            border-color: rgba(77,166,255,0.35);
+        }
+        .project-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .project-card p {
+            font-size: 14px;
+            color: #8aa0c0;
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+        .placement-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .placement-card-new {
+            background: rgba(13,34,64,0.45);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 18px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+        .placement-card-new:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(77,166,255,0.12);
+            border-color: rgba(77,166,255,0.35);
+        }
+        .placement-card-new h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .placement-card-new p {
+            font-size: 14px;
+            color: #8aa0c0;
+            line-height: 1.6;
+        }
+        .placement-card-new .company-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #4da6ff;
+            margin-bottom: 4px;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .section-title p {
+            font-size: 17px;
+            color: #8aa0c0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .professional-footer {
+            background: rgba(8,24,40,0.92);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 64px 0 0;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+        .footer-brand h3 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 14px;
+        }
+        .footer-brand p {
+            font-size: 14px;
+            color: #8aa0c0;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        .footer-social {
+            display: flex;
+            gap: 12px;
+        }
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8aa0c0;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .footer-social a:hover {
+            background: rgba(77,166,255,0.15);
+            border-color: rgba(77,166,255,0.3);
+            color: #4da6ff;
+            transform: translateY(-2px);
+        }
+        .footer-col h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+        .footer-col ul li a {
+            font-size: 14px;
+            color: #8aa0c0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .footer-col ul li a:hover {
+            color: #4da6ff;
+            padding-left: 4px;
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin-top: 48px;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-bottom p {
+            font-size: 13px;
+            color: #6888aa;
+        }
+        .cta-banner {
+            background: linear-gradient(135deg, rgba(77,166,255,0.15) 0%, rgba(13,34,64,0.6) 100%);
+            border: 1px solid rgba(77,166,255,0.25);
+            border-radius: 24px;
+            padding: 60px 48px;
+            text-align: center;
+            margin: 48px 0;
+        }
+        .cta-banner h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .cta-banner p {
+            font-size: 17px;
+            color: #8aa0c0;
+            margin-bottom: 28px;
+        }
+        @media (max-width: 1024px) {
+            .feature-grid { grid-template-columns: repeat(4, 1fr); }
+            .resource-cards { grid-template-columns: repeat(2, 1fr); }
+            .placement-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+        }
+        @media (max-width: 768px) {
+            .hero-slider { height: 480px; }
+            .hero-slide-content h1 { font-size: 36px; }
+            .hero-slide-content p { font-size: 16px; }
+            .feature-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .resource-cards { grid-template-columns: 1fr; }
+            .placement-grid { grid-template-columns: 1fr; }
+            .section-title h2 { font-size: 28px; }
+            .slider-arrow { width: 42px; height: 42px; font-size: 18px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+            .cta-banner { padding: 40px 24px; border-radius: 18px; }
+            .cta-banner h2 { font-size: 24px; }
+        }
+        @media (max-width: 480px) {
+            .hero-slider { height: 420px; }
+            .hero-slide-content h1 { font-size: 28px; }
+            .hero-slide-content p { font-size: 14px; }
+            .hero-btn { padding: 14px 28px; font-size: 15px; }
+            .feature-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .feature-grid-card { padding: 22px 14px; }
+            .feature-grid-icon { width: 52px; height: 52px; font-size: 24px; }
+            .feature-grid-card h3 { font-size: 14px; }
+            .feature-grid-card p { font-size: 12px; }
+            .note-list-card { flex-direction: column; align-items: flex-start; }
+            .slider-arrow { width: 36px; height: 36px; font-size: 16px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+    </style>
 </head>
 <body>
 
 <header class="header-transparent" id="siteHeader">
     <a href="index.html" class="logo">
-<img src="images/logo.jpg" alt="EngiHub" class="logo-img">
-    EngiHub
+        <img src="images/logo.jpg" alt="EngiHub" class="logo-img">
+        EngiHub
     </a>
-    <button class="menu-toggle">&#9776;</button>
-    <nav>
+    <button class="menu-toggle" id="menuToggle">&#9776;</button>
+    <nav id="mainNav">
         <a href="index.html" class="active">Home</a>
-        <a href="subjects.html">Subjects</a>
         <a href="notes.html">Notes</a>
-        <a href="pdfs.html">PDFs</a>
-        <a href="exams.html">MCQ Quiz</a>
-        <a href="pyq.html">Previous Papers</a>
         <a href="syllabus.html">Syllabus</a>
-        <a href="notices.html">Notices</a>
-        <a href="login.html">Admin Login</a>
-        <a href="student_login.html" class="btn-login">Student Login</a>
-        <a href="register.html" style="color:rgba(255,255,255,0.8);font-weight:600;">Register</a>
+        <a href="pyq.html">PYQ</a>
+        <a href="practical.html">Practical</a>
+        <a href="projects.html">Projects</a>
+        <a href="coding.html">Coding</a>
+        <a href="placement.html">Placement</a>
+        <a href="login.html" class="btn-login">Login</a>
     </nav>
 </header>
 
-<section class="hero">
-    <div class="hero-content">
-        <h1>Welcome to <span class="highlight">EngiHub</span></h1>
-        <p>Everything an Engineering Student Needs. Notes, syllabus, PYQ, practicals, coding practice, projects and placement updates - all organized by branch and semester.</p>
-        <div class="hero-stats">
-            <div class="hero-stat-glass">
-                <span class="stat-number">50+</span>
-                <span class="stat-label">Notes</span>
-            </div>
-            <div class="hero-stat-glass">
-                <span class="stat-number">7</span>
-                <span class="stat-label">Branches</span>
-            </div>
-            <div class="hero-stat-glass">
-                <span class="stat-number">6</span>
-                <span class="stat-label">Semesters</span>
-            </div>
-            <div class="hero-stat-glass">
-                <span class="stat-number">20+</span>
-                <span class="stat-label">PYQ Papers</span>
-            </div>
-            <div class="hero-stat-glass">
-                <span class="stat-number">15+</span>
-                <span class="stat-label">Assignments</span>
-            </div>
-            <div class="hero-stat-glass">
-                <span class="stat-number">10+</span>
-                <span class="stat-label">Syllabus</span>
-            </div>
-            <div class="hero-stat-glass">
-                <span class="stat-number">10+</span>
-                <span class="stat-label">Practicals</span>
-            </div>
-            <div class="hero-stat-glass">
-                <span class="stat-number">10+</span>
-                <span class="stat-label">Coding</span>
-            </div>
-            <div class="hero-stat-glass">
-                <span class="stat-number">5+</span>
-                <span class="stat-label">Projects</span>
-            </div>
-            <div class="hero-stat-glass">
-                <span class="stat-number">5+</span>
-                <span class="stat-label">Placements</span>
-            </div>
+<section class="hero-slider" id="heroSlider">
+    <div class="hero-slide active" data-index="0">
+        <div class="hero-slide-bg" style="background-image:url('https://images.unsplash.com/photo-1562774053-701939374585?w=1600&q=80')"></div>
+        <div class="hero-slide-overlay"></div>
+        <div class="hero-slide-content">
+            <h1>Learn. Build. <span class="highlight">Succeed.</span></h1>
+            <p>Everything an engineering student needs in one platform.</p>
+            <a href="#features" class="hero-btn">Explore Now &rarr;</a>
         </div>
+    </div>
+    <div class="hero-slide" data-index="1">
+        <div class="hero-slide-bg" style="background-image:url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=80')"></div>
+        <div class="hero-slide-overlay"></div>
+        <div class="hero-slide-content">
+            <h1>Engineering <span class="highlight">Notes</span></h1>
+            <p>Access semester-wise notes, study materials and important questions.</p>
+            <a href="notes.html" class="hero-btn">View Notes &rarr;</a>
+        </div>
+    </div>
+    <div class="hero-slide" data-index="2">
+        <div class="hero-slide-bg" style="background-image:url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1600&q=80')"></div>
+        <div class="hero-slide-overlay"></div>
+        <div class="hero-slide-content">
+            <h1>Prepare. Practice. <span class="highlight">Perform.</span></h1>
+            <p>Practice PYQs, coding and placement questions.</p>
+            <a href="pyq.html" class="hero-btn">Start Learning &rarr;</a>
+        </div>
+    </div>
+    <div class="hero-slide" data-index="3">
+        <div class="hero-slide-bg" style="background-image:url('https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1600&q=80')"></div>
+        <div class="hero-slide-overlay"></div>
+        <div class="hero-slide-content">
+            <h1>Crack Your <span class="highlight">Placement</span></h1>
+            <p>Placement drives, company reviews and interview preparation.</p>
+            <a href="placement.html" class="hero-btn">View Openings &rarr;</a>
+        </div>
+    </div>
+    <div class="hero-slide" data-index="4">
+        <div class="hero-slide-bg" style="background-image:url('https://images.unsplash.com/photo-1581093458791-9d42e3c7e117?w=1600&q=80')"></div>
+        <div class="hero-slide-overlay"></div>
+        <div class="hero-slide-content">
+            <h1>Build Amazing <span class="highlight">Projects</span></h1>
+            <p>Get project ideas, reports and implementation guides.</p>
+            <a href="projects.html" class="hero-btn">Explore Projects &rarr;</a>
+        </div>
+    </div>
+    <div class="slider-arrows">
+        <button class="slider-arrow" id="prevSlide">&#10094;</button>
+        <button class="slider-arrow" id="nextSlide">&#10095;</button>
+    </div>
+    <div class="slider-dots" id="sliderDots">
+        <span class="slider-dot active" data-index="0"></span>
+        <span class="slider-dot" data-index="1"></span>
+        <span class="slider-dot" data-index="2"></span>
+        <span class="slider-dot" data-index="3"></span>
+        <span class="slider-dot" data-index="4"></span>
     </div>
 </section>
 
-<div class="search-section">
-    <form method="GET" action="notes.html">
-        <div class="search-box">
-            <input type="text" name="search" placeholder="Search notes by title, branch, or semester...">
-            <button type="submit">Search</button>
-        </div>
-    </form>
-</div>
-
-<div class="collage-slider-section">
-    <div class="collage-slider-track">
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(26,53,80,0.7),rgba(26,53,80,0.3));"><span>&#128218;</span><p>Classroom Notes</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(212,168,67,0.6),rgba(212,168,67,0.25));"><span>&#127891;</span><p>Graduation Day</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(45,138,78,0.6),rgba(45,138,78,0.25));"><span>&#128187;</span><p>Lab Sessions</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(26,53,80,0.65),rgba(38,75,110,0.3));"><span>&#128205;</span><p>Campus Life</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(212,168,67,0.55),rgba(15,34,54,0.35));"><span>&#128214;</span><p>Library Studies</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(26,53,80,0.6),rgba(45,138,78,0.2));"><span>&#127942;</span><p>Achievements</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(15,34,54,0.7),rgba(212,168,67,0.2));"><span>&#128101;</span><p>Group Projects</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(45,138,78,0.5),rgba(26,53,80,0.3));"><span>&#127775;</span><p>Student Life</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(26,53,80,0.7),rgba(26,53,80,0.3));"><span>&#128218;</span><p>Classroom Notes</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(212,168,67,0.6),rgba(212,168,67,0.25));"><span>&#127891;</span><p>Graduation Day</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(45,138,78,0.6),rgba(45,138,78,0.25));"><span>&#128187;</span><p>Lab Sessions</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(26,53,80,0.65),rgba(38,75,110,0.3));"><span>&#128205;</span><p>Campus Life</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(212,168,67,0.55),rgba(15,34,54,0.35));"><span>&#128214;</span><p>Library Studies</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(26,53,80,0.6),rgba(45,138,78,0.2));"><span>&#127942;</span><p>Achievements</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(15,34,54,0.7),rgba(212,168,67,0.2));"><span>&#128101;</span><p>Group Projects</p></div></div>
-        <div class="collage-slide"><div class="collage-card" style="background:linear-gradient(135deg,rgba(45,138,78,0.5),rgba(26,53,80,0.3));"><span>&#127775;</span><p>Student Life</p></div></div>
+<div class="container" id="features">
+    <div class="section-title fade-in">
+        <h2>Everything You Need</h2>
+        <p>Your complete engineering study companion - notes, exams, projects and more.</p>
     </div>
-    <div class="collage-overlay-left"></div>
-    <div class="collage-overlay-right"></div>
+
+    <div class="feature-grid">
+        <a href="notes.html" class="feature-grid-card slide-up">
+            <div class="feature-grid-icon">&#128218;</div>
+            <h3>Notes</h3>
+            <p>Semester-wise study notes</p>
+        </a>
+        <a href="pyq.html" class="feature-grid-card slide-up">
+            <div class="feature-grid-icon" style="background:rgba(212,168,67,0.12);border-color:rgba(212,168,67,0.2);">&#128203;</div>
+            <h3>PYQ</h3>
+            <p>Previous year question papers</p>
+        </a>
+        <a href="syllabus.html" class="feature-grid-card slide-up">
+            <div class="feature-grid-icon" style="background:rgba(45,138,78,0.12);border-color:rgba(45,138,78,0.2);">&#128214;</div>
+            <h3>Syllabus</h3>
+            <p>Latest semester syllabus</p>
+        </a>
+        <a href="practical.html" class="feature-grid-card slide-up">
+            <div class="feature-grid-icon" style="background:rgba(168,85,247,0.12);border-color:rgba(168,85,247,0.2);">&#128300;</div>
+            <h3>Practical</h3>
+            <p>Practical files &amp; manuals</p>
+        </a>
+        <a href="coding.html" class="feature-grid-card slide-up">
+            <div class="feature-grid-icon" style="background:rgba(236,72,153,0.12);border-color:rgba(236,72,153,0.2);">&#128187;</div>
+            <h3>Coding</h3>
+            <p>Practice coding problems</p>
+        </a>
+        <a href="projects.html" class="feature-grid-card slide-up">
+            <div class="feature-grid-icon" style="background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.2);">&#128640;</div>
+            <h3>Projects</h3>
+            <p>Project ideas &amp; reports</p>
+        </a>
+        <a href="placement.html" class="feature-grid-card slide-up">
+            <div class="feature-grid-icon" style="background:rgba(6,182,212,0.12);border-color:rgba(6,182,212,0.2);">&#128188;</div>
+            <h3>Placement</h3>
+            <p>Drives &amp; job openings</p>
+        </a>
+        <a href="notices.html" class="feature-grid-card slide-up">
+            <div class="feature-grid-icon" style="background:rgba(192,57,43,0.12);border-color:rgba(192,57,43,0.2);">&#128227;</div>
+            <h3>Notices</h3>
+            <p>College announcements</p>
+        </a>
+    </div>
 </div>
 
 <div class="container">
-    <div class="section-header">
-        <h2>Recently Uploaded Notes</h2>
-        <a href="notes.html">View All &rarr;</a>
+    <div class="section-title fade-in">
+        <h2>Popular Resources</h2>
+        <p>Most accessed study materials by students across all semesters.</p>
     </div>
 
-    <div class="empty-state">
-        <div class="empty-icon">&#128214;</div>
-        <h3>Notes coming soon</h3>
-        <p>Admin can upload notes from the dashboard. Check back later!</p>
-    </div>
-
-    <div style="margin-top:48px;">
-        <div class="section-header fade-in">
-            <h2>Latest Notices</h2>
-            <a href="notices.html">View All &rarr;</a>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:14px;">
-            <div class="notice-card notice-important slide-up">
-                <span class="notice-important-badge">&#128226; Important</span>
-                <div class="notice-head">
-                    <h3>Welcome to the Study Portal!</h3>
-                    <span class="notice-category">General</span>
-                </div>
-                <p class="notice-content">All notes, PYQ papers, assignments, online tests and notices are now available in one place. Register as a student to get started.</p>
-                <div class="notice-date">Posted on 11 Aug 2026</div>
-            </div>
-            <div class="notice-card slide-up">
-                <div class="notice-head">
-                    <h3>Online Test Guidelines</h3>
-                    <span class="notice-category">Exam</span>
-                </div>
-                <p class="notice-content">Attempt online tests only after logging in as a student. Results are shown instantly after submission.</p>
-                <div class="notice-date">Posted on 11 Aug 2026</div>
+    <div class="resource-cards">
+        <div class="resource-card slide-up">
+            <span class="resource-card-tag tag-notes">Notes</span>
+            <h3>Engineering Mathematics - Sem 3</h3>
+            <p>Complete handwritten notes covering all units with solved examples and practice problems.</p>
+            <div class="resource-card-meta">
+                <span>Semester 3 &middot; Computer Engg.</span>
+                <a href="notes.html" class="btn btn-primary btn-sm">View &rarr;</a>
             </div>
         </div>
-    </div>
-
-    <div style="margin-top:48px;">
-        <div class="section-header fade-in">
-            <h2>Campus Gallery</h2>
-            <a href="gallery.html">View All &rarr;</a>
-        </div>
-        <div class="gallery-grid">
-            <div class="gallery-item slide-up">
-                <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(77,166,255,0.35),rgba(13,34,64,0.85));">
-                    <span>&#127961; Campus View</span>
-                </div>
-                <div class="gallery-overlay"><p>Campus View</p></div>
-            </div>
-            <div class="gallery-item slide-up">
-                <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(45,138,78,0.35),rgba(13,34,64,0.85));">
-                    <span>&#128218; Library</span>
-                </div>
-                <div class="gallery-overlay"><p>Library</p></div>
-            </div>
-            <div class="gallery-item slide-up">
-                <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(212,168,67,0.35),rgba(13,34,64,0.85));">
-                    <span>&#128187; Computer Lab</span>
-                </div>
-                <div class="gallery-overlay"><p>Computer Lab</p></div>
-            </div>
-            <div class="gallery-item slide-up">
-                <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(77,166,255,0.25),rgba(212,168,67,0.2));">
-                    <span>&#127891; Seminar Hall</span>
-                </div>
-                <div class="gallery-overlay"><p>Seminar Hall</p></div>
-            </div>
-            <div class="gallery-item slide-up">
-                <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(45,138,78,0.25),rgba(212,168,67,0.2));">
-                    <span>&#128295; Workshop</span>
-                </div>
-                <div class="gallery-overlay"><p>Workshop</p></div>
-            </div>
-            <div class="gallery-item slide-up">
-                <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(192,57,43,0.2),rgba(13,34,64,0.7));">
-                    <span>&#9917; Sports Area</span>
-                </div>
-                <div class="gallery-overlay"><p>Sports Area</p></div>
+        <div class="resource-card slide-up">
+            <span class="resource-card-tag tag-pyq">PYQ</span>
+            <h3>Data Structures - Sem 3 (2024)</h3>
+            <p>Previous year exam paper with all questions from the last 5 years compiled.</p>
+            <div class="resource-card-meta">
+                <span>Semester 3 &middot; All Branches</span>
+                <a href="pyq.html" class="btn btn-primary btn-sm">View &rarr;</a>
             </div>
         </div>
-    </div>
-
-    <div style="margin-top:48px;">
-        <div class="section-header fade-in">
-            <h2>Explore the Hub</h2>
-        </div>
-        <div class="user-account-grid">
-            <a href="notes.html" class="user-account-card">
-                <div class="user-account-icon">&#128196;</div>
-                <h3>Notes</h3>
-                <p>Semester-wise study notes</p>
-            </a>
-            <a href="syllabus.html" class="user-account-card">
-                <div class="user-account-icon">&#128214;</div>
-                <h3>Syllabus</h3>
-                <p>Download latest syllabus</p>
-            </a>
-            <a href="pyq.html" class="user-account-card">
-                <div class="user-account-icon">&#128218;</div>
-                <h3>Previous Year Questions</h3>
-                <p>Practice old exam papers</p>
-            </a>
-            <a href="practical.html" class="user-account-card">
-                <div class="user-account-icon">&#128196;</div>
-                <h3>Practical Files</h3>
-                <p>Practical lists &amp; manuals</p>
-            </a>
-            <a href="coding.html" class="user-account-card">
-                <div class="user-account-icon">&#128187;</div>
-                <h3>Coding Practice</h3>
-                <p>Problems with solutions</p>
-            </a>
-            <a href="projects.html" class="user-account-card">
-                <div class="user-account-icon">&#128736;</div>
-                <h3>Projects</h3>
-                <p>Project ideas &amp; reports</p>
-            </a>
-            <a href="placement.html" class="user-account-card">
-                <div class="user-account-icon">&#128188;</div>
-                <h3>Placement Corner</h3>
-                <p>Drives &amp; job openings</p>
-            </a>
-            <a href="assignments.html" class="user-account-card">
-                <div class="user-account-icon">&#128221;</div>
-                <h3>Assignments</h3>
-                <p>Download &amp; submit</p>
-            </a>
-            <a href="exams.html" class="user-account-card">
-                <div class="user-account-icon">&#127919;</div>
-                <h3>Online Tests</h3>
-                <p>MCQ exams &amp; results</p>
-            </a>
-        </div>
-    </div>
-
-    <div class="features">
-        <div class="feature-card">
-            <div class="feature-icon blue">&#128196;</div>
-            <h3>PDF Downloads</h3>
-            <p>All notes, syllabus, PYQ and practical files are available as PDFs for offline reading.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon orange">&#128269;</div>
-            <h3>Quick Search</h3>
-            <p>Find material instantly by title, branch, or semester using the search feature.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon green">&#128241;</div>
-            <h3>Mobile Friendly</h3>
-            <p>Access everything on any device - phone, tablet, or desktop computer.</p>
+        <div class="resource-card slide-up">
+            <span class="resource-card-tag tag-practical">Practical</span>
+            <h3>DBMS Lab Manual</h3>
+            <p>Complete practical file with SQL queries, normalization problems and ER diagrams.</p>
+            <div class="resource-card-meta">
+                <span>Semester 4 &middot; IT / CSE</span>
+                <a href="practical.html" class="btn btn-primary btn-sm">View &rarr;</a>
+            </div>
         </div>
     </div>
 </div>
 
-<footer>
-    <p>&copy; 2026 EngiHub Portal. All rights reserved.</p>
+<div class="container">
+    <div class="section-header fade-in">
+        <h2>Latest Notes</h2>
+        <a href="notes.html">View All &rarr;</a>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="note-list-card slide-up">
+            <div class="note-info">
+                <h4>Operating Systems</h4>
+                <span>Semester 4 &middot; Computer Engineering &middot; PDF &middot; Uploaded 2 days ago</span>
+            </div>
+            <a href="notes.html" class="btn btn-primary btn-sm">View &rarr;</a>
+        </div>
+        <div class="note-list-card slide-up">
+            <div class="note-info">
+                <h4>Computer Networks</h4>
+                <span>Semester 4 &middot; IT Engineering &middot; PDF &middot; Uploaded 5 days ago</span>
+            </div>
+            <a href="notes.html" class="btn btn-primary btn-sm">View &rarr;</a>
+        </div>
+        <div class="note-list-card slide-up">
+            <div class="note-info">
+                <h4>Engineering Mathematics - IV</h4>
+                <span>Semester 4 &middot; All Branches &middot; PDF &middot; Uploaded 1 week ago</span>
+            </div>
+            <a href="notes.html" class="btn btn-primary btn-sm">View &rarr;</a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="section-header fade-in">
+        <h2>Latest Projects</h2>
+        <a href="projects.html">View All &rarr;</a>
+    </div>
+
+    <div class="resource-cards" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="project-card slide-up">
+            <span class="resource-card-tag tag-notes">Semester 5</span>
+            <h3>Online Examination System</h3>
+            <p>A complete web-based examination system with auto-grading, timer and result analytics.</p>
+            <div class="resource-card-meta">
+                <span>Computer Engineering</span>
+                <a href="projects.html" class="btn btn-primary btn-sm">View &rarr;</a>
+            </div>
+        </div>
+        <div class="project-card slide-up">
+            <span class="resource-card-tag tag-pyq">Semester 6</span>
+            <h3>Smart Attendance System</h3>
+            <p>Face recognition-based attendance system using Python and OpenCV.</p>
+            <div class="resource-card-meta">
+                <span>IT Engineering</span>
+                <a href="projects.html" class="btn btn-primary btn-sm">View &rarr;</a>
+            </div>
+        </div>
+        <div class="project-card slide-up">
+            <span class="resource-card-tag tag-practical">Semester 5</span>
+            <h3>Library Management App</h3>
+            <p>Full-stack library management system with barcode scanning and inventory tracking.</p>
+            <div class="resource-card-meta">
+                <span>Electronics Engineering</span>
+                <a href="projects.html" class="btn btn-primary btn-sm">View &rarr;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="section-title fade-in">
+        <h2>Placement Preparation</h2>
+        <p>Get ready for campus placements with company-specific resources.</p>
+    </div>
+
+    <div class="placement-grid">
+        <div class="placement-card-new slide-up">
+            <span class="resource-card-tag tag-notes">Aptitude</span>
+            <div class="company-name">TCS / Infosys / Wipro</div>
+            <h3>Aptitude &amp; Reasoning</h3>
+            <p>Quantitative aptitude, logical reasoning and verbal ability practice sets.</p>
+            <div class="resource-card-meta">
+                <span>150+ Questions</span>
+                <a href="placement.html" class="btn btn-primary btn-sm">View &rarr;</a>
+            </div>
+        </div>
+        <div class="placement-card-new slide-up">
+            <span class="resource-card-tag tag-pyq">Coding</span>
+            <div class="company-name">Google / Amazon / Microsoft</div>
+            <h3>DSA Interview Problems</h3>
+            <p>Top 100 DSA problems frequently asked in product-based company interviews.</p>
+            <div class="resource-card-meta">
+                <span>100+ Problems</span>
+                <a href="coding.html" class="btn btn-primary btn-sm">View &rarr;</a>
+            </div>
+        </div>
+        <div class="placement-card-new slide-up">
+            <span class="resource-card-tag tag-practical">HR</span>
+            <div class="company-name">All Companies</div>
+            <h3>HR Interview Guide</h3>
+            <p>Common HR questions, group discussion tips and resume building strategies.</p>
+            <div class="resource-card-meta">
+                <span>50+ Questions</span>
+                <a href="placement.html" class="btn btn-primary btn-sm">View &rarr;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="cta-banner fade-in">
+        <h2>Ready to Start Learning?</h2>
+        <p>Join thousands of engineering students using EngiHub for their studies.</p>
+        <a href="register.html" class="hero-btn">Get Started Free &rarr;</a>
+    </div>
+</div>
+
+<footer class="professional-footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h3>EngiHub</h3>
+            <p>Everything an Engineering Student Needs. Your one-stop platform for notes, syllabus, PYQ, practicals, coding, projects and placement preparation.</p>
+            <div class="footer-social">
+                <a href="#" title="Instagram">&#9733;</a>
+                <a href="#" title="YouTube">&#9654;</a>
+                <a href="#" title="Telegram">&#9993;</a>
+                <a href="#" title="GitHub">&#9733;</a>
+            </div>
+        </div>
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="syllabus.html">Syllabus</a></li>
+                <li><a href="pyq.html">PYQ Papers</a></li>
+                <li><a href="practical.html">Practicals</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Resources</h4>
+            <ul>
+                <li><a href="coding.html">Coding Practice</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="placement.html">Placement</a></li>
+                <li><a href="exams.html">Online Tests</a></li>
+                <li><a href="notices.html">Notices</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Contact</h4>
+            <ul>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="admission.html">Admissions</a></li>
+                <li><a href="login.html">Admin Login</a></li>
+                <li><a href="student_login.html">Student Login</a></li>
+                <li><a href="register.html">Register</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 EngiHub. All rights reserved.</p>
+        <p>Built for engineering students, by engineering students.</p>
+    </div>
 </footer>
 
 <a href="https://wa.me/918860695666?text=Hi%20EngiHub%2C%20I%20have%20a%20question" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
     <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.132 6.744 3.058 9.374L1.054 31.2l6.064-1.97A15.912 15.912 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.31 22.608c-.39 1.096-1.932 2.01-3.162 2.274-.844.18-1.946.322-5.656-1.216-4.746-1.966-7.798-6.79-8.036-7.108-.23-.318-1.9-2.524-1.9-4.814 0-2.29 1.204-3.416 1.63-3.884.39-.428.924-.57 1.23-.57.31 0 .618.004.886.016.284.012.664-.106 1.036.79.39.932 1.33 3.24 1.446 3.478.116.238.194.516.038.834-.156.318-.232.516-.462.794-.23.278-.484.62-.692.832-.23.238-.47.496-.2.972.27.476 1.2 1.98 2.578 3.208 1.77 1.58 3.26 2.07 3.736 2.298.374.18.792.136 1.086-.23.374-.476.836-1.262 1.304-2.02.334-.542.756-.61 1.276-.414.53.196 3.364 1.586 3.94 1.87.576.284.96.428 1.102.664.14.236.14 1.37-.25 2.464z"/></svg>
 </a>
 
-<div id="galleryLightbox" class="lightbox">
-    <button class="lightbox-close">&times;</button>
-    <img class="lightbox-img" src="" alt="">
-</div>
-
 <script src="js/main.js"></script>
+<script>
+(function(){
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.slider-dot');
+    let current = 0;
+    let interval;
+
+    function goTo(index) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = (index + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+    }
+
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+
+    function startAuto() { interval = setInterval(next, 5000); }
+    function stopAuto() { clearInterval(interval); }
+
+    document.getElementById('nextSlide').addEventListener('click', function(){ stopAuto(); next(); startAuto(); });
+    document.getElementById('prevSlide').addEventListener('click', function(){ stopAuto(); prev(); startAuto(); });
+
+    dots.forEach(function(dot){
+        dot.addEventListener('click', function(){
+            stopAuto();
+            goTo(parseInt(this.dataset.index));
+            startAuto();
+        });
+    });
+
+    startAuto();
+})();
+</script>
 </body>
 </html>
