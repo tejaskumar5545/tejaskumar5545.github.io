@@ -2,69 +2,645 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="theme-color" content="#0d2240">
-    <title>Coding Practice - EngiHub</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <title>Coding Learning - EngiHub</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fb; color: #111827; }
+        a { text-decoration: none; color: inherit; }
+        code { font-family: 'Consolas', 'Courier New', monospace; }
+
+        .navbar { width: 100%; height: 70px; background: white; display: flex; align-items: center; justify-content: space-between; padding: 0 6%; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 28px; font-weight: bold; color: #2563eb; }
+        .logo span { color: #111827; }
+        .nav-links { display: flex; gap: 25px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover { color: #2563eb; }
+        .nav-links a.active { color: #2563eb; font-weight: 700; }
+        .login-btn { background: #2563eb; color: white !important; padding: 10px 20px; border-radius: 8px; }
+        .login-btn:hover { background: #1d4ed8; }
+        .menu-toggle { display: none; background: none; border: none; font-size: 28px; cursor: pointer; color: #111827; }
+
+        .page-header { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); color: white; padding: 60px 6% 50px; text-align: center; }
+        .page-header h1 { font-size: 40px; font-weight: 800; margin-bottom: 10px; }
+        .page-header p { font-size: 17px; opacity: 0.85; max-width: 560px; margin: 0 auto; }
+
+        .search-section { max-width: 650px; margin: -28px auto 0; padding: 0 6%; position: relative; z-index: 10; }
+        .search-box { background: white; border-radius: 14px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); display: flex; overflow: hidden; }
+        .search-box input { flex: 1; border: none; padding: 18px 24px; font-size: 16px; font-family: inherit; outline: none; }
+        .search-box input::placeholder { color: #9ca3af; }
+        .search-box button { background: #2563eb; color: white; border: none; padding: 18px 30px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.2s; }
+        .search-box button:hover { background: #1d4ed8; }
+
+        .dashboard { padding: 28px 6% 0; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
+        .dash-card { background: white; border-radius: 14px; padding: 22px; border: 1px solid #e5e7eb; text-align: center; transition: all 0.3s; }
+        .dash-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.07); }
+        .dash-icon { font-size: 30px; margin-bottom: 8px; }
+        .dash-num { font-size: 28px; font-weight: 800; color: #2563eb; }
+        .dash-label { font-size: 13px; color: #6b7280; margin-top: 2px; font-weight: 500; }
+
+        .progress-section { padding: 24px 6% 0; max-width: 1100px; margin: 0 auto; }
+        .progress-card { background: white; border-radius: 14px; padding: 24px 28px; border: 1px solid #e5e7eb; }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .progress-header h3 { font-size: 17px; font-weight: 700; }
+        .progress-percent { font-size: 15px; font-weight: 700; color: #2563eb; }
+        .progress-bar-bg { width: 100%; height: 12px; background: #e5e7eb; border-radius: 10px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #2563eb, #60a5fa); border-radius: 10px; transition: width 1s ease; }
+        .progress-labels { display: flex; justify-content: space-between; margin-top: 10px; }
+        .progress-labels span { font-size: 12px; color: #9ca3af; font-weight: 500; }
+
+        .lang-section { padding: 28px 6% 0; max-width: 1100px; margin: 0 auto; }
+        .section-title { margin-bottom: 24px; }
+        .section-title h2 { font-size: 24px; color: #111827; }
+        .section-title p { margin-top: 6px; color: #6b7280; font-size: 14px; }
+        .lang-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+
+        .lang-card { background: white; border-radius: 14px; border: 1px solid #e5e7eb; padding: 26px 22px; transition: all 0.3s; display: flex; flex-direction: column; }
+        .lang-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); border-color: #2563eb; }
+        .lang-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+        .lang-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; color: white; }
+        .lang-name { font-size: 18px; font-weight: 700; color: #111827; }
+        .lang-tagline { font-size: 12px; color: #6b7280; margin-top: 2px; }
+        .lang-stats { display: flex; gap: 14px; margin-bottom: 14px; }
+        .lang-stat { font-size: 12px; color: #6b7280; font-weight: 500; }
+        .lang-stat strong { color: #374151; }
+        .lang-bar-bg { width: 100%; height: 6px; background: #e5e7eb; border-radius: 6px; overflow: hidden; margin-bottom: 4px; }
+        .lang-bar-fill { height: 100%; border-radius: 6px; transition: width 0.8s ease; }
+        .lang-bar-label { display: flex; justify-content: space-between; margin-bottom: 16px; }
+        .lang-bar-label span { font-size: 11px; color: #9ca3af; font-weight: 600; }
+        .lang-btn { padding: 10px; background: #eff6ff; color: #2563eb; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; text-align: center; }
+        .lang-btn:hover { background: #2563eb; color: white; }
+
+        .topic-section { padding: 0 6% 40px; max-width: 1100px; margin: 0 auto; display: none; }
+        .topic-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+        .back-btn { padding: 8px 16px; background: white; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; color: #2563eb; }
+        .topic-header h2 { font-size: 24px; }
+
+        .diff-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .diff-tab { padding: 10px 20px; background: white; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 13px; font-weight: 600; color: #6b7280; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+        .diff-tab:hover { border-color: #2563eb; color: #2563eb; }
+        .diff-tab.active { background: #2563eb; color: white; border-color: #2563eb; }
+        .diff-tab .count { opacity: 0.7; font-size: 11px; }
+
+        .topic-tabs { display: flex; gap: 0; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 24px; }
+        .topic-tab { flex: 1; padding: 14px 12px; text-align: center; font-size: 13px; font-weight: 600; color: #6b7280; background: white; border: none; cursor: pointer; font-family: inherit; transition: all 0.2s; border-bottom: 3px solid transparent; }
+        .topic-tab:hover { color: #2563eb; background: #f9fafb; }
+        .topic-tab.active { color: #2563eb; border-bottom-color: #2563eb; background: #eff6ff; }
+
+        .content-area { display: none; }
+        .content-area.active { display: block; }
+
+        .tut-card { background: white; border-radius: 14px; border: 1px solid #e5e7eb; padding: 24px; margin-bottom: 16px; transition: all 0.2s; }
+        .tut-card:hover { border-color: #2563eb; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+        .tut-num { font-size: 11px; font-weight: 700; color: #2563eb; background: #eff6ff; padding: 3px 10px; border-radius: 6px; display: inline-block; margin-bottom: 8px; }
+        .tut-title { font-size: 17px; font-weight: 700; color: #111827; margin-bottom: 6px; }
+        .tut-desc { font-size: 14px; color: #6b7280; line-height: 1.6; margin-bottom: 12px; }
+        .diff-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 6px; }
+        .diff-beginner { color: #059669; background: #ecfdf5; }
+        .diff-intermediate { color: #b45309; background: #fef3c7; }
+        .diff-advanced { color: #dc2626; background: #fef2f2; }
+
+        .code-block { background: #1e293b; color: #e2e8f0; border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; overflow-x: auto; font-size: 13px; line-height: 1.8; position: relative; }
+        .code-block .code-lang { position: absolute; top: 10px; right: 16px; font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; }
+        .code-block .kw { color: #c084fc; }
+        .code-block .fn { color: #60a5fa; }
+        .code-block .str { color: #34d399; }
+        .code-block .cm { color: #64748b; }
+        .code-block .num { color: #fb923c; }
+
+        .practice-card { background: white; border-radius: 14px; border: 1px solid #e5e7eb; padding: 20px 24px; margin-bottom: 12px; display: flex; align-items: center; gap: 16px; transition: all 0.2s; }
+        .practice-card:hover { border-color: #2563eb; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+        .practice-num { width: 36px; height: 36px; background: #eff6ff; color: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+        .practice-info { flex: 1; }
+        .practice-title { font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 3px; }
+        .practice-hint { font-size: 13px; color: #9ca3af; }
+
+        .program-card { background: white; border-radius: 14px; border: 1px solid #e5e7eb; margin-bottom: 16px; overflow: hidden; transition: all 0.2s; }
+        .program-card:hover { border-color: #2563eb; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+        .program-header { padding: 18px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .program-header h4 { font-size: 15px; font-weight: 700; color: #111827; }
+        .program-arrow { font-size: 12px; color: #9ca3af; transition: transform 0.3s; }
+        .program-body { padding: 0 24px 20px; display: none; }
+        .program-body.open { display: block; }
+
+        .empty-state { text-align: center; padding: 50px 20px; }
+        .empty-icon { font-size: 56px; margin-bottom: 12px; }
+        .empty-state h3 { font-size: 20px; color: #374151; margin-bottom: 6px; }
+        .empty-state p { font-size: 14px; color: #9ca3af; }
+
+        .footer { background: #111827; color: white; padding: 50px 6% 0; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; }
+        .footer-brand h3 { font-size: 24px; margin-bottom: 12px; }
+        .footer-brand h3 span { color: #2563eb; }
+        .footer-brand p { font-size: 14px; color: #9ca3af; line-height: 1.7; }
+        .footer-col h4 { font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a { font-size: 14px; color: #9ca3af; transition: color 0.2s; }
+        .footer-col ul li a:hover { color: #2563eb; }
+        .footer-bottom { border-top: 1px solid #1f2937; padding: 18px 0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        .footer-bottom p { font-size: 13px; color: #6b7280; }
+        .whatsapp-float { position: fixed; bottom: 28px; right: 28px; width: 56px; height: 56px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); z-index: 99; transition: transform 0.3s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+        .whatsapp-float svg { width: 30px; height: 30px; fill: white; }
+
+        @media (max-width: 768px) {
+            .navbar { height: 60px; padding: 0 20px; }
+            .logo { font-size: 23px; }
+            .nav-links { display: none; position: absolute; top: 60px; left: 0; right: 0; background: white; flex-direction: column; padding: 16px 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); gap: 0; }
+            .nav-links.open { display: flex; }
+            .nav-links a { padding: 14px 0; border-bottom: 1px solid #f3f4f6; }
+            .menu-toggle { display: block; }
+            .page-header { padding: 40px 6% 36px; }
+            .page-header h1 { font-size: 28px; }
+            .search-box { flex-direction: column; }
+            .search-box button { padding: 14px; }
+            .dashboard { grid-template-columns: 1fr 1fr; }
+            .lang-grid { grid-template-columns: 1fr; }
+            .topic-tabs { flex-direction: column; }
+            .topic-tab { border-bottom: none; border-left: 3px solid transparent; text-align: left; }
+            .topic-tab.active { border-left-color: #2563eb; border-bottom-color: transparent; }
+            .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+    </style>
 </head>
 <body>
 
-<header>
-    <a href="index.html" class="logo">
-        <img src="images/logo.jpg" alt="EngiHub" class="logo-img">
-        EngiHub
-    </a>
-    <button class="menu-toggle">&#9776;</button>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="notes.html">Notes</a>
-        <a href="syllabus.html">Syllabus</a>
-        <a href="pyq.html">PYQ</a>
-        <a href="practical.html">Practical</a>
-        <a href="coding.html" class="active">Coding</a>
-        <a href="projects.html">Projects</a>
-        <a href="placement.html">Placement</a>
-        <a href="notices.html">Notices</a>
-        <a href="exams.html">Online Test</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact Us</a>
-        <a href="login.html">Admin Login</a>
-        <a href="student_login.html">Student Login</a>
-        <a href="register.html">Register</a>
-    </nav>
-</header>
+<nav class="navbar">
+    <div class="logo">Engi<span>Hub</span></div>
+    <button class="menu-toggle" id="menuToggle">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="notes.html">Notes</a></li>
+        <li><a href="syllabus.html">Syllabus</a></li>
+        <li><a href="pyq.html">PYQ</a></li>
+        <li><a href="practical.html">Practical</a></li>
+        <li><a href="coding.html" class="active">Coding</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="placement.html">Placement</a></li>
+        <li><a href="login.html" class="login-btn">Login</a></li>
+    </ul>
+</nav>
 
-<div class="container">
-    <h2 style="font-size:28px;font-weight:700;margin-bottom:8px;color:var(--white);">Coding Practice</h2>
-    <p style="color:var(--gray-700);font-size:15px;margin-bottom:28px;">Practice coding problems with solutions to sharpen your programming skills.</p>
+<section class="page-header">
+    <h1>Coding Learning Hub</h1>
+    <p>Master programming with structured tutorials, code examples and practice problems.</p>
+</section>
 
-    <form>
-        <div class="filter-bar">
-            <input type="text" name="search" placeholder="Search by title or description...">
-            <select name="language">
-                <option value="">All Languages</option>
-            </select>
-            <select name="difficulty">
-                <option value="">All Levels</option>
-                <option value="Easy">Easy</option>
-                <option value="Medium">Medium</option>
-                <option value="Hard">Hard</option>
-            </select>
-            <button type="submit" class="btn-filter">Filter</button>
-        </div>
-    </form>
-
-    <div class="empty-state">
-        <div class="empty-icon">&#128187;</div>
-        <h3>No coding problems found</h3>
-        <p>Try adjusting your filters or check back later.</p>
+<div class="search-section">
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search tutorials, programs, questions..." oninput="handleSearch()">
+        <button onclick="handleSearch()">Search</button>
     </div>
 </div>
 
-<footer><p>&copy; 2026 EngiHub Portal</p></footer>
-<a href="https://wa.me/918860695666?text=Hi%20EngiHub%2C%20I%20have%20a%20question" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.132 6.744 3.058 9.374L1.054 31.2l6.064-1.97A15.912 15.912 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.31 22.608c-.39 1.096-1.932 2.01-3.162 2.274-.844.18-1.946.322-5.656-1.216-4.746-1.966-7.798-6.79-8.036-7.108-.23-.318-1.9-2.524-1.9-4.814 0-2.29 1.204-3.416 1.63-3.884.39-.428.924-.57 1.23-.57.31 0 .618.004.886.016.284.012.664-.106 1.036.79.39.932 1.33 3.24 1.446 3.478.116.238.194.516.038.834-.156.318-.232.516-.462.794-.23.278-.484.62-.692.832-.23.238-.47.496-.2.972.27.476 1.2 1.98 2.578 3.208 1.77 1.58 3.26 2.07 3.736 2.298.374.18.792.136 1.086-.23.374-.476.836-1.262 1.304-2.02.334-.542.756-.61 1.276-.414.53.196 3.364 1.586 3.94 1.87.576.284.96.428 1.102.664.14.236.14 1.37-.25 2.464z"/></svg>
-</a>
-<script src="js/main.js"></script>
+<div class="dashboard">
+    <div class="dash-card"><div class="dash-icon">&#128187;</div><div class="dash-num">6</div><div class="dash-label">Languages</div></div>
+    <div class="dash-card"><div class="dash-icon">&#128218;</div><div class="dash-num">120+</div><div class="dash-label">Tutorials</div></div>
+    <div class="dash-card"><div class="dash-icon">&#128196;</div><div class="dash-num">90+</div><div class="dash-label">Code Examples</div></div>
+    <div class="dash-card"><div class="dash-icon">&#9997;</div><div class="dash-num">180+</div><div class="dash-label">Practice Qs</div></div>
+</div>
+
+<div class="progress-section">
+    <div class="progress-card">
+        <div class="progress-header">
+            <h3>Overall Learning Progress</h3>
+            <span class="progress-percent" id="overallPercent">0%</span>
+        </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="overallBar" style="width:0%"></div></div>
+        <div class="progress-labels"><span>Start learning to track progress</span><span id="overallLabel">0 / 6 languages explored</span></div>
+    </div>
+</div>
+
+<div class="lang-section" id="langSection">
+    <div class="section-title">
+        <h2>Choose a Language</h2>
+        <p>Click on any language to explore tutorials, programs and practice questions.</p>
+    </div>
+    <div class="lang-grid" id="langGrid"></div>
+</div>
+
+<div class="topic-section" id="topicSection">
+    <div class="topic-header">
+        <button class="back-btn" onclick="showLanguages()">&#8592; All Languages</button>
+        <h2 id="topicTitle">Language</h2>
+    </div>
+
+    <div class="diff-tabs" id="diffTabs"></div>
+
+    <div class="topic-tabs">
+        <button class="topic-tab active" data-content="tutorials" onclick="switchContent('tutorials')">&#128214; Tutorials</button>
+        <button class="topic-tab" data-content="programs" onclick="switchContent('programs')">&#128196; Programs</button>
+        <button class="topic-tab" data-content="practice" onclick="switchContent('practice')">&#9997; Practice</button>
+    </div>
+
+    <div class="content-area active" id="content-tutorials"></div>
+    <div class="content-area" id="content-programs"></div>
+    <div class="content-area" id="content-practice"></div>
+</div>
+
+<footer class="footer">
+    <div class="footer-grid">
+        <div class="footer-brand"><h3>Engi<span>Hub</span></h3><p>Everything an Engineering Student Needs. Your one-stop platform for notes, syllabus, PYQ, practicals, coding, projects and placement preparation.</p></div>
+        <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="notes.html">Notes</a></li><li><a href="syllabus.html">Syllabus</a></li><li><a href="pyq.html">PYQ Papers</a></li><li><a href="practical.html">Practicals</a></li></ul></div>
+        <div class="footer-col"><h4>Resources</h4><ul><li><a href="coding.html">Coding Practice</a></li><li><a href="projects.html">Projects</a></li><li><a href="placement.html">Placement</a></li><li><a href="exams.html">Online Tests</a></li><li><a href="notices.html">Notices</a></li></ul></div>
+        <div class="footer-col"><h4>Account</h4><ul><li><a href="login.html">Admin Login</a></li><li><a href="student_login.html">Student Login</a></li><li><a href="register.html">Register</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 EngiHub. All rights reserved.</p><p>Built for engineering students, by engineering students.</p></div>
+</footer>
+
+<a href="https://wa.me/918860695666?text=Hi%20EngiHub%2C%20I%20have%20a%20question" class="whatsapp-float" target="_blank" rel="noopener"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.132 6.744 3.058 9.374L1.054 31.2l6.064-1.97A15.912 15.912 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.31 22.608c-.39 1.096-1.932 2.01-3.162 2.274-.844.18-1.946.322-5.656-1.216-4.746-1.966-7.798-6.79-8.036-7.108-.23-.318-1.9-2.524-1.9-4.814 0-2.29 1.204-3.416 1.63-3.884.39-.428.924-.57 1.23-.57.31 0 .618.004.886.016.284.012.664-.106 1.036.79.39.932 1.33 3.24 1.446 3.478.116.238.194.516.038.834-.156.318-.232.516-.462.794-.23.278-.484.62-.692.832-.23.238-.47.496-.2.972.27.476 1.2 1.98 2.578 3.208 1.77 1.58 3.26 2.07 3.736 2.298.374.18.792.136 1.086-.23.374-.476.836-1.262 1.304-2.02.334-.542.756-.61 1.276-.414.53.196 3.364 1.586 3.94 1.87.576.284.96.428 1.102.664.14.236.14 1.37-.25 2.464z"/></svg></a>
+
+<script>
+document.getElementById('menuToggle').addEventListener('click', function() { document.getElementById('navLinks').classList.toggle('open'); });
+
+var currentLang = '';
+var currentDiff = 'all';
+var explored = {};
+
+var languages = [
+    { key: 'c', name: 'C', color: '#555555', tagline: 'Foundation of modern programming', tutorials: 8, programs: 12, practice: 20 },
+    { key: 'cpp', name: 'C++', color: '#00599C', tagline: 'OOP and STL powerhouse', tutorials: 8, programs: 12, practice: 20 },
+    { key: 'python', name: 'Python', color: '#3776AB', tagline: 'Simple syntax, vast ecosystem', tutorials: 8, programs: 12, practice: 20 },
+    { key: 'java', name: 'Java', color: '#ED8B00', tagline: 'Enterprise and Android standard', tutorials: 8, programs: 12, practice: 20 },
+    { key: 'js', name: 'JavaScript', color: '#F7DF1E', tagline: 'The language of the web', tutorials: 8, programs: 12, practice: 20 },
+    { key: 'htmlcss', name: 'HTML & CSS', color: '#E34F26', tagline: 'Structure and style of web pages', tutorials: 8, programs: 12, practice: 20 }
+];
+
+var tutorials = {
+    c: [
+        { num: 1, title: 'Variables and Data Types', desc: 'Learn int, float, char, double, sizeof operator and type casting in C.', diff: 'beginner' },
+        { num: 2, title: 'Input/Output Basics', desc: 'Master printf(), scanf(), format specifiers and escape sequences.', diff: 'beginner' },
+        { num: 3, title: 'Conditional Statements', desc: 'if, else if, else, nested if and ternary operator with real examples.', diff: 'beginner' },
+        { num: 4, title: 'Loops: for, while, do-while', desc: 'Understand loop control with break, continue and nested loops.', diff: 'beginner' },
+        { num: 5, title: 'Functions in C', desc: 'Function declaration, definition, call by value and call by reference.', diff: 'intermediate' },
+        { num: 6, title: 'Arrays and Strings', desc: '1D/2D arrays, string manipulation, strlen, strcpy and strcmp.', diff: 'intermediate' },
+        { num: 7, title: 'Pointers and Memory', desc: 'Pointer arithmetic, pointer to pointer, malloc, calloc and free.', diff: 'advanced' },
+        { num: 8, title: 'Structures and File I/O', desc: 'User-defined types, file handling with fopen, fread, fwrite and fprintf.', diff: 'advanced' }
+    ],
+    cpp: [
+        { num: 1, title: 'C++ Basics and I/O', desc: 'cin, cout, variables, data types and basic syntax differences from C.', diff: 'beginner' },
+        { num: 2, title: 'Functions and References', desc: 'Function overloading, default arguments, inline functions and pass by reference.', diff: 'beginner' },
+        { num: 3, title: 'Classes and Objects', desc: 'Encapsulation, access specifiers, constructors and destructors.', diff: 'beginner' },
+        { num: 4, title: 'Inheritance and Polymorphism', desc: 'Single, multi-level, hybrid inheritance, virtual functions and runtime binding.', diff: 'intermediate' },
+        { num: 5, title: 'Templates and Generics', desc: 'Function templates, class templates and template specialization.', diff: 'intermediate' },
+        { num: 6, title: 'STL: Containers', desc: 'vector, list, map, set, stack, queue with iterator-based operations.', diff: 'intermediate' },
+        { num: 7, title: 'STL: Algorithms and Strings', desc: 'sort, binary_search, string class methods and lambda expressions.', diff: 'advanced' },
+        { num: 8, title: 'Exception Handling and File I/O', desc: 'try-catch-throw, custom exceptions, fstream and stringstream.', diff: 'advanced' }
+    ],
+    python: [
+        { num: 1, title: 'Python Basics', desc: 'Variables, data types, indentation, print() and input().', diff: 'beginner' },
+        { num: 2, title: 'Strings and Slicing', desc: 'String methods, f-strings, slicing, formatting and common operations.', diff: 'beginner' },
+        { num: 3, title: 'Control Flow', desc: 'if/elif/else, for/while loops, range(), break, continue and pass.', diff: 'beginner' },
+        { num: 4, title: 'Lists and Tuples', desc: 'List methods, list comprehension, tuple unpacking and nested structures.', diff: 'intermediate' },
+        { num: 5, title: 'Dictionaries and Sets', desc: 'Dict comprehension, set operations, defaultdict and Counter.', diff: 'intermediate' },
+        { num: 6, title: 'Functions and Lambda', desc: 'def, *args, **kwargs, lambda, map, filter and reduce.', diff: 'intermediate' },
+        { num: 7, title: 'OOP in Python', desc: 'Classes, inheritance, __init__, __str__, decorators and property.', diff: 'advanced' },
+        { num: 8, title: 'File Handling and Modules', desc: 'open, read, write, csv module, os module and pip package manager.', diff: 'advanced' }
+    ],
+    java: [
+        { num: 1, title: 'Java Fundamentals', desc: 'JVM, data types, operators, Scanner class and basic I/O.', diff: 'beginner' },
+        { num: 2, title: 'Control Statements', desc: 'if/else, switch, for, while, do-while, break, continue and labeled loops.', diff: 'beginner' },
+        { num: 3, title: 'Arrays and Strings', desc: 'Array declaration, String class, StringBuilder and common string methods.', diff: 'beginner' },
+        { num: 4, title: 'Object Oriented Programming', desc: 'Class, object, constructor, this keyword, method overloading.', diff: 'intermediate' },
+        { num: 5, title: 'Inheritance and Interfaces', desc: 'extends, implements, abstract classes, final keyword and packages.', diff: 'intermediate' },
+        { num: 6, title: 'Exception Handling', desc: 'try-catch-finally, throw, throws, custom exceptions and stack trace.', diff: 'intermediate' },
+        { num: 7, title: 'Collections Framework', desc: 'ArrayList, HashMap, LinkedList, TreeSet and Iterator interface.', diff: 'advanced' },
+        { num: 8, title: 'Multithreading and IO', desc: 'Thread class, Runnable, synchronized, FileInputStream and serialization.', diff: 'advanced' }
+    ],
+    js: [
+        { num: 1, title: 'JS Basics and Variables', desc: 'var, let, const, data types, template literals and type coercion.', diff: 'beginner' },
+        { num: 2, title: 'Functions and Scope', desc: 'Function declarations, expressions, arrow functions, closures and hoisting.', diff: 'beginner' },
+        { num: 3, title: 'DOM Manipulation', desc: 'getElementById, querySelector, classList, innerHTML and event handling.', diff: 'beginner' },
+        { num: 4, title: 'Arrays and Objects', desc: 'Array methods (map, filter, reduce), object destructuring and spread operator.', diff: 'intermediate' },
+        { num: 5, title: 'Async JavaScript', desc: 'Callbacks, Promises, async/await, fetch API and error handling.', diff: 'intermediate' },
+        { num: 6, title: 'ES6+ Features', desc: 'Modules, optional chaining, nullish coalescing, BigInt and Symbol.', diff: 'intermediate' },
+        { num: 7, title: 'JSON and API Integration', desc: 'JSON.parse, JSON.stringify, REST APIs, CORS and authentication headers.', diff: 'advanced' },
+        { num: 8, title: 'Local Storage and Events', desc: 'localStorage, sessionStorage, custom events, event delegation and throttling.', diff: 'advanced' }
+    ],
+    htmlcss: [
+        { num: 1, title: 'HTML Document Structure', desc: 'DOCTYPE, html, head, body, meta tags, semantic elements and accessibility.', diff: 'beginner' },
+        { num: 2, title: 'Forms and Input Elements', desc: 'Form tags, input types, validation attributes, select, textarea and labels.', diff: 'beginner' },
+        { num: 3, title: 'CSS Selectors and Specificity', desc: 'Class, ID, attribute, pseudo-class, pseudo-element and specificity rules.', diff: 'beginner' },
+        { num: 4, title: 'Box Model and Layout', desc: 'Margin, padding, border, display, position, z-index and overflow.', diff: 'intermediate' },
+        { num: 5, title: 'Flexbox Layout', desc: 'Flex container, flex items, justify-content, align-items and wrapping.', diff: 'intermediate' },
+        { num: 6, title: 'CSS Grid Layout', desc: 'Grid template, grid areas, fr unit, auto-fill, minmax and grid gaps.', diff: 'intermediate' },
+        { num: 7, title: 'Responsive Design', desc: 'Media queries, mobile-first, viewport units, clamp() and fluid typography.', diff: 'advanced' },
+        { num: 8, title: 'Animations and Transitions', desc: 'transition, @keyframes, transform, animation-fill-mode and performance tips.', diff: 'advanced' }
+    ]
+};
+
+var programs = {
+    c: [
+        { title: 'Hello World Program', diff: 'beginner', code: '#<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>\n\n<span class="kw">int</span> <span class="fn">main</span>() {\n    <span class="fn">printf</span>(<span class="str">"Hello, World!\\n"</span>);\n    <span class="kw">return</span> <span class="num">0</span>;\n}' },
+        { title: 'Swap Two Numbers', diff: 'beginner', code: '<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>\n\n<span class="kw">int</span> <span class="fn">main</span>() {\n    <span class="kw">int</span> a = <span class="num">5</span>, b = <span class="num">10</span>;\n    a = a + b;\n    b = a - b;\n    a = a - b;\n    <span class="fn">printf</span>(<span class="str">"a=%d, b=%d"</span>, a, b);\n    <span class="kw">return</span> <span class="num">0</span>;\n}' },
+        { title: 'Factorial Using Recursion', diff: 'intermediate', code: '<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>\n\n<span class="kw">int</span> <span class="fn">factorial</span>(<span class="kw">int</span> n) {\n    <span class="kw">if</span> (n <= <span class="num">1</span>) <span class="kw">return</span> <span class="num">1</span>;\n    <span class="kw">return</span> n * <span class="fn">factorial</span>(n - <span class="num">1</span>);\n}\n\n<span class="kw">int</span> <span class="fn">main</span>() {\n    <span class="fn">printf</span>(<span class="str">"%d"</span>, <span class="fn">factorial</span>(<span class="num">5</span>));\n    <span class="kw">return</span> <span class="num">0</span>;\n}' },
+        { title: 'Bubble Sort', diff: 'intermediate', code: '<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>\n\n<span class="kw">void</span> <span class="fn">bubbleSort</span>(<span class="kw">int</span> arr[], <span class="kw">int</span> n) {\n    <span class="kw">for</span>(<span class="kw">int</span> i=<span class="num">0</span>; i&lt;n-<span class="num">1</span>; i++)\n        <span class="kw">for</span>(<span class="kw">int</span> j=<span class="num">0</span>; j&lt;n-i-<span class="num">1</span>; j++)\n            <span class="kw">if</span>(arr[j] > arr[j+<span class="num">1</span>]) {\n                <span class="kw">int</span> t = arr[j];\n                arr[j] = arr[j+<span class="num">1</span>];\n                arr[j+<span class="num">1</span>] = t;\n            }\n}' },
+        { title: 'File Read and Write', diff: 'advanced', code: '<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>\n\n<span class="kw">int</span> <span class="fn">main</span>() {\n    FILE *f = <span class="fn">fopen</span>(<span class="str">"data.txt"</span>, <span class="str">"w"</span>);\n    <span class="fn">fprintf</span>(f, <span class="str">"Hello File!"</span>);\n    <span class="fn">fclose</span>(f);\n\n    <span class="kw">char</span> buf[<span class="num">100</span>];\n    f = <span class="fn">fopen</span>(<span class="str">"data.txt"</span>, <span class="str">"r"</span>);\n    <span class="fn">fgets</span>(buf, <span class="num">100</span>, f);\n    <span class="fn">printf</span>(<span class="str">"%s"</span>, buf);\n    <span class="fn">fclose</span>(f);\n    <span class="kw">return</span> <span class="num">0</span>;\n}' },
+        { title: 'Structure and Array of Structures', diff: 'advanced', code: '<span class="kw">#include</span> <span class="str">&lt;stdio.h&gt;</span>\n<span class="kw">#include</span> <span class="str">&lt;string.h&gt;</span>\n\n<span class="kw">struct</span> Student {\n    <span class="kw">char</span> name[<span class="num">50</span>];\n    <span class="kw">int</span> roll;\n    <span class="kw">float</span> marks;\n};\n\n<span class="kw">int</span> <span class="fn">main</span>() {\n    <span class="kw">struct</span> Student s = {<span class="str">"Rahul"</span>, <span class="num">101</span>, <span class="num">92.5</span>};\n    <span class="fn">printf</span>(<span class="str">"%s %d %.1f"</span>, s.name, s.roll, s.marks);\n    <span class="kw">return</span> <span class="num">0</span>;\n}' }
+    ],
+    cpp: [
+        { title: 'Hello World in C++', diff: 'beginner', code: '<span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>\n<span class="kw">using namespace</span> std;\n\n<span class="kw">int</span> <span class="fn">main</span>() {\n    cout &lt;&lt; <span class="str">"Hello, World!"</span> &lt;&lt; endl;\n    <span class="kw">return</span> <span class="num">0</span>;\n}' },
+        { title: 'Class and Object', diff: 'beginner', code: '<span class="kw">class</span> <span class="fn">Car</span> {\n<span class="kw">public</span>:\n    <span class="kw">string</span> brand;\n    <span class="kw">int</span> year;\n    <span class="kw">void</span> <span class="fn">display</span>() {\n        cout &lt;&lt; brand &lt;&lt; <span class="str">" "</span> &lt;&lt; year;\n    }\n};\n\n<span class="kw">int</span> <span class="fn">main</span>() {\n    Car c = {<span class="str">"Toyota"</span>, <span class="num">2024</span>};\n    c.<span class="fn">display</span>();\n}' },
+        { title: 'Vector and Iterator', diff: 'intermediate', code: '<span class="kw">#include</span> <span class="str">&lt;vector&gt;</span>\n<span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>\n\n<span class="kw">int</span> <span class="fn">main</span>() {\n    vector&lt;<span class="kw">int</span>&gt; v = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>};\n    v.<span class="fn">push_back</span>(<span class="num">40</span>);\n    <span class="kw">for</span>(<span class="kw">auto</span> x : v)\n        cout &lt;&lt; x &lt;&lt; <span class="str">" "</span>;\n}' },
+        { title: 'Map and Pair', diff: 'intermediate', code: '<span class="kw">#include</span> <span class="str">&lt;map&gt;</span>\n\n<span class="kw">int</span> <span class="fn">main</span>() {\n    map&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt; m;\n    m[<span class="str">"apple"</span>] = <span class="num">3</span>;\n    m[<span class="str">"banana"</span>] = <span class="num">5</span>;\n    <span class="kw">for</span>(<span class="kw">auto</span>&amp; p : m)\n        cout &lt;&lt; p.first &lt;&lt; <span class="str">": "</span> &lt;&lt; p.second;\n}' },
+        { title: 'Operator Overloading', diff: 'advanced', code: '<span class="kw">class</span> <span class="fn">Point</span> {\n<span class="kw">public</span>:\n    <span class="kw">int</span> x, y;\n    Point <span class="kw">operator</span>+(<span class="kw">const</span> Point&amp; p) {\n        <span class="kw">return</span> {x + p.x, y + p.y};\n    }\n};' },
+        { title: 'File I/O with fstream', diff: 'advanced', code: '<span class="kw">#include</span> <span class="str">&lt;fstream&gt;</span>\n\n<span class="kw">int</span> <span class="fn">main</span>() {\n    ofstream <span class="fn">out</span>(<span class="str">"file.txt"</span>);\n    out &lt;&lt; <span class="str">"Hello File"</span>;\n    out.<span class="fn">close</span>();\n\n    ifstream <span class="fn">in</span>(<span class="str">"file.txt"</span>);\n    <span class="kw">string</span> line;\n    getline(in, line);\n    cout &lt;&lt; line;\n}' }
+    ],
+    python: [
+        { title: 'Hello World', diff: 'beginner', code: '<span class="fn">print</span>(<span class="str">"Hello, World!"</span>)' },
+        { title: 'List Comprehension', diff: 'beginner', code: 'squares = [x**<span class="num">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>)]\n<span class="fn">print</span>(squares)\n<span class="cm"># [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</span>' },
+        { title: 'Dictionary Comprehension', diff: 'intermediate', code: 'word = <span class="str">"hello"</span>\nfreq = {c: word.<span class="fn">count</span>(c) <span class="kw">for</span> c <span class="kw">in</span> <span class="fn">set</span>(word)}\n<span class="fn">print</span>(freq)\n<span class="cm"># {\'h\': 1, \'e\': 1, \'l\': 2, \'o\': 1}</span>' },
+        { title: 'Lambda and Map', diff: 'intermediate', code: 'nums = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>]\ndoubled = <span class="fn">list</span>(<span class="fn">map</span>(<span class="kw">lambda</span> x: x * <span class="num">2</span>, nums))\n<span class="fn">print</span>(doubled)\n<span class="cm"># [2, 4, 6, 8]</span>' },
+        { title: 'Class with __init__', diff: 'intermediate', code: '<span class="kw">class</span> <span class="fn">Student</span>:\n    <span class="kw">def</span> <span class="fn">__init__</span>(self, name, marks):\n        self.name = name\n        self.marks = marks\n\n    <span class="kw">def</span> <span class="fn">__str__</span>(self):\n        <span class="kw">return</span> <span class="str">f"{self.name}: {self.marks}"</span>\n\ns = Student(<span class="str">"Rahul"</span>, <span class="num">92</span>)\n<span class="fn">print</span>(s)' },
+        { title: 'File Read/Write', diff: 'advanced', code: '<span class="cm"># Write</span>\n<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"data.txt"</span>, <span class="str">"w"</span>) <span class="kw">as</span> f:\n    f.<span class="fn">write</span>(<span class="str">"Hello File!"</span>)\n\n<span class="cm"># Read</span>\n<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"data.txt"</span>, <span class="str">"r"</span>) <span class="kw">as</span> f:\n    <span class="fn">print</span>(f.<span class="fn">read</span>())' },
+        { title: 'Decorators', diff: 'advanced', code: '<span class="kw">def</span> <span class="fn">timer</span>(func):\n    <span class="kw">import</span> time\n    <span class="kw">def</span> <span class="fn">wrapper</span>(*args, **kwargs):\n        start = time.<span class="fn">time</span>()\n        result = <span class="fn">func</span>(*args, **kwargs)\n        <span class="fn">print</span>(<span class="str">f"Time: {time.time()-start:.4f}s"</span>)\n        <span class="kw">return</span> result\n    <span class="kw">return</span> wrapper\n\n<span class="kw">@timer</span>\n<span class="kw">def</span> <span class="fn">slow</span>(): time.<span class="fn">sleep</span>(<span class="num">1</span>)' }
+    ],
+    java: [
+        { title: 'Hello World', diff: 'beginner', code: '<span class="kw">public class</span> <span class="fn">Main</span> {\n    <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {\n        System.out.<span class="fn">println</span>(<span class="str">"Hello, World!"</span>);\n    }\n}' },
+        { title: 'Constructor and Method', diff: 'beginner', code: '<span class="kw">class</span> <span class="fn">Student</span> {\n    String name;\n    <span class="kw">int</span> roll;\n\n    <span class="fn">Student</span>(String n, <span class="kw">int</span> r) {\n        name = n; roll = r;\n    }\n\n    <span class="kw">void</span> <span class="fn">display</span>() {\n        System.out.<span class="fn">println</span>(name + <span class="str">" "</span> + roll);\n    }\n}' },
+        { title: 'ArrayList Usage', diff: 'intermediate', code: '<span class="kw">import</span> java.util.*;\n\n<span class="kw">class</span> <span class="fn">Main</span> {\n    <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {\n        ArrayList&lt;String&gt; list = <span class="kw">new</span> ArrayList&lt;&gt;();\n        list.<span class="fn">add</span>(<span class="str">"Java"</span>);\n        list.<span class="fn">add</span>(<span class="str">"Python"</span>);\n        <span class="kw">for</span>(String s : list)\n            System.out.<span class="fn">println</span>(s);\n    }\n}' },
+        { title: 'HashMap Example', diff: 'intermediate', code: 'HashMap&lt;String, Integer&gt; map = <span class="kw">new</span> HashMap&lt;&gt;();\nmap.<span class="fn">put</span>(<span class="str">"apple"</span>, <span class="num">3</span>);\nmap.<span class="fn">put</span>(<span class="str">"banana"</span>, <span class="num">5</span>);\n\n<span class="kw">for</span>(Map.Entry&lt;String,Integer&gt; e : map.<span class="fn">entrySet</span>())\n    System.out.<span class="fn">println</span>(e.<span class="fn">getKey</span>()+<span class="str">": "</span>+e.<span class="fn">getValue</span>());' },
+        { title: 'Custom Exception', diff: 'advanced', code: '<span class="kw">class</span> <span class="fn">AgeException</span> <span class="kw">extends</span> Exception {\n    <span class="fn">AgeException</span>(String msg) { <span class="kw">super</span>(msg); }\n}\n\n<span class="kw">class</span> <span class="fn">Main</span> {\n    <span class="kw">static void</span> <span class="fn">check</span>(<span class="kw">int</span> age) <span class="kw">throws</span> AgeException {\n        <span class="kw">if</span>(age &lt; <span class="num">18</span>) <span class="kw">throw new</span> AgeException(<span class="str">"Too young"</span>);\n    }\n}' },
+        { title: 'Thread Example', diff: 'advanced', code: '<span class="kw">class</span> <span class="fn">MyThread</span> <span class="kw">extends</span> Thread {\n    <span class="kw">public void</span> <span class="fn">run</span>() {\n        <span class="kw">for</span>(<span class="kw">int</span> i=<span class="num">0</span>; i&lt;<span class="num">5</span>; i++)\n            System.out.<span class="fn">println</span>(<span class="fn">getName</span>()+<span class="str">": "</span>+i);\n    }\n}\n\n<span class="kw">new</span> MyThread().<span class="fn">start</span>();\n<span class="kw">new</span> MyThread().<span class="fn">start</span>();' }
+    ],
+    js: [
+        { title: 'Hello World', diff: 'beginner', code: 'console.<span class="fn">log</span>(<span class="str">"Hello, World!"</span>);' },
+        { title: 'Arrow Functions', diff: 'beginner', code: '<span class="kw">const</span> add = (a, b) =&gt; a + b;\nconsole.<span class="fn">log</span>(<span class="fn">add</span>(<span class="num">5</span>, <span class="num">3</span>));\n<span class="cm">// 8</span>' },
+        { title: 'Array Methods', diff: 'intermediate', code: '<span class="kw">const</span> nums = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>];\n\n<span class="kw">const</span> even = nums.<span class="fn">filter</span>(n =&gt; n % <span class="num">2</span> === <span class="num">0</span>);\n<span class="kw">const</span> sum = nums.<span class="fn">reduce</span>((a, b) =&gt; a + b, <span class="num">0</span>);\nconsole.<span class="fn">log</span>(even, sum);' },
+        { title: 'DOM Manipulation', diff: 'intermediate', code: '<span class="kw">const</span> btn = document.<span class="fn">querySelector</span>(<span class="str">"#myBtn"</span>);\nbtn.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () =&gt; {\n    document.<span class="fn">getElementById</span>(<span class="str">"output"</span>)\n        .textContent = <span class="str">"Clicked!"</span>;\n});' },
+        { title: 'Async/Await with Fetch', diff: 'advanced', code: '<span class="kw">async function</span> <span class="fn">getData</span>() {\n    <span class="kw">try</span> {\n        <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"/api/data"</span>);\n        <span class="kw">const</span> json = <span class="kw">await</span> res.<span class="fn">json</span>();\n        console.<span class="fn">log</span>(json);\n    } <span class="kw">catch</span>(e) {\n        console.<span class="fn">error</span>(e);\n    }\n}' },
+        { title: 'LocalStorage', diff: 'advanced', code: '<span class="cm">// Save</span>\nlocalStorage.<span class="fn">setItem</span>(<span class="str">"user"</span>, JSON.<span class="fn">stringify</span>({name: <span class="str">"Rahul"</span>}));\n\n<span class="cm">// Load</span>\n<span class="kw">const</span> user = JSON.<span class="fn">parse</span>(localStorage.<span class="fn">getItem</span>(<span class="str">"user"</span>));\nconsole.<span class="fn">log</span>(user.name);' }
+    ],
+    htmlcss: [
+        { title: 'Basic HTML Page', diff: 'beginner', code: '<span class="kw">&lt;!DOCTYPE html&gt;</span>\n<span class="kw">&lt;html</span> lang=<span class="str">"en"</span><span class="kw">&gt;</span>\n<span class="kw">&lt;head&gt;</span>\n    <span class="kw">&lt;meta</span> charset=<span class="str">"UTF-8"</span><span class="kw">&gt;</span>\n    <span class="kw">&lt;title&gt;</span>My Page<span class="kw">&lt;/title&gt;</span>\n<span class="kw">&lt;/head&gt;</span>\n<span class="kw">&lt;body&gt;</span>\n    <span class="kw">&lt;h1&gt;</span>Hello World<span class="kw">&lt;/h1&gt;</span>\n<span class="kw">&lt;/body&gt;</span>\n<span class="kw">&lt;/html&gt;</span>' },
+        { title: 'HTML Form', diff: 'beginner', code: '<span class="kw">&lt;form</span> action=<span class="str">"/submit"</span> method=<span class="str">"POST"</span><span class="kw">&gt;</span>\n    <span class="kw">&lt;label&gt;</span>Name: <span class="kw">&lt;input</span> type=<span class="str">"text"</span> name=<span class="str">"name"</span> required<span class="kw">&gt;&lt;/label&gt;</span>\n    <span class="kw">&lt;label&gt;</span>Email: <span class="kw">&lt;input</span> type=<span class="str">"email"</span> name=<span class="str">"email"</span><span class="kw">&gt;&lt;/label&gt;</span>\n    <span class="kw">&lt;button</span> type=<span class="str">"submit"</span><span class="kw">&gt;</span>Submit<span class="kw">&lt;/button&gt;</span>\n<span class="kw">&lt;/form&gt;</span>' },
+        { title: 'Flexbox Layout', diff: 'intermediate', code: '<span class="kw">.container</span> {\n    <span class="fn">display</span>: flex;\n    <span class="fn">justify-content</span>: center;\n    <span class="fn">align-items</span>: center;\n    <span class="fn">gap</span>: <span class="num">20px</span>;\n    <span class="fn">flex-wrap</span>: wrap;\n}\n\n<span class="kw">.item</span> {\n    <span class="fn">flex</span>: <span class="num">1</span> <span class="num">1</span> <span class="num">200px</span>;\n}' },
+        { title: 'CSS Grid Layout', diff: 'intermediate', code: '<span class="kw">.grid</span> {\n    <span class="fn">display</span>: grid;\n    <span class="fn">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="num">3</span>, <span class="num">1fr</span>);\n    <span class="fn">gap</span>: <span class="num">16px</span>;\n}\n\n<span class="kw">@media</span> (max-width: <span class="num">768px</span>) {\n    <span class="kw">.grid</span> { <span class="fn">grid-template-columns</span>: <span class="num">1fr</span>; }\n}' },
+        { title: 'Responsive Design', diff: 'advanced', code: '<span class="kw">html</span> { <span class="fn">font-size</span>: <span class="fn">clamp</span>(<span class="num">14px</span>, <span class="num">1vw</span>, <span class="num">18px</span>); }\n\n<span class="kw">.container</span> {\n    <span class="fn">width</span>: <span class="fn">min</span>(<span class="num">90%</span>, <span class="num">1200px</span>);\n    <span class="fn">margin</span>: <span class="num">0</span> auto;\n    <span class="fn">padding</span>: <span class="num">0</span> <span class="fn">clamp</span>(<span class="num">16px</span>, <span class="num">4vw</span>, <span class="num">48px</span>);\n}' },
+        { title: 'CSS Animations', diff: 'advanced', code: '<span class="kw">@keyframes</span> slideIn {\n    <span class="kw">from</span> { <span class="fn">opacity</span>: <span class="num">0</span>; <span class="fn">transform</span>: <span class="fn">translateY</span>(<span class="num">20px</span>); }\n    <span class="kw">to</span>   { <span class="fn">opacity</span>: <span class="num">1</span>; <span class="fn">transform</span>: <span class="fn">translateY</span>(<span class="num">0</span>); }\n}\n\n<span class="kw">.card</span> {\n    <span class="fn">animation</span>: slideIn <span class="num">0.5s</span> ease forwards;\n}' }
+    ]
+};
+
+var practice = {
+    c: [
+        { title: 'Write a program to check if a number is even or odd', hint: 'Use modulus operator %', diff: 'beginner' },
+        { title: 'Find the largest of three numbers', hint: 'Use nested if-else or ternary operator', diff: 'beginner' },
+        { title: 'Print all prime numbers between 1 and 100', hint: 'Use nested loops with a flag variable', diff: 'beginner' },
+        { title: 'Reverse a string without using strrev()', hint: 'Use a for loop with two pointers', diff: 'beginner' },
+        { title: 'Count vowels and consonants in a string', hint: 'Loop through characters and check conditions', diff: 'beginner' },
+        { title: 'Find GCD of two numbers', hint: 'Use Euclidean algorithm with while loop', diff: 'intermediate' },
+        { title: 'Convert decimal to binary', hint: 'Repeatedly divide by 2 and store remainders', diff: 'intermediate' },
+        { title: 'Matrix multiplication of two 2D arrays', hint: 'Use three nested for loops', diff: 'intermediate' },
+        { title: 'Check if a string is a palindrome', hint: 'Compare characters from both ends', diff: 'intermediate' },
+        { title: 'Find the second largest element in an array', hint: 'Track two largest values during single traversal', diff: 'intermediate' },
+        { title: 'Implement binary search on a sorted array', hint: 'Use low, mid, high pointers with divide and conquer', diff: 'advanced' },
+        { title: 'Merge two sorted arrays into one sorted array', hint: 'Use two pointer technique', diff: 'advanced' },
+        { title: 'Implement a linked list with insert, delete and display', hint: 'Use struct with self-referential pointer', diff: 'advanced' },
+        { title: 'Find all Armstrong numbers between 1 and 1000', hint: 'Number equals sum of its digits raised to power', diff: 'advanced' },
+        { title: 'Implement Quick Sort algorithm', hint: 'Choose pivot, partition and recurse', diff: 'advanced' }
+    ],
+    cpp: [
+        { title: 'Write a program using constructor overloading', hint: 'Create multiple constructors with different parameters', diff: 'beginner' },
+        { title: 'Swap two numbers using a function template', hint: 'Use template<typename T>', diff: 'beginner' },
+        { title: 'Reverse an array using vectors', hint: 'Use reverse() from <algorithm>', diff: 'beginner' },
+        { title: 'Count frequency of elements using map', hint: 'Iterate and increment map values', diff: 'intermediate' },
+        { title: 'Find duplicates in an array', hint: 'Use a set or map to track seen elements', diff: 'intermediate' },
+        { title: 'Implement a stack using linked list', hint: 'Push at head, pop from head', diff: 'intermediate' },
+        { title: 'Sort a vector of pairs by second element', hint: 'Use custom comparator in sort()', diff: 'intermediate' },
+        { title: 'Implement operator == for a class', hint: 'Define as member or friend function', diff: 'advanced' },
+        { title: 'Create a generic min() function using templates', hint: 'Template function with two parameters', diff: 'advanced' },
+        { title: 'Implement a priority queue using heap', hint: 'Use vector with heap operations', diff: 'advanced' }
+    ],
+    python: [
+        { title: 'Check if a number is a palindrome', hint: 'Convert to string and compare with reverse', diff: 'beginner' },
+        { title: 'Find factorial using recursion', hint: 'Base case: n <= 1 return 1', diff: 'beginner' },
+        { title: 'Count words in a sentence', hint: 'Use split() and len()', diff: 'beginner' },
+        { title: 'Remove duplicates from a list preserving order', hint: 'Use dict.fromkeys() or a seen set', diff: 'intermediate' },
+        { title: 'Flatten a nested list', hint: 'Use list comprehension or itertools.chain', diff: 'intermediate' },
+        { title: 'Find the most frequent element in a list', hint: 'Use collections.Counter', diff: 'intermediate' },
+        { title: 'Merge two dictionaries', hint: 'Use dict unpacking ** or update()', diff: 'intermediate' },
+        { title: 'Implement a decorator that logs function calls', hint: 'Define wrapper that prints args and return value', diff: 'advanced' },
+        { title: 'Write a context manager using __enter__ and __exit__', hint: 'Define class with those dunder methods', diff: 'advanced' },
+        { title: 'Create a generator that yields Fibonacci numbers', hint: 'Use yield with two tracking variables', diff: 'advanced' }
+    ],
+    java: [
+        { title: 'Reverse a number using a loop', hint: 'Use modulus and division in while loop', diff: 'beginner' },
+        { title: 'Find the sum of array elements', hint: 'Iterate and accumulate in a variable', diff: 'beginner' },
+        { title: 'Check if a string is palindrome', hint: 'Compare StringBuilder reverse with original', diff: 'beginner' },
+        { title: 'Sort an ArrayList in descending order', hint: 'Use Collections.sort with Collections.reverseOrder()', diff: 'intermediate' },
+        { title: 'Find common elements in two arrays', hint: 'Use HashSet retainAll()', diff: 'intermediate' },
+        { title: 'Implement a simple LinkedList', hint: 'Create Node class with next reference', diff: 'intermediate' },
+        { title: 'Merge two sorted arrays', hint: 'Use two pointers approach', diff: 'advanced' },
+        { title: 'Implement thread-safe singleton class', hint: 'Use synchronized block or double-checked locking', diff: 'advanced' },
+        { title: 'Serialize and deserialize a Java object', hint: 'Implement Serializable, use ObjectOutputStream', diff: 'advanced' }
+    ],
+    js: [
+        { title: 'Check if a string is a palindrome', hint: 'Use split, reverse and join', diff: 'beginner' },
+        { title: 'Find the maximum value in an array', hint: 'Use Math.max with spread operator', diff: 'beginner' },
+        { title: 'Remove falsy values from an array', hint: 'Use filter(Boolean)', diff: 'beginner' },
+        { title: 'Group array elements by a key', hint: 'Use reduce to build an object', diff: 'intermediate' },
+        { title: 'Debounce a function', hint: 'Use setTimeout and clearTimeout', diff: 'intermediate' },
+        { title: 'Deep clone an object', hint: 'Use structuredClone() or JSON parse/stringify', diff: 'intermediate' },
+        { title: 'Flatten a deeply nested array', hint: 'Use recursive reduce or flat(Infinity)', diff: 'advanced' },
+        { title: 'Implement a simple EventEmitter', hint: 'Use object to store event callbacks', diff: 'advanced' },
+        { title: 'Throttle a scroll event handler', hint: 'Track last execution time with Date.now()', diff: 'advanced' }
+    ],
+    htmlcss: [
+        { title: 'Create a responsive navigation bar', hint: 'Use Flexbox with media query for mobile', diff: 'beginner' },
+        { title: 'Build a card layout with 3 columns', hint: 'Use CSS Grid with repeat(3, 1fr)', diff: 'beginner' },
+        { title: 'Center a div both horizontally and vertically', hint: 'Use Flexbox: justify-content and align-items center', diff: 'beginner' },
+        { title: 'Create a sticky header', hint: 'Use position: sticky with top: 0', diff: 'intermediate' },
+        { title: 'Build a responsive image gallery', hint: 'Use grid with auto-fill and minmax()', diff: 'intermediate' },
+        { title: 'Create a CSS-only hamburger menu', hint: 'Use checkbox hack with :checked selector', diff: 'intermediate' },
+        { title: 'Implement a dark mode toggle with CSS', hint: 'Use :root variables and a toggle class', diff: 'advanced' },
+        { title: 'Build an animated loading spinner', hint: 'Use @keyframes with border-radius and borders', diff: 'advanced' },
+        { title: 'Create a masonry grid layout', hint: 'Use grid with varying row spans or columns', diff: 'advanced' }
+    ]
+};
+
+function renderLanguages() {
+    var grid = document.getElementById('langGrid');
+    grid.innerHTML = '';
+    languages.forEach(function(lang) {
+        var pct = Math.floor(Math.random() * 15);
+        var card = document.createElement('div');
+        card.className = 'lang-card';
+        card.innerHTML =
+            '<div class="lang-top"><div class="lang-icon" style="background:' + lang.color + '">' + lang.name.charAt(0) + '</div><div><div class="lang-name">' + lang.name + '</div><div class="lang-tagline">' + lang.tagline + '</div></div></div>' +
+            '<div class="lang-stats"><span class="lang-stat"><strong>' + lang.tutorials + '</strong> Tutorials</span><span class="lang-stat"><strong>' + lang.programs + '</strong> Programs</span><span class="lang-stat"><strong>' + lang.practice + '</strong> Questions</span></div>' +
+            '<div class="lang-bar-bg"><div class="lang-bar-fill" style="width:' + pct + '%;background:' + lang.color + '"></div></div>' +
+            '<div class="lang-bar-label"><span>' + pct + '% explored</span><span>' + (lang.tutorials + lang.programs + lang.practice) + ' items</span></div>' +
+            '<button class="lang-btn" onclick="openLanguage(\'' + lang.key + '\')">Start Learning &#8594;</button>';
+        grid.appendChild(card);
+    });
+}
+
+function openLanguage(key) {
+    currentLang = key;
+    currentDiff = 'all';
+    var lang = languages.find(function(l) { return l.key === key; });
+    document.getElementById('topicTitle').textContent = lang.name + ' Learning Path';
+    document.getElementById('langSection').style.display = 'none';
+    document.getElementById('topicSection').style.display = 'block';
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+    explored[key] = true;
+    updateProgress();
+    renderDiffTabs(key);
+    renderContent(key);
+}
+
+function showLanguages() {
+    document.getElementById('langSection').style.display = 'block';
+    document.getElementById('topicSection').style.display = 'none';
+    currentLang = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderDiffTabs(key) {
+    var tabs = document.getElementById('diffTabs');
+    var tut = tutorials[key] || [];
+    var progs = programs[key] || [];
+    var prac = practice[key] || [];
+    var allItems = tut.concat(progs, prac);
+    var beg = allItems.filter(function(i) { return i.diff === 'beginner'; }).length;
+    var inter = allItems.filter(function(i) { return i.diff === 'intermediate'; }).length;
+    var adv = allItems.filter(function(i) { return i.diff === 'advanced'; }).length;
+
+    tabs.innerHTML = '';
+    var diffs = [
+        { key: 'all', label: 'All Levels', count: allItems.length },
+        { key: 'beginner', label: 'Beginner', count: beg },
+        { key: 'intermediate', label: 'Intermediate', count: inter },
+        { key: 'advanced', label: 'Advanced', count: adv }
+    ];
+    diffs.forEach(function(d) {
+        var btn = document.createElement('button');
+        btn.className = 'diff-tab' + (d.key === 'all' ? ' active' : '');
+        btn.innerHTML = d.label + ' <span class="count">(' + d.count + ')</span>';
+        btn.onclick = function() {
+            currentDiff = d.key;
+            document.querySelectorAll('.diff-tab').forEach(function(t) { t.classList.remove('active'); });
+            btn.classList.add('active');
+            renderContent(key);
+        };
+        tabs.appendChild(btn);
+    });
+}
+
+function renderContent(key) {
+    renderTutorials(key);
+    renderPrograms(key);
+    renderPractice(key);
+    switchContent('tutorials');
+}
+
+function renderTutorials(key) {
+    var container = document.getElementById('content-tutorials');
+    var items = (tutorials[key] || []).filter(function(t) {
+        return currentDiff === 'all' || t.diff === currentDiff;
+    });
+    if (items.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128214;</div><h3>No tutorials at this level</h3><p>Try selecting a different difficulty.</p></div>';
+        return;
+    }
+    var html = '';
+    items.forEach(function(t) {
+        html += '<div class="tut-card"><span class="tut-num">Lesson ' + t.num + '</span> <span class="diff-badge diff-' + t.diff + '">' + t.diff.charAt(0).toUpperCase() + t.diff.slice(1) + '</span><div class="tut-title">' + t.title + '</div><div class="tut-desc">' + t.desc + '</div></div>';
+    });
+    container.innerHTML = html;
+}
+
+function renderPrograms(key) {
+    var container = document.getElementById('content-programs');
+    var items = (programs[key] || []).filter(function(p) {
+        return currentDiff === 'all' || p.diff === currentDiff;
+    });
+    if (items.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128196;</div><h3>No programs at this level</h3><p>Try selecting a different difficulty.</p></div>';
+        return;
+    }
+    var html = '';
+    items.forEach(function(p, i) {
+        html += '<div class="program-card"><div class="program-header" onclick="toggleProgram(this)"><div><h4>' + p.title + ' <span class="diff-badge diff-' + p.diff + '">' + p.diff.charAt(0).toUpperCase() + p.diff.slice(1) + '</span></h4></div><span class="program-arrow">&#9660;</span></div><div class="program-body"><div class="code-block"><span class="code-lang">' + (key === 'htmlcss' ? 'html/css' : key === 'js' ? 'javascript' : key) + '</span>' + p.code + '</div></div></div>';
+    });
+    container.innerHTML = html;
+}
+
+function renderPractice(key) {
+    var container = document.getElementById('content-practice');
+    var items = (practice[key] || []).filter(function(q) {
+        return currentDiff === 'all' || q.diff === currentDiff;
+    });
+    if (items.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#9997;</div><h3>No questions at this level</h3><p>Try selecting a different difficulty.</p></div>';
+        return;
+    }
+    var html = '';
+    items.forEach(function(q, i) {
+        html += '<div class="practice-card"><div class="practice-num">' + (i + 1) + '</div><div class="practice-info"><div class="practice-title">' + q.title + ' <span class="diff-badge diff-' + q.diff + '">' + q.diff.charAt(0).toUpperCase() + q.diff.slice(1) + '</span></div><div class="practice-hint">' + q.hint + '</div></div></div>';
+    });
+    container.innerHTML = html;
+}
+
+function switchContent(type) {
+    document.querySelectorAll('.topic-tab').forEach(function(t) {
+        t.classList.toggle('active', t.getAttribute('data-content') === type);
+    });
+    document.querySelectorAll('.content-area').forEach(function(c) { c.classList.remove('active'); });
+    document.getElementById('content-' + type).classList.add('active');
+}
+
+function toggleProgram(header) {
+    var body = header.nextElementSibling;
+    var arrow = header.querySelector('.program-arrow');
+    body.classList.toggle('open');
+    arrow.innerHTML = body.classList.contains('open') ? '&#9650;' : '&#9660;';
+}
+
+function updateProgress() {
+    var total = languages.length;
+    var done = Object.keys(explored).length;
+    var pct = Math.round((done / total) * 100);
+    document.getElementById('overallPercent').textContent = pct + '%';
+    document.getElementById('overallBar').style.width = pct + '%';
+    document.getElementById('overallLabel').textContent = done + ' / ' + total + ' languages explored';
+}
+
+function handleSearch() {
+    var q = document.getElementById('searchInput').value.trim().toLowerCase();
+    if (!q) {
+        if (currentLang) {
+            renderContent(currentLang);
+        }
+        return;
+    }
+    if (currentLang) {
+        var tut = (tutorials[currentLang] || []).filter(function(t) { return (t.title + ' ' + t.desc).toLowerCase().indexOf(q) !== -1; });
+        var progs = (programs[currentLang] || []).filter(function(p) { return p.title.toLowerCase().indexOf(q) !== -1; });
+        var prac = (practice[currentLang] || []).filter(function(p) { return (p.title + ' ' + p.hint).toLowerCase().indexOf(q) !== -1; });
+        document.getElementById('content-tutorials').innerHTML = tut.length ? '' : '<div class="empty-state"><div class="empty-icon">&#128269;</div><h3>No matching tutorials</h3></div>';
+        document.getElementById('content-programs').innerHTML = progs.length ? '' : '<div class="empty-state"><div class="empty-icon">&#128269;</div><h3>No matching programs</h3></div>';
+        document.getElementById('content-practice').innerHTML = prac.length ? '' : '<div class="empty-state"><div class="empty-icon">&#128269;</div><h3>No matching questions</h3></div>';
+        if (tut.length) { var h = ''; tut.forEach(function(t) { h += '<div class="tut-card"><span class="tut-num">Lesson ' + t.num + '</span> <span class="diff-badge diff-' + t.diff + '">' + t.diff.charAt(0).toUpperCase() + t.diff.slice(1) + '</span><div class="tut-title">' + t.title + '</div><div class="tut-desc">' + t.desc + '</div></div>'; }); document.getElementById('content-tutorials').innerHTML = h; }
+        if (progs.length) { var h = ''; progs.forEach(function(p) { h += '<div class="program-card"><div class="program-header" onclick="toggleProgram(this)"><div><h4>' + p.title + ' <span class="diff-badge diff-' + p.diff + '">' + p.diff.charAt(0).toUpperCase() + p.diff.slice(1) + '</span></h4></div><span class="program-arrow">&#9660;</span></div><div class="program-body"><div class="code-block"><span class="code-lang">' + currentLang + '</span>' + p.code + '</div></div></div>'; }); document.getElementById('content-programs').innerHTML = h; }
+        if (prac.length) { var h = ''; prac.forEach(function(p, i) { h += '<div class="practice-card"><div class="practice-num">' + (i + 1) + '</div><div class="practice-info"><div class="practice-title">' + p.title + ' <span class="diff-badge diff-' + p.diff + '">' + p.diff.charAt(0).toUpperCase() + p.diff.slice(1) + '</span></div><div class="practice-hint">' + p.hint + '</div></div></div>'; }); document.getElementById('content-practice').innerHTML = h; }
+    } else {
+        var grid = document.getElementById('langGrid');
+        var cards = grid.querySelectorAll('.lang-card');
+        cards.forEach(function(card, i) {
+            var lang = languages[i];
+            var match = (lang.name + ' ' + lang.tagline).toLowerCase().indexOf(q) !== -1;
+            card.style.display = match ? 'flex' : 'none';
+        });
+    }
+}
+
+renderLanguages();
+</script>
+
 </body>
 </html>
