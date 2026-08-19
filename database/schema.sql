@@ -1,8 +1,8 @@
--- ClassroomX Database Schema
+-- EngiHub Database Schema
 -- Run this to create all required tables from scratch.
 --
 -- Usage:
---   mysql -u root -p your_database_name < database/schema.sql
+--   mysql -u root -p engihub < database/schema.sql
 --
 -- Or import via phpMyAdmin
 
@@ -23,8 +23,10 @@ CREATE TABLE IF NOT EXISTS `students` (
   `full_name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `college_name` varchar(150) DEFAULT NULL,
   `semester` varchar(20) NOT NULL,
   `branch` varchar(50) NOT NULL,
+  `is_active` tinyint(1) DEFAULT 1,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
@@ -34,10 +36,12 @@ CREATE TABLE IF NOT EXISTS `students` (
 CREATE TABLE IF NOT EXISTS `notes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
+  `subject_code` varchar(20) DEFAULT NULL,
   `description` text DEFAULT NULL,
   `semester` varchar(20) NOT NULL,
   `branch` varchar(50) NOT NULL,
   `pdf_file` varchar(255) NOT NULL,
+  `download_count` int(11) DEFAULT 0,
   `upload_date` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -256,3 +260,7 @@ CREATE TABLE IF NOT EXISTS `contact_messages` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Default admin account (password: admin123)
+INSERT INTO `admin` (`username`, `password`) VALUES
+('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');

@@ -1,26 +1,5 @@
-# Uploaded user content (notes, PYQs, gallery images, etc.)
-uploads/
-!uploads/.gitkeep
-!uploads/gallery/.gitkeep
-!uploads/notes/.gitkeep
-
-# Environment & config (contains real credentials)
+﻿config.php
 .env
-config.php
-
-# SQL files with real user data / credentials
-college_notes.sql
-college_notes_import.sql
-add_new_tables.sql
-
-# Windows / OS junk
-Thumbs.db
-Desktop.ini
-
-# PHPStorm / IDE
-.idea/
-.vscode/
-*.swp
-
-# Test / debug files
-test.php
+database/
+uploads/*.pdf
+uploads/*.PDF

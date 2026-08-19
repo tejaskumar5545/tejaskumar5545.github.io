@@ -1,131 +1,72 @@
 ﻿<?php
-session_start();
-include 'db.php';
-
-$semesters = ['Semester 1','Semester 2','Semester 3','Semester 4','Semester 5','Semester 6'];
-$branches_result = mysqli_query($conn, "SELECT DISTINCT branch FROM practicals ORDER BY branch");
-$branches = [];
-while ($r = mysqli_fetch_assoc($branches_result)) {
-    $branches[] = $r['branch'];
-}
-
-$filter_sem = isset($_GET['semester']) ? $_GET['semester'] : '';
-$filter_branch = isset($_GET['branch']) ? $_GET['branch'] : '';
-$search = isset($_GET['search']) ? trim($_GET['search']) : '';
-
-$where = [];
-if ($filter_sem !== '') {
-    $where[] = "semester = '" . mysqli_real_escape_string($conn, $filter_sem) . "'";
-}
-if ($filter_branch !== '') {
-    $where[] = "branch = '" . mysqli_real_escape_string($conn, $filter_branch) . "'";
-}
-if ($search !== '') {
-    $search_safe = mysqli_real_escape_string($conn, $search);
-    $where[] = "(title LIKE '%$search_safe%' OR subject LIKE '%$search_safe%')";
-}
-
-$where_sql = count($where) > 0 ? 'WHERE ' . implode(' AND ', $where) : '';
-$practicals = mysqli_query($conn, "SELECT * FROM practicals $where_sql ORDER BY semester ASC, upload_date DESC");
+require_once 'db.php';
+$branch = $_GET['branch'] ?? '';
+$semester = $_GET['semester'] ?? '';
+$search = $_GET['search'] ?? '';
+$query = "SELECT * FROM practicals WHERE 1=1";
+if ($branch) $query .= " AND branch='" . $conn->real_escape_string($branch) . "'";
+if ($semester) $query .= " AND semester='" . $conn->real_escape_string($semester) . "'";
+if ($search) $query .= " AND (title LIKE '%" . $conn->real_escape_string($search) . "%' OR subject LIKE '%" . $conn->real_escape_string($search) . "%')";
+$query .= " ORDER BY upload_date DESC";
+$result = $conn->query($query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="theme-color" content="#0d2240">
-    <title>Practical Files - EngiHub</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#2563eb">
+    <title>Practicals - EngiHub</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f5f7fb;color:#111827;min-height:100vh;display:flex;flex-direction:column}
+        .navbar{width:100%;height:70px;background:white;display:flex;align-items:center;justify-content:space-between;padding:0 6%;box-shadow:0 2px 10px rgba(0,0,0,.08);position:sticky;top:0;z-index:100}
+        .logo{font-size:28px;font-weight:bold;color:#2563eb}.logo span{color:#111827}
+        .nav-links{display:flex;gap:20px;list-style:none;align-items:center}.nav-links a{text-decoration:none;color:#333;font-weight:500;transition:color .2s;font-size:14px}.nav-links a:hover{color:#2563eb}.nav-links a.active{color:#2563eb;font-weight:700}
+        .menu-toggle{display:none;background:none;border:none;font-size:28px;cursor:pointer;color:#111827}
+        .hero{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:white;padding:50px 6% 40px;text-align:center}
+        .hero h1{font-size:32px;font-weight:800;margin-bottom:8px}.hero p{font-size:15px;opacity:.85}
+        .container{max-width:1100px;margin:0 auto;width:100%;padding:0 6%}
+        .filters{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0;align-items:center}
+        .filters select,.filters input{padding:10px 14px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:inherit;background:white;color:#111827;outline:none}.filters select:focus,.filters input:focus{border-color:#2563eb}
+        .filters input[type=text]{min-width:220px}
+        .clear-btn{background:#f3f4f6;border:none;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;color:#6b7280;cursor:pointer;font-family:inherit}.clear-btn:hover{background:#e5e7eb;color:#111827}
+        .results-count{font-size:14px;color:#6b7280;margin-bottom:16px}
+        .practicals-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;padding:10px 0 40px}
+        .practical-card{background:white;border-radius:14px;padding:22px;box-shadow:0 2px 10px rgba(0,0,0,.06);transition:all .2s;display:flex;flex-direction:column}.practical-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+        .practical-card .tag{display:inline-block;background:#f0fdf4;color:#16a34a;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;margin-bottom:10px;width:fit-content}
+        .practical-card h3{font-size:15px;font-weight:700;color:#111827;margin-bottom:6px}
+        .practical-card .subject{font-size:13px;color:#6b7280;margin-bottom:12px}
+        .practical-card .meta{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+        .practical-card .actions{display:flex;gap:8px}
+        .practical-card .actions a{padding:8px 16px;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;transition:all .2s}
+        .btn-view{background:#f3f4f6;color:#374151}.btn-view:hover{background:#e5e7eb}
+        .btn-download{background:#2563eb;color:white}.btn-download:hover{background:#1d4ed8}
+        .empty{text-align:center;padding:60px 0;color:#9ca3af;font-size:16px}
+        .footer{background:#111827;color:white;padding:20px 6%;text-align:center;margin-top:auto}.footer p{font-size:13px;color:#6b7280}
+        @media(max-width:768px){.navbar{height:60px;padding:0 20px}.logo{font-size:23px}.nav-links{display:none;position:absolute;top:60px;left:0;right:0;background:white;flex-direction:column;padding:16px 20px;box-shadow:0 8px 24px rgba(0,0,0,.1);gap:0}.nav-links.open{display:flex}.nav-links a{padding:14px 0;border-bottom:1px solid #f3f4f6}.menu-toggle{display:block}.practicals-grid{grid-template-columns:1fr}.container{padding:0 16px}}
+    </style>
 </head>
 <body>
-
-<header>
-    <a href="index.php" class="logo">
-        <img src="images/logo.jpg" alt="EngiHub" class="logo-img">
-        EngiHub
-    </a>
-    <button class="menu-toggle">&#9776;</button>
-    <nav>
-        <a href="index.php">Home</a>
-        <a href="notes.php">Notes</a>
-        <a href="syllabus.php">Syllabus</a>
-        <a href="pyq.php">PYQ</a>
-        <a href="practical.php" class="active">Practical</a>
-        <a href="exams.php">Online Test</a>
-        <a href="about.php">About</a>
-        <a href="contact.php">Contact Us</a>
-        <?php if (isset($_SESSION['admin'])): ?>
-            <a href="dashboard.php">Dashboard</a>
-            <a href="logout.php">Logout</a>
-        <?php elseif (isset($_SESSION['student'])): ?>
-            <a href="student_dashboard.php">My Dashboard</a>
-            <a href="student_logout.php">Logout</a>
-        <?php else: ?>
-            <a href="login.php">Admin</a>
-            <a href="student_login.php" class="btn-login">Student Login</a>
-        <?php endif; ?>
-    </nav>
-</header>
-
+<nav class="navbar"><a href="index.html" class="logo">Engi<span>Hub</span></a><button class="menu-toggle" id="menuToggle">&#9776;</button><ul class="nav-links" id="navLinks"><li><a href="index.html">Home</a></li><li><a href="syllabus.html">Syllabus</a></li><li><a href="notes.php">Notes</a></li><li><a href="pyq.php">PYQ</a></li><li><a href="practical.php">Practicals</a></li><li><a href="login.php">Login</a></li></ul></nav>
+<div class="hero"><h1>&#128295; Practicals &amp; Lab Manuals</h1><p>Download practical files, lab manuals, and viva preparation guides</p></div>
 <div class="container">
-    <h2 style="font-size:28px;font-weight:700;margin-bottom:8px;color:var(--white);">Practical Files</h2>
-    <p style="color:var(--gray-700);font-size:15px;margin-bottom:28px;">Download practical lists and lab manuals for your branch and semester.</p>
-
-    <form method="GET" action="practical.php">
-        <div class="filter-bar">
-            <input type="text" name="search" placeholder="Search by title or subject..." value="<?php echo htmlspecialchars($search); ?>">
-            <select name="semester">
-                <option value="">All Semesters</option>
-                <?php foreach ($semesters as $sem): ?>
-                    <option value="<?php echo $sem; ?>" <?php echo $filter_sem === $sem ? 'selected' : ''; ?>><?php echo $sem; ?></option>
-                <?php endforeach; ?>
-            </select>
-            <select name="branch">
-                <option value="">All Branches</option>
-                <?php foreach ($branches as $br): ?>
-                    <option value="<?php echo $br; ?>" <?php echo $filter_branch === $br ? 'selected' : ''; ?>><?php echo $br; ?></option>
-                <?php endforeach; ?>
-            </select>
-            <button type="submit" class="btn-filter">Filter</button>
-            <?php if ($filter_sem !== '' || $filter_branch !== '' || $search !== ''): ?>
-                <a href="practical.php" class="btn-reset">Clear</a>
-            <?php endif; ?>
-        </div>
+    <form class="filters" method="GET" action="practical.php">
+        <select name="branch"><option value="">All Branches</option><option value="CSE" <?php if($branch==='CSE')echo'selected';?>>CSE</option><option value="ECE" <?php if($branch==='ECE')echo'selected';?>>ECE</option><option value="ME" <?php if($branch==='ME')echo'selected';?>>ME</option><option value="CE" <?php if($branch==='CE')echo'selected';?>>CE</option><option value="EE" <?php if($branch==='EE')echo'selected';?>>EE</option></select>
+        <select name="semester"><option value="">All Semesters</option><?php for($i=1;$i<=8;$i++):?><option value="<?php echo $i;?>" <?php if($semester==(string)$i)echo'selected';?>>Sem <?php echo $i;?></option><?php endfor;?></select>
+        <input type="text" name="search" placeholder="Search practicals..." value="<?php echo htmlspecialchars($search); ?>">
+        <button type="submit" class="btn-download" style="border:none;cursor:pointer">&#128269; Search</button>
+        <a href="practical.php" class="clear-btn">Clear All</a>
     </form>
-
-    <?php if ($practicals && mysqli_num_rows($practicals) > 0): ?>
-        <p style="color:var(--gray-700);font-size:14px;margin-bottom:16px;">Showing <?php echo mysqli_num_rows($practicals); ?> file(s)</p>
-        <div class="cards">
-            <?php while ($row = mysqli_fetch_assoc($practicals)): ?>
-                <div class="card">
-                    <span class="card-badge badge-sem"><?php echo htmlspecialchars($row['semester']); ?></span>
-                    <span class="card-badge badge-branch"><?php echo htmlspecialchars($row['branch']); ?></span>
-                    <h3><?php echo htmlspecialchars($row['title']); ?></h3>
-                    <p class="card-desc">
-                        <?php if (!empty($row['subject'])): ?>Subject: <?php echo htmlspecialchars($row['subject']); ?><br><?php endif; ?>
-                        Branch: <?php echo htmlspecialchars($row['branch']); ?>
-                    </p>
-                    <div class="card-meta">
-                        <span class="card-date"><?php echo date('d M Y', strtotime($row['upload_date'])); ?></span>
-                        <a href="download_practical.php?id=<?php echo $row['id']; ?>" class="btn btn-primary btn-sm">Download</a>
-                    </div>
-                </div>
-            <?php endwhile; ?>
-        </div>
-    <?php else: ?>
-        <div class="empty-state">
-            <div class="empty-icon">&#128196;</div>
-            <h3>No practical files found</h3>
-            <p>Try adjusting your filters or check back later.</p>
-        </div>
-    <?php endif; ?>
+    <div class="results-count"><?php echo $result->num_rows; ?> practical(s) found</div>
+    <div class="practicals-grid">
+        <?php if ($result && $result->num_rows > 0): while ($row = $result->fetch_assoc()): ?>
+            <div class="practical-card">
+                <span class="tag"><?php echo htmlspecialchars($row['branch']); ?> | Sem <?php echo htmlspecialchars($row['semester']); ?></span>
+                <h3><?php echo htmlspecialchars($row['title']); ?></h3>
+                <div class="subject"><?php echo htmlspecialchars($row['subject'] ?? 'General'); ?></div>
+                <div class="meta"><div class="actions"><a href="download.php?type=practicals&id=<?php echo $row['id'];?>" class="btn-view">View</a><a href="download.php?type=practicals&id=<?php echo $row['id'];?>" class="btn-download">Download</a></div></div>
+            </div>
+        <?php endwhile; else: ?><div class="empty">&#128221; No practicals found. Try different filters.</div><?php endif; ?>
+    </div>
 </div>
-
-<footer><p>&copy; 2026 EngiHub Portal</p></footer>
-<a href="https://wa.me/918860695666?text=Hi%20EngiHub%2C%20I%20have%20a%20question" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.132 6.744 3.058 9.374L1.054 31.2l6.064-1.97A15.912 15.912 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.31 22.608c-.39 1.096-1.932 2.01-3.162 2.274-.844.18-1.946.322-5.656-1.216-4.746-1.966-7.798-6.79-8.036-7.108-.23-.318-1.9-2.524-1.9-4.814 0-2.29 1.204-3.416 1.63-3.884.39-.428.924-.57 1.23-.57.31 0 .618.004.886.016.284.012.664-.106 1.036.79.39.932 1.33 3.24 1.446 3.478.116.238.194.516.038.834-.156.318-.232.516-.462.794-.23.278-.484.62-.692.832-.23.238-.47.496-.2.972.27.476 1.2 1.98 2.578 3.208 1.77 1.58 3.26 2.07 3.736 2.298.374.18.792.136 1.086-.23.374-.476.836-1.262 1.304-2.02.334-.542.756-.61 1.276-.414.53.196 3.364 1.586 3.94 1.87.576.284.96.428 1.102.664.14.236.14 1.37-.25 2.464z"/></svg>
-</a>
-<script src="js/main.js"></script>
-</body>
-</html>
-<?php mysqli_close($conn); ?>
+<footer class="footer"><p>&copy; 2026 EngiHub. All rights reserved.</p></footer>
+<script>document.getElementById('menuToggle').addEventListener('click',function(){document.getElementById('navLinks').classList.toggle('open')})</script>
+</body></html>

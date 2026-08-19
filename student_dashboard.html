@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#2563eb">
+    <title>Student Dashboard - EngiHub</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f5f7fb;color:#111827;min-height:100vh;display:flex;flex-direction:column}
+        .navbar{width:100%;height:70px;background:white;display:flex;align-items:center;justify-content:space-between;padding:0 6%;box-shadow:0 2px 10px rgba(0,0,0,.08);position:sticky;top:0;z-index:100}
+        .logo{font-size:28px;font-weight:bold;color:#2563eb}.logo span{color:#111827}
+        .nav-links{display:flex;gap:20px;list-style:none;align-items:center}.nav-links a{text-decoration:none;color:#333;font-weight:500;transition:color .2s;font-size:14px}.nav-links a:hover{color:#2563eb}.nav-links a.active{color:#2563eb;font-weight:700}
+        .menu-toggle{display:none;background:none;border:none;font-size:28px;cursor:pointer;color:#111827}
+        .login-area{display:flex;gap:12px;align-items:center}.login-area .btn-login{background:#2563eb;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px}.login-area .btn-login:hover{background:#1d4ed8}.login-area .btn-register{border:2px solid #2563eb;color:#2563eb;padding:8px 18px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px}.login-area .btn-register:hover{background:#eff6ff}
+        .hero{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:white;padding:60px 6%;text-align:center}
+        .hero h1{font-size:36px;font-weight:800;margin-bottom:10px}.hero p{font-size:16px;opacity:.85;max-width:600px;margin:0 auto}
+        .section{max-width:1100px;margin:0 auto;width:100%;padding:40px 6%}
+        .section-title{font-size:24px;font-weight:800;text-align:center;margin-bottom:8px}.section-subtitle{font-size:14px;color:#6b7280;text-align:center;margin-bottom:32px}
+        .feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+        .feature-card{background:white;border-radius:14px;padding:28px;box-shadow:0 2px 10px rgba(0,0,0,.06);text-align:center;transition:all .3s}.feature-card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,.1)}
+        .feature-card .icon{font-size:40px;margin-bottom:14px}.feature-card h3{font-size:17px;font-weight:700;margin-bottom:8px}.feature-card p{font-size:13px;color:#6b7280;line-height:1.6}
+        .stats-section{background:white;padding:40px 6%;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+        .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:900px;margin:0 auto}
+        .stat-item{text-align:center}.stat-item .number{font-size:36px;font-weight:800;color:#2563eb}.stat-item .label{font-size:14px;color:#6b7280;margin-top:4px}
+        .footer{background:#111827;color:white;padding:30px 6%;text-align:center;margin-top:auto}.footer p{font-size:13px;color:#6b7280}
+        @media(max-width:768px){.navbar{height:60px;padding:0 20px}.logo{font-size:23px}.nav-links{display:none;position:absolute;top:60px;left:0;right:0;background:white;flex-direction:column;padding:16px 20px;box-shadow:0 8px 24px rgba(0,0,0,.1);gap:0}.nav-links.open{display:flex}.nav-links a{padding:14px 0;border-bottom:1px solid #f3f4f6}.menu-toggle{display:block}.stats-grid{grid-template-columns:1fr 1fr}.hero h1{font-size:26px}.section{padding:30px 16px}}
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <a href="index.html" class="logo">Engi<span>Hub</span></a>
+    <button class="menu-toggle" id="menuToggle">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="syllabus.html">Syllabus</a></li>
+        <li><a href="notes.php">Notes</a></li>
+        <li><a href="pyq.php">PYQ</a></li>
+        <li><a href="coding.html">Coding</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <div class="login-area">
+            <a href="login.php" class="btn-login">Login</a>
+            <a href="register.php" class="btn-register">Register</a>
+        </div>
+    </ul>
+</nav>
+
+<div class="hero">
+    <h1>Your Student Dashboard</h1>
+    <p>Everything you need as an engineering student - notes, papers, practicals, coding practice, and placement prep - all in one place.</p>
+</div>
+
+<div class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-item"><div class="number">500+</div><div class="label">Study Notes</div></div>
+        <div class="stat-item"><div class="number">200+</div><div class="label">PYQ Papers</div></div>
+        <div class="stat-item"><div class="number">100+</div><div class="label">Practical Files</div></div>
+        <div class="stat-item"><div class="number">50+</div><div class="label">Projects</div></div>
+    </div>
+</div>
+
+<div class="section">
+    <h2 class="section-title">Quick Access</h2>
+    <p class="section-subtitle">Navigate to the section you need instantly</p>
+    <div class="feature-grid">
+        <a href="syllabus.html" style="text-decoration:none;color:inherit">
+            <div class="feature-card">
+                <div class="icon">&#128218;</div>
+                <h3>Syllabus</h3>
+                <p>View semester-wise syllabus for your branch with subject codes and descriptions</p>
+            </div>
+        </a>
+        <a href="notes.php" style="text-decoration:none;color:inherit">
+            <div class="feature-card">
+                <div class="icon">&#128221;</div>
+                <h3>Study Notes</h3>
+                <p>Download subject-wise notes uploaded by toppers and faculty members</p>
+            </div>
+        </a>
+        <a href="pyq.php" style="text-decoration:none;color:inherit">
+            <div class="feature-card">
+                <div class="icon">&#128196;</div>
+                <h3>Previous Year Papers</h3>
+                <p>Practice with real exam papers from 2018 to 2025 for all branches</p>
+            </div>
+        </a>
+        <a href="practical.php" style="text-decoration:none;color:inherit">
+            <div class="feature-card">
+                <div class="icon">&#128295;</div>
+                <h3>Practical Files</h3>
+                <p>Lab manuals, practical experiments, and viva preparation guides</p>
+            </div>
+        </a>
+        <a href="coding.html" style="text-decoration:none;color:inherit">
+            <div class="feature-card">
+                <div class="icon">&#128187;</div>
+                <h3>Coding Hub</h3>
+                <p>Learn C, C++, Python, Java, JavaScript with tutorials and practice problems</p>
+            </div>
+        </a>
+        <a href="projects.html" style="text-decoration:none;color:inherit">
+            <div class="feature-card">
+                <div class="icon">&#128736;</div>
+                <h3>Mini Projects</h3>
+                <p>Browse project ideas across Web, Android, Python, IoT, and Electronics</p>
+            </div>
+        </a>
+        <a href="placement.html" style="text-decoration:none;color:inherit">
+            <div class="feature-card">
+                <div class="icon">&#127919;</div>
+                <h3>Placement Prep</h3>
+                <p>Aptitude, coding tests, interview questions, and company-wise preparation</p>
+            </div>
+        </a>
+        <a href="login.php" style="text-decoration:none;color:inherit">
+            <div class="feature-card">
+                <div class="icon">&#128100;</div>
+                <h3>Your Account</h3>
+                <p>Login to track your downloads, manage your profile, and access personalized content</p>
+            </div>
+        </a>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>&copy; 2026 EngiHub. All rights reserved. Built for engineering students.</p>
+</footer>
+
+<script>
+document.getElementById("menuToggle").addEventListener("click", function(){
+    document.getElementById("navLinks").classList.toggle("open");
+});
+</script>
+</body>
+</html>

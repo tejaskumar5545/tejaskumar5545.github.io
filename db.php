@@ -1,16 +1,43 @@
 <?php
-if (!file_exists(__DIR__ . '/config.php')) {
-    die("config.php not found. Copy config.example.php to config.php and fill in your database credentials.");
+define('DB_HOST', 'localhost');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+define('DB_NAME', 'engihub');
+
+session_start();
+
+$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$conn->set_charset("utf8mb4");
+
+function sanitize($conn, $data) {
+    return htmlspecialchars(trim($data));
 }
 
-require __DIR__ . '/config.php';
-
-mysqli_report(MYSQLI_REPORT_OFF);
-$conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
-
-if (!$conn) {
-    die("Database Connection Failed: " . mysqli_connect_error());
+function isLoggedIn() {
+    return isset($_SESSION['student_id']) || isset($_SESSION['admin_id']);
 }
 
-mysqli_set_charset($conn, "utf8");
-?>
+function isStudent() {
+    return isset($_SESSION['student_id']);
+}
+
+function isAdmin() {
+    return isset($_SESSION['admin_id']);
+}
+
+function requireLogin() {
+    if (!isStudent()) {
+        header("Location: login.php");
+        exit;
+    }
+}
+
+function requireAdmin() {
+    if (!isAdmin()) {
+        header("Location: login.php");
+        exit;
+    }
+}
