@@ -6,8 +6,8 @@
 --
 -- Or import via phpMyAdmin
 
-CREATE DATABASE IF NOT EXISTS `college_notes` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `college_notes`;
+CREATE DATABASE IF NOT EXISTS `engihub` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `engihub`;
 
 -- Admin table
 CREATE TABLE IF NOT EXISTS `admin` (
@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS `students` (
   `dark_mode` tinyint(1) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `mobile` (`mobile`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Notes table
