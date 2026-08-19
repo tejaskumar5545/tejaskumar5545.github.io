@@ -34,9 +34,6 @@ if (isset($_SESSION['student'])) {
         <a href="projects.php">Projects</a>
         <a href="placement.php">Placement</a>
         <a href="notices.php">Notices</a>
-
-        <a href="about.php">About</a>
-        <a href="contact.php">Contact Us</a>
         <a href="login.php">Admin</a>
         <a href="student_login.php" class="btn-login active">Student Login</a>
     </nav>

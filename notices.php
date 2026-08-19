@@ -46,9 +46,6 @@ $notices = mysqli_query($conn, "SELECT * FROM notices $where_sql ORDER BY is_imp
         <a href="projects.php">Projects</a>
         <a href="placement.php">Placement</a>
         <a href="notices.php" class="active">Notices</a>
-
-        <a href="about.php">About</a>
-        <a href="contact.php">Contact Us</a>
         <?php if (isset($_SESSION['admin'])): ?>
             <a href="dashboard.php">Dashboard</a>
             <a href="logout.php">Logout</a>

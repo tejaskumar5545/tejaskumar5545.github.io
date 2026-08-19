@@ -38,9 +38,6 @@ $placement = mysqli_query($conn, "SELECT * FROM placement $where ORDER BY create
         <a href="coding.php">Coding</a>
         <a href="projects.php">Projects</a>
         <a href="placement.php" class="active">Placement</a>
-
-        <a href="about.php">About</a>
-        <a href="contact.php">Contact Us</a>
         <?php if (isset($_SESSION['admin'])): ?>
             <a href="dashboard.php">Dashboard</a>
             <a href="logout.php">Logout</a>

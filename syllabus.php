@@ -50,9 +50,6 @@ $syllabus = mysqli_query($conn, "SELECT * FROM syllabus $where_sql ORDER BY seme
         <a href="notes.php">Notes</a>
         <a href="syllabus.php" class="active">Syllabus</a>
         <a href="pyq.php">PYQ</a>
-
-        <a href="about.php">About</a>
-        <a href="contact.php">Contact Us</a>
         <?php if (isset($_SESSION['admin'])): ?>
             <a href="dashboard.php">Dashboard</a>
             <a href="logout.php">Logout</a>
