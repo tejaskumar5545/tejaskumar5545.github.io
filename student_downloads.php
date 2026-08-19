@@ -53,7 +53,7 @@ $downloads = mysqli_query($conn, "
         <a href="projects.php">Projects</a>
         <a href="placement.php">Placement</a>
         <a href="notices.php">Notices</a>
-        <a href="exams.php">Online Test</a>
+
         <a href="student_dashboard.php" class="active">My Dashboard</a>
         <a href="student_logout.php">Logout</a>
     </nav>

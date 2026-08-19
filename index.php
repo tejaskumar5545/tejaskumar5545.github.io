@@ -50,7 +50,7 @@ $notes_result = mysqli_query($conn, $notes_query);
         <a href="subjects.php">Subjects</a>
         <a href="notes.php">Notes</a>
         <a href="pdfs.php">PDFs</a>
-        <a href="exams.php">MCQ Quiz</a>
+
         <a href="pyq.php">Previous Papers</a>
         <a href="syllabus.php">Syllabus</a>
         <a href="notices.php">Notices</a>
@@ -316,11 +316,7 @@ $notes_result = mysqli_query($conn, $notes_query);
                 <h3>Assignments</h3>
                 <p>Download &amp; submit</p>
             </a>
-            <a href="exams.php" class="user-account-card">
-                <div class="user-account-icon">&#127919;</div>
-                <h3>Online Tests</h3>
-                <p>MCQ exams &amp; results</p>
-            </a>
+            
         </div>
     </div>
 

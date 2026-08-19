@@ -29,7 +29,7 @@ $semesters = mysqli_query($conn, "SELECT DISTINCT semester FROM notes ORDER BY s
         <a href="subjects.php" class="active">Subjects</a>
         <a href="notes.php">Notes</a>
         <a href="pdfs.php">PDFs</a>
-        <a href="exams.php">MCQ Quiz</a>
+
         <a href="pyq.php">Previous Papers</a>
         <a href="syllabus.php">Syllabus</a>
         <a href="notices.php">Notices</a>

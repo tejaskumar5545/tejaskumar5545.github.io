@@ -55,7 +55,7 @@ $assignments = mysqli_query($conn, "SELECT * FROM assignments $where_sql ORDER B
         <a href="projects.php">Projects</a>
         <a href="placement.php">Placement</a>
         <a href="notices.php">Notices</a>
-        <a href="exams.php">Online Test</a>
+
         <a href="about.php">About</a>
         <a href="contact.php">Contact Us</a>
         <?php if (isset($_SESSION['admin'])): ?>

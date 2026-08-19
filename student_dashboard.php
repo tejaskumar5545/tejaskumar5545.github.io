@@ -52,7 +52,7 @@ $sem_notes = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM n
         <a href="projects.php">Projects</a>
         <a href="placement.php">Placement</a>
         <a href="notices.php">Notices</a>
-        <a href="exams.php">Online Test</a>
+
         <a href="student_dashboard.php" class="active">My Dashboard</a>
         <a href="student_logout.php">Logout</a>
     </nav>
@@ -120,11 +120,7 @@ $sem_notes = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM n
             <h3>Browse Notes</h3>
             <p>Find study material</p>
         </a>
-        <a href="exams.php" class="user-account-card">
-            <div class="user-account-icon">&#127919;</div>
-            <h3>Online Test</h3>
-            <p>Attempt &amp; check results</p>
-        </a>
+        
         <a href="exam_history.php" class="user-account-card">
             <div class="user-account-icon">&#127891;</div>
             <h3>My Results</h3>

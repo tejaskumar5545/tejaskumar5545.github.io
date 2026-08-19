@@ -32,7 +32,7 @@ include 'db.php';
         <a href="projects.php">Projects</a>
         <a href="placement.php">Placement</a>
         <a href="notices.php">Notices</a>
-        <a href="exams.php">Online Test</a>
+
         <a href="about.php" class="active">About</a>
         <a href="contact.php">Contact Us</a>
         <?php if (isset($_SESSION['admin'])): ?>
@@ -55,8 +55,6 @@ include 'db.php';
         <p>A modern digital platform built for diploma college students to access, share, and download study notes easily.</p>
     </div>
 </section>
-
-
 
 <div class="container">
     <div style="max-width:900px;margin:0 auto;">

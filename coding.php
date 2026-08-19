@@ -51,7 +51,7 @@ $coding = mysqli_query($conn, "SELECT * FROM coding $where_sql ORDER BY FIELD(di
         <a href="pyq.php">PYQ</a>
         <a href="practical.php">Practical</a>
         <a href="coding.php" class="active">Coding</a>
-        <a href="exams.php">Online Test</a>
+
         <a href="about.php">About</a>
         <a href="contact.php">Contact Us</a>
         <?php if (isset($_SESSION['admin'])): ?>

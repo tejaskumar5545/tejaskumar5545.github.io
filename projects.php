@@ -52,7 +52,7 @@ $projects = mysqli_query($conn, "SELECT * FROM projects $where_sql ORDER BY crea
         <a href="practical.php">Practical</a>
         <a href="coding.php">Coding</a>
         <a href="projects.php" class="active">Projects</a>
-        <a href="exams.php">Online Test</a>
+
         <a href="about.php">About</a>
         <a href="contact.php">Contact Us</a>
         <?php if (isset($_SESSION['admin'])): ?>

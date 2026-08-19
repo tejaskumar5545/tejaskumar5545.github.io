@@ -32,7 +32,7 @@ $totalPracticals = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c 
         <a href="subjects.php">Subjects</a>
         <a href="notes.php">Notes</a>
         <a href="pdfs.php" class="active">PDFs</a>
-        <a href="exams.php">MCQ Quiz</a>
+
         <a href="pyq.php">Previous Papers</a>
         <a href="syllabus.php">Syllabus</a>
         <a href="notices.php">Notices</a>
