@@ -129,24 +129,75 @@
         @media (max-width: 450px) {
             .branch-grid { grid-template-columns: 1fr 1fr; }
         }
-    </style>
+    
+        /* ================= MOBILE NAV FIX ================= */
+
+        @media (max-width: 768px) {
+
+            .nav-links {
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                visibility: hidden;
+
+                transition:
+                    max-height 0.3s ease,
+                    opacity 0.25s ease,
+                    visibility 0.25s ease;
+            }
+
+            .nav-links.open {
+                max-height: 600px;
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links li a {
+                display: block;
+                width: 100%;
+            }
+
+            .nav-links .login-btn {
+                text-align: center;
+                margin-top: 5px;
+            }
+        }</style>
 </head>
 <body>
 
 <!-- NAVBAR -->
 <nav class="navbar">
-    <div class="logo">Engi<span>Hub</span></div>
-    <button class="menu-toggle" id="menuToggle">&#9776;</button>
+    <a href="index.html" class="logo" aria-label="EngiHub Home">
+        Engi<span>Hub</span>
+    </a>
+
+    <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+    >
+        &#9776;
+    </button>
+
     <ul class="nav-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
         <li><a href="notes.html">Notes</a></li>
-        <li><a href="syllabus.html" class="active">Syllabus</a></li>
+        <li><a href="syllabus.html">Syllabus</a></li>
         <li><a href="pyq.html">PYQ</a></li>
         <li><a href="practical.html">Practical</a></li>
         <li><a href="coding.html">Coding</a></li>
         <li><a href="projects.html">Projects</a></li>
         <li><a href="placement.html">Placement</a></li>
-        <li><a href="login.html" class="login-btn">Login</a></li>
+        <li><a href="register.php">Register</a></li>
+        <li>
+            <a href="login.php" class="login-btn">Login</a>
+        </li>
     </ul>
 </nav>
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#2563eb">
@@ -22,23 +22,73 @@
         .stat-item{text-align:center}.stat-item .number{font-size:36px;font-weight:800;color:#2563eb}.stat-item .label{font-size:14px;color:#6b7280;margin-top:4px}
         .footer{background:#111827;color:white;padding:30px 6%;text-align:center;margin-top:auto}.footer p{font-size:13px;color:#6b7280}
         @media(max-width:768px){.navbar{height:60px;padding:0 20px}.logo{font-size:23px}.nav-links{display:none;position:absolute;top:60px;left:0;right:0;background:white;flex-direction:column;padding:16px 20px;box-shadow:0 8px 24px rgba(0,0,0,.1);gap:0}.nav-links.open{display:flex}.nav-links a{padding:14px 0;border-bottom:1px solid #f3f4f6}.menu-toggle{display:block}.stats-grid{grid-template-columns:1fr 1fr}.hero h1{font-size:26px}.section{padding:30px 16px}}
-    </style>
+    
+        /* ================= MOBILE NAV FIX ================= */
+
+        @media (max-width: 768px) {
+
+            .nav-links {
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                visibility: hidden;
+
+                transition:
+                    max-height 0.3s ease,
+                    opacity 0.25s ease,
+                    visibility 0.25s ease;
+            }
+
+            .nav-links.open {
+                max-height: 600px;
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links li a {
+                display: block;
+                width: 100%;
+            }
+
+            .nav-links .login-btn {
+                text-align: center;
+                margin-top: 5px;
+            }
+        }</style>
 </head>
 <body>
 <nav class="navbar">
-    <a href="index.html" class="logo">Engi<span>Hub</span></a>
-    <button class="menu-toggle" id="menuToggle">&#9776;</button>
+    <a href="index.html" class="logo" aria-label="EngiHub Home">
+        Engi<span>Hub</span>
+    </a>
+
+    <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+    >
+        &#9776;
+    </button>
+
     <ul class="nav-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
+        <li><a href="notes.html">Notes</a></li>
         <li><a href="syllabus.html">Syllabus</a></li>
-        <li><a href="notes.php">Notes</a></li>
-        <li><a href="pyq.php">PYQ</a></li>
+        <li><a href="pyq.html">PYQ</a></li>
+        <li><a href="practical.html">Practical</a></li>
         <li><a href="coding.html">Coding</a></li>
         <li><a href="projects.html">Projects</a></li>
-        <div class="login-area">
-            <a href="login.php" class="btn-login">Login</a>
-            <a href="register.php" class="btn-register">Register</a>
-        </div>
+        <li><a href="placement.html">Placement</a></li>
+        <li><a href="register.php">Register</a></li>
+        <li>
+            <a href="login.php" class="login-btn">Login</a>
+        </li>
     </ul>
 </nav>
 
@@ -124,8 +174,40 @@
 </footer>
 
 <script>
-document.getElementById("menuToggle").addEventListener("click", function(){
-    document.getElementById("navLinks").classList.toggle("open");
+// ================= MOBILE MENU =================
+
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
+
+menuToggle.addEventListener("click", function () {
+
+    const isOpen = navLinks.classList.toggle("open");
+
+    menuToggle.setAttribute(
+        "aria-expanded",
+        isOpen ? "true" : "false"
+    );
+
+    menuToggle.innerHTML = isOpen ? "&#10005;" : "&#9776;";
+});
+
+
+// Close menu after clicking a link
+
+document.querySelectorAll(".nav-links a").forEach(function (link) {
+
+    link.addEventListener("click", function () {
+
+        navLinks.classList.remove("open");
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+        menuToggle.innerHTML = "&#9776;";
+    });
+
 });
 </script>
 </body>

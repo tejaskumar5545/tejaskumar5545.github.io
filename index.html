@@ -636,7 +636,43 @@
                 gap: 10px;
             }
         }
-    </style>
+    
+        /* ================= MOBILE NAV FIX ================= */
+
+        @media (max-width: 768px) {
+
+            .nav-links {
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                visibility: hidden;
+
+                transition:
+                    max-height 0.3s ease,
+                    opacity 0.25s ease,
+                    visibility 0.25s ease;
+            }
+
+            .nav-links.open {
+                max-height: 600px;
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links li a {
+                display: block;
+                width: 100%;
+            }
+
+            .nav-links .login-btn {
+                text-align: center;
+                margin-top: 5px;
+            }
+        }</style>
 </head>
 
 <body>
@@ -644,10 +680,22 @@
 <!-- ================= NAVBAR ================= -->
 
 <nav class="navbar">
-    <div class="logo">Engi<span>Hub</span></div>
-    <button class="menu-toggle" id="menuToggle">&#9776;</button>
+    <a href="index.html" class="logo" aria-label="EngiHub Home">
+        Engi<span>Hub</span>
+    </a>
+
+    <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+    >
+        &#9776;
+    </button>
+
     <ul class="nav-links" id="navLinks">
-        <li><a href="index.html" style="color:#2563eb;font-weight:700;">Home</a></li>
+        <li><a href="index.html">Home</a></li>
         <li><a href="notes.html">Notes</a></li>
         <li><a href="syllabus.html">Syllabus</a></li>
         <li><a href="pyq.html">PYQ</a></li>
@@ -655,7 +703,10 @@
         <li><a href="coding.html">Coding</a></li>
         <li><a href="projects.html">Projects</a></li>
         <li><a href="placement.html">Placement</a></li>
-        <li><a href="login.html" class="login-btn">Login</a></li>
+        <li><a href="register.php">Register</a></li>
+        <li>
+            <a href="login.php" class="login-btn">Login</a>
+        </li>
     </ul>
 </nav>
 
@@ -923,9 +974,40 @@
 <!-- ================= JAVASCRIPT ================= -->
 
 <script>
-// Mobile menu toggle
-document.getElementById('menuToggle').addEventListener('click', function() {
-    document.getElementById('navLinks').classList.toggle('open');
+// ================= MOBILE MENU =================
+
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
+
+menuToggle.addEventListener("click", function () {
+
+    const isOpen = navLinks.classList.toggle("open");
+
+    menuToggle.setAttribute(
+        "aria-expanded",
+        isOpen ? "true" : "false"
+    );
+
+    menuToggle.innerHTML = isOpen ? "&#10005;" : "&#9776;";
+});
+
+
+// Close menu after clicking a link
+
+document.querySelectorAll(".nav-links a").forEach(function (link) {
+
+    link.addEventListener("click", function () {
+
+        navLinks.classList.remove("open");
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+        menuToggle.innerHTML = "&#9776;";
+    });
+
 });
 
 // Slider
