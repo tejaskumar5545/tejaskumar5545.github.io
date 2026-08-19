@@ -2,72 +2,610 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="theme-color" content="#0d2240">
-    <title>Syllabus - EngiHub</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <title>Engineering Syllabus - EngiHub</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fb; color: #111827; }
+        a { text-decoration: none; color: inherit; }
+
+        /* NAVBAR */
+        .navbar { width: 100%; height: 70px; background: white; display: flex; align-items: center; justify-content: space-between; padding: 0 6%; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 28px; font-weight: bold; color: #2563eb; }
+        .logo span { color: #111827; }
+        .nav-links { display: flex; gap: 25px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover { color: #2563eb; }
+        .nav-links a.active { color: #2563eb; font-weight: 700; }
+        .login-btn { background: #2563eb; color: white !important; padding: 10px 20px; border-radius: 8px; }
+        .login-btn:hover { background: #1d4ed8; }
+        .menu-toggle { display: none; background: none; border: none; font-size: 28px; cursor: pointer; color: #111827; }
+
+        /* PAGE HEADER */
+        .page-header { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); color: white; padding: 60px 6% 50px; text-align: center; }
+        .page-header h1 { font-size: 40px; font-weight: 800; margin-bottom: 10px; }
+        .page-header p { font-size: 17px; opacity: 0.85; max-width: 550px; margin: 0 auto; }
+
+        /* SEARCH */
+        .search-section { max-width: 650px; margin: -28px auto 0; padding: 0 6%; position: relative; z-index: 10; }
+        .search-box { background: white; border-radius: 14px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); display: flex; overflow: hidden; }
+        .search-box input { flex: 1; border: none; padding: 18px 24px; font-size: 16px; font-family: inherit; outline: none; }
+        .search-box input::placeholder { color: #9ca3af; }
+        .search-box button { background: #2563eb; color: white; border: none; padding: 18px 30px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.2s; }
+        .search-box button:hover { background: #1d4ed8; }
+
+        /* BRANCH SELECT */
+        .branch-section { padding: 40px 6% 10px; }
+        .section-title { text-align: center; margin-bottom: 32px; }
+        .section-title h2 { font-size: 28px; color: #111827; }
+        .section-title p { margin-top: 8px; color: #6b7280; font-size: 15px; }
+        .branch-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; max-width: 900px; margin: 0 auto; }
+        .branch-card {
+            background: white; border: 2px solid #e5e7eb; border-radius: 14px;
+            padding: 28px 16px; text-align: center; cursor: pointer; transition: all 0.3s;
+        }
+        .branch-card:hover { border-color: #2563eb; transform: translateY(-4px); box-shadow: 0 8px 24px rgba(37,99,235,0.12); }
+        .branch-card.active { border-color: #2563eb; background: #eff6ff; box-shadow: 0 8px 24px rgba(37,99,235,0.15); }
+        .branch-card .branch-icon { font-size: 40px; margin-bottom: 10px; }
+        .branch-card h3 { font-size: 15px; font-weight: 700; color: #111827; }
+
+        /* SEMESTER TABS */
+        .sem-section { padding: 30px 6% 0; display: none; }
+        .sem-tabs { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; }
+        .sem-tab {
+            padding: 12px 24px; background: white; border: 2px solid #e5e7eb; border-radius: 10px;
+            font-size: 14px; font-weight: 600; color: #4b5563; cursor: pointer; transition: all 0.2s; font-family: inherit;
+        }
+        .sem-tab:hover { border-color: #2563eb; color: #2563eb; }
+        .sem-tab.active { background: #2563eb; color: white; border-color: #2563eb; }
+
+        /* SUBJECTS TABLE */
+        .subjects-section { padding: 0 6% 40px; display: none; }
+        .subjects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .subject-card {
+            background: white; border-radius: 14px; padding: 24px; border: 1px solid #e5e7eb;
+            transition: all 0.3s; display: flex; flex-direction: column; gap: 10px;
+        }
+        .subject-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); border-color: #2563eb; }
+        .subject-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+        .subject-info h3 { font-size: 16px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+        .subject-code { font-size: 12px; font-weight: 600; color: #2563eb; background: #eff6ff; padding: 3px 10px; border-radius: 6px; white-space: nowrap; }
+        .subject-card p { font-size: 13px; color: #6b7280; line-height: 1.5; }
+        .subject-actions { display: flex; gap: 8px; margin-top: auto; }
+        .btn-view {
+            padding: 9px 18px; background: #2563eb; color: white; border-radius: 8px;
+            font-size: 13px; font-weight: 600; border: none; cursor: pointer; font-family: inherit; transition: background 0.2s;
+        }
+        .btn-view:hover { background: #1d4ed8; }
+        .btn-download {
+            padding: 9px 18px; background: #f3f4f6; color: #374151; border-radius: 8px;
+            font-size: 13px; font-weight: 600; border: 1px solid #e5e7eb; cursor: pointer; font-family: inherit; transition: all 0.2s;
+        }
+        .btn-download:hover { background: #e5e7eb; }
+
+        /* EMPTY */
+        .empty-state { text-align: center; padding: 50px 20px; grid-column: 1 / -1; }
+        .empty-icon { font-size: 56px; margin-bottom: 12px; }
+        .empty-state h3 { font-size: 20px; color: #374151; margin-bottom: 6px; }
+        .empty-state p { font-size: 14px; color: #9ca3af; }
+
+        /* FOOTER */
+        .footer { background: #111827; color: white; padding: 50px 6% 0; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; }
+        .footer-brand h3 { font-size: 24px; margin-bottom: 12px; }
+        .footer-brand h3 span { color: #2563eb; }
+        .footer-brand p { font-size: 14px; color: #9ca3af; line-height: 1.7; }
+        .footer-col h4 { font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a { font-size: 14px; color: #9ca3af; transition: color 0.2s; }
+        .footer-col ul li a:hover { color: #2563eb; }
+        .footer-bottom { border-top: 1px solid #1f2937; padding: 18px 0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        .footer-bottom p { font-size: 13px; color: #6b7280; }
+
+        /* WHATSAPP */
+        .whatsapp-float { position: fixed; bottom: 28px; right: 28px; width: 56px; height: 56px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); z-index: 99; transition: transform 0.3s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+        .whatsapp-float svg { width: 30px; height: 30px; fill: white; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .navbar { height: 60px; padding: 0 20px; }
+            .logo { font-size: 23px; }
+            .nav-links { display: none; position: absolute; top: 60px; left: 0; right: 0; background: white; flex-direction: column; padding: 16px 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); gap: 0; }
+            .nav-links.open { display: flex; }
+            .nav-links a { padding: 14px 0; border-bottom: 1px solid #f3f4f6; }
+            .menu-toggle { display: block; }
+            .page-header { padding: 40px 6% 36px; }
+            .page-header h1 { font-size: 28px; }
+            .search-box { flex-direction: column; }
+            .search-box button { padding: 14px; }
+            .branch-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .subjects-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+        @media (max-width: 450px) {
+            .branch-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
 </head>
 <body>
 
-<header>
-    <a href="index.html" class="logo">
-        <img src="images/logo.jpg" alt="EngiHub" class="logo-img">
-        EngiHub
-    </a>
-    <button class="menu-toggle">&#9776;</button>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="notes.html">Notes</a>
-        <a href="syllabus.html" class="active">Syllabus</a>
-        <a href="pyq.html">PYQ</a>
-        <a href="practical.html">Practical</a>
-        <a href="coding.html">Coding</a>
-        <a href="projects.html">Projects</a>
-        <a href="placement.html">Placement</a>
-        <a href="notices.html">Notices</a>
-        <a href="exams.html">Online Test</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact Us</a>
-        <a href="login.html">Admin Login</a>
-        <a href="student_login.html">Student Login</a>
-        <a href="register.html">Register</a>
-    </nav>
-</header>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">Engi<span>Hub</span></div>
+    <button class="menu-toggle" id="menuToggle">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="notes.html">Notes</a></li>
+        <li><a href="syllabus.html" class="active">Syllabus</a></li>
+        <li><a href="pyq.html">PYQ</a></li>
+        <li><a href="practical.html">Practical</a></li>
+        <li><a href="coding.html">Coding</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="placement.html">Placement</a></li>
+        <li><a href="login.html" class="login-btn">Login</a></li>
+    </ul>
+</nav>
 
-<div class="container">
-    <h2 style="font-size:28px;font-weight:700;margin-bottom:8px;color:var(--white);">Syllabus</h2>
-    <p style="color:var(--gray-700);font-size:15px;margin-bottom:28px;">Download the latest syllabus for your branch and semester.</p>
+<!-- PAGE HEADER -->
+<section class="page-header">
+    <h1>Engineering Syllabus</h1>
+    <p>Select your branch and semester to view the complete syllabus with subject codes.</p>
+</section>
 
-    <form>
-        <div class="filter-bar">
-            <input type="text" name="search" placeholder="Search by title or subject...">
-            <select name="semester">
-                <option value="">All Semesters</option>
-                <option value="Semester 1">Semester 1</option>
-                <option value="Semester 2">Semester 2</option>
-                <option value="Semester 3">Semester 3</option>
-                <option value="Semester 4">Semester 4</option>
-                <option value="Semester 5">Semester 5</option>
-                <option value="Semester 6">Semester 6</option>
-            </select>
-            <select name="branch">
-                <option value="">All Branches</option>
-            </select>
-            <button type="submit" class="btn-filter">Filter</button>
-        </div>
-    </form>
-
-    <div class="empty-state">
-        <div class="empty-icon">&#128214;</div>
-        <h3>No syllabus found</h3>
-        <p>Try adjusting your filters or check back later.</p>
+<!-- SEARCH -->
+<div class="search-section">
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search by subject name or code..." oninput="searchSubjects()">
+        <button onclick="searchSubjects()">Search</button>
     </div>
 </div>
 
-<footer><p>&copy; 2026 EngiHub Portal</p></footer>
-<a href="https://wa.me/918860695666?text=Hi%20EngiHub%2C%20I%20have%20a%20question" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+<!-- BRANCH SELECT -->
+<div class="branch-section">
+    <div class="section-title">
+        <h2>Select Your Branch</h2>
+    </div>
+    <div class="branch-grid" id="branchGrid"></div>
+</div>
+
+<!-- SEMESTER TABS -->
+<div class="sem-section" id="semSection">
+    <div class="section-title">
+        <h2 id="semTitle">Select Semester</h2>
+    </div>
+    <div class="sem-tabs" id="semTabs"></div>
+</div>
+
+<!-- SUBJECTS -->
+<div class="subjects-section" id="subjectsSection">
+    <div class="section-title">
+        <h2 id="subjectTitle">Subjects</h2>
+    </div>
+    <div class="subjects-grid" id="subjectsGrid"></div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h3>Engi<span>Hub</span></h3>
+            <p>Everything an Engineering Student Needs. Your one-stop platform for notes, syllabus, PYQ, practicals, coding, projects and placement preparation.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="syllabus.html">Syllabus</a></li>
+                <li><a href="pyq.html">PYQ Papers</a></li>
+                <li><a href="practical.html">Practicals</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Resources</h4>
+            <ul>
+                <li><a href="coding.html">Coding Practice</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="placement.html">Placement</a></li>
+                <li><a href="exams.html">Online Tests</a></li>
+                <li><a href="notices.html">Notices</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Account</h4>
+            <ul>
+                <li><a href="login.html">Admin Login</a></li>
+                <li><a href="student_login.html">Student Login</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 EngiHub. All rights reserved.</p>
+        <p>Built for engineering students, by engineering students.</p>
+    </div>
+</footer>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/918860695666?text=Hi%20EngiHub%2C%20I%20have%20a%20question" class="whatsapp-float" target="_blank" rel="noopener">
     <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.132 6.744 3.058 9.374L1.054 31.2l6.064-1.97A15.912 15.912 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.31 22.608c-.39 1.096-1.932 2.01-3.162 2.274-.844.18-1.946.322-5.656-1.216-4.746-1.966-7.798-6.79-8.036-7.108-.23-.318-1.9-2.524-1.9-4.814 0-2.29 1.204-3.416 1.63-3.884.39-.428.924-.57 1.23-.57.31 0 .618.004.886.016.284.012.664-.106 1.036.79.39.932 1.33 3.24 1.446 3.478.116.238.194.516.038.834-.156.318-.232.516-.462.794-.23.278-.484.62-.692.832-.23.238-.47.496-.2.972.27.476 1.2 1.98 2.578 3.208 1.77 1.58 3.26 2.07 3.736 2.298.374.18.792.136 1.086-.23.374-.476.836-1.262 1.304-2.02.334-.542.756-.61 1.276-.414.53.196 3.364 1.586 3.94 1.87.576.284.96.428 1.102.664.14.236.14 1.37-.25 2.464z"/></svg>
 </a>
-<script src="js/main.js"></script>
+
+<script>
+document.getElementById('menuToggle').addEventListener('click', function() {
+    document.getElementById('navLinks').classList.toggle('open');
+});
+
+var currentBranch = '';
+var currentSem = '';
+
+var syllabusData = {
+    "CSE": {
+        name: "Computer Science & Engineering",
+        icon: "&#128187;",
+        subjects: {
+            "1": [
+                { name: "Engineering Mathematics - I", code: "MA101", desc: "Algebra, trigonometry, calculus and coordinate geometry." },
+                { name: "Engineering Physics", code: "PH101", desc: "Optics, thermodynamics, quantum mechanics and semiconductors." },
+                { name: "Basic Electronics", code: "EC101", desc: "Diodes, transistors, biasing and small signal amplifiers." },
+                { name: "Programming in C", code: "CS101", desc: "C language fundamentals, control structures, arrays and pointers." },
+                { name: "Communication Skills", code: "HS101", desc: "Technical writing, presentation and soft skills." }
+            ],
+            "2": [
+                { name: "Engineering Mathematics - II", code: "MA201", desc: "Differential equations, linear algebra and Laplace transforms." },
+                { name: "Data Structures", code: "CS201", desc: "Arrays, linked lists, stacks, queues, trees and graphs." },
+                { name: "Digital Logic Design", code: "CS202", desc: "Boolean algebra, logic gates, combinational and sequential circuits." },
+                { name: "Object Oriented Programming", code: "CS203", desc: "Java OOP: classes, objects, inheritance, polymorphism." },
+                { name: "Environmental Science", code: "HS201", desc: "Ecosystems, pollution, sustainability and environmental laws." }
+            ],
+            "3": [
+                { name: "Database Management Systems", code: "CS301", desc: "ER models, normalization, SQL, transactions and indexing." },
+                { name: "Computer Organization", code: "CS302", desc: "CPU architecture, memory hierarchy, I/O and pipelining." },
+                { name: "Operating Systems", code: "CS303", desc: "Process management, memory, file systems and scheduling." },
+                { name: "Discrete Mathematics", code: "MA301", desc: "Sets, relations, graph theory, combinatorics and logic." },
+                { name: "Web Technologies", code: "CS304", desc: "HTML, CSS, JavaScript, DOM and basic web frameworks." }
+            ],
+            "4": [
+                { name: "Algorithm Design", code: "CS401", desc: "Sorting, searching, dynamic programming and greedy methods." },
+                { name: "Computer Networks", code: "CS402", desc: "OSI model, TCP/IP, routing, switching and security." },
+                { name: "Software Engineering", code: "CS403", desc: "SDLC, UML diagrams, agile methods and testing." },
+                { name: "Theory of Computation", code: "CS404", desc: "Automata, regular expressions, CFGs and Turing machines." },
+                { name: "Compiler Design", code: "CS405", desc: "Lexical analysis, parsing, code generation and optimization." }
+            ],
+            "5": [
+                { name: "Machine Learning", code: "CS501", desc: "Supervised/unsupervised learning, neural networks, model evaluation." },
+                { name: "Cloud Computing", code: "CS502", desc: "Virtualization, AWS/Azure, deployment models and containers." },
+                { name: "Cyber Security", code: "CS503", desc: "Cryptography, network security, malware analysis and ethics." },
+                { name: "Internet of Things", code: "CS504", desc: "Sensors, Arduino, Raspberry Pi, MQTT and IoT protocols." },
+                { name: "Technical Seminar", code: "CS505", desc: "Research paper presentation and technical communication." }
+            ],
+            "6": [
+                { name: "Deep Learning", code: "CS601", desc: "CNNs, RNNs, transformers and real-world applications." },
+                { name: "DevOps & CI/CD", code: "CS602", desc: "Docker, Kubernetes, Jenkins and deployment automation." },
+                { name: "Blockchain Technology", code: "CS603", desc: "Distributed ledger, smart contracts, Ethereum and applications." },
+                { name: "Full Stack Development", code: "CS604", desc: "React, Node.js, MongoDB and end-to-end web applications." },
+                { name: "Major Project", code: "CS605", desc: "Capstone project with documentation and presentation." }
+            ]
+        }
+    },
+    "ECE": {
+        name: "Electronics & Communication Engineering",
+        icon: "&#128225;",
+        subjects: {
+            "1": [
+                { name: "Engineering Mathematics - I", code: "MA101", desc: "Algebra, trigonometry, calculus and coordinate geometry." },
+                { name: "Engineering Physics", code: "PH101", desc: "Optics, thermodynamics, quantum mechanics." },
+                { name: "Basic Electrical Engineering", code: "EE101", desc: "DC/AC circuits, transformers and electrical laws." },
+                { name: "Electronic Devices", code: "EC101", desc: "Diodes, transistors, MOSFETs and characteristics." },
+                { name: "Communication Skills", code: "HS101", desc: "Technical writing, presentation and soft skills." }
+            ],
+            "2": [
+                { name: "Engineering Mathematics - II", code: "MA201", desc: "Differential equations, linear algebra and Laplace transforms." },
+                { name: "Network Analysis", code: "EC201", desc: "KVL/KCL, Thevenin, Norton, mesh and nodal analysis." },
+                { name: "Analog Electronics", code: "EC202", desc: "Amplifiers, oscillators, feedback and filters." },
+                { name: "Signals & Systems", code: "EC203", desc: "Continuous and discrete signals, Fourier and Z-transform." },
+                { name: "Environmental Science", code: "HS201", desc: "Ecosystems, pollution and sustainability." }
+            ],
+            "3": [
+                { name: "Digital Electronics", code: "EC301", desc: "Boolean algebra, logic gates, flip-flops, counters and registers." },
+                { name: "Electromagnetic Theory", code: "EC302", desc: "Maxwell equations, wave propagation and antennas." },
+                { name: "Microprocessors", code: "EC303", desc: "8085 architecture, assembly language and interrupts." },
+                { name: "Probability & Statistics", code: "MA301", desc: "Random variables, distributions and hypothesis testing." },
+                { name: "Control Systems", code: "EC304", desc: "Transfer functions, block diagrams and stability analysis." }
+            ],
+            "4": [
+                { name: "Communication Systems", code: "EC401", desc: "AM, FM, digital modulation and noise analysis." },
+                { name: "VLSI Design", code: "EC402", desc: "CMOS logic, layout design and fabrication process." },
+                { name: "Embedded Systems", code: "EC403", desc: "Microcontrollers, RTOS and interfacing techniques." },
+                { name: "Digital Signal Processing", code: "EC404", desc: "DFT, FFT, FIR/IIR filters and applications." },
+                { name: "Power Electronics", code: "EC405", desc: "Rectifiers, inverters, choppers and converters." }
+            ],
+            "5": [
+                { name: "Wireless Communication", code: "EC501", desc: "Cellular systems, MIMO, 4G/5G and wireless protocols." },
+                { name: "Image Processing", code: "EC502", desc: "Image transforms, enhancement, segmentation and compression." },
+                { name: "Robotics", code: "EC503", desc: "Kinematics, sensors, actuators and robot programming." },
+                { name: "Optical Communication", code: "EC504", desc: "Fiber optics, LEDs, photodetectors and link design." },
+                { name: "Technical Seminar", code: "EC505", desc: "Research paper presentation and technical communication." }
+            ],
+            "6": [
+                { name: "IoT & Edge Computing", code: "EC601", desc: "Sensor networks, edge devices and cloud integration." },
+                { name: "Machine Learning for ECE", code: "EC602", desc: "ML in signal processing, classification and prediction." },
+                { name: "Satellite Communication", code: "EC603", desc: "Orbit types, transponders, link budgets and applications." },
+                { name: "Radar Systems", code: "EC604", desc: "Radar equation, types, display and applications." },
+                { name: "Major Project", code: "EC605", desc: "Capstone project with documentation and presentation." }
+            ]
+        }
+    },
+    "ME": {
+        name: "Mechanical Engineering",
+        icon: "&#9881;",
+        subjects: {
+            "1": [
+                { name: "Engineering Mathematics - I", code: "MA101", desc: "Algebra, trigonometry, calculus and coordinate geometry." },
+                { name: "Engineering Physics", code: "PH101", desc: "Optics, thermodynamics, quantum mechanics." },
+                { name: "Engineering Drawing", code: "ME101", desc: "Orthographic projections, isometric views and sections." },
+                { name: "Workshop Practice", code: "ME102", desc: "Fitting, welding, carpentry and sheet metal work." },
+                { name: "Communication Skills", code: "HS101", desc: "Technical writing, presentation and soft skills." }
+            ],
+            "2": [
+                { name: "Engineering Mathematics - II", code: "MA201", desc: "Differential equations, linear algebra and Laplace transforms." },
+                { name: "Thermodynamics", code: "ME201", desc: "Laws of thermodynamics, entropy, Carnot cycle and heat engines." },
+                { name: "Strength of Materials", code: "ME202", desc: "Stress, strain, bending moment and deflection of beams." },
+                { name: "Manufacturing Processes", code: "ME203", desc: "Casting, machining, forming and joining processes." },
+                { name: "Environmental Science", code: "HS201", desc: "Ecosystems, pollution and sustainability." }
+            ],
+            "3": [
+                { name: "Fluid Mechanics", code: "ME301", desc: "Fluid properties, Bernoulli equation and pipe flow." },
+                { name: "Machine Design - I", code: "ME302", desc: "Design of joints, keys, pins and boltsed connections." },
+                { name: "Theory of Machines", code: "ME303", desc: "Mechanisms, cams, gears and governors." },
+                { name: "Material Science", code: "ME304", desc: "Crystal structures, phase diagrams and heat treatment." },
+                { name: "CAD/CAM", code: "ME305", desc: "AutoCAD, SolidWorks and CNC programming basics." }
+            ],
+            "4": [
+                { name: "Heat & Mass Transfer", code: "ME401", desc: "Conduction, convection, radiation and heat exchangers." },
+                { name: "Machine Design - II", code: "ME402", desc: "Design of gears, bearings, shafts and belts." },
+                { name: "Automobile Engineering", code: "ME403", desc: "Engine systems, transmission, braking and steering." },
+                { name: "Metrology & Inspection", code: "ME404", desc: "Measuring instruments, limits, fits and surface finish." },
+                { name: "Industrial Engineering", code: "ME405", desc: "Work study, plant layout and production planning." }
+            ],
+            "5": [
+                { name: "Refrigeration & AC", code: "ME501", desc: "Vapor compression, absorption systems and psychrometry." },
+                { name: "Robotics", code: "ME502", desc: "Kinematics, dynamics, sensors and robot programming." },
+                { name: "Finite Element Analysis", code: "ME503", desc: "Discretization, shape functions and FEA software." },
+                { name: "Power Plant Engineering", code: "ME504", desc: "Steam, gas, nuclear and renewable energy plants." },
+                { name: "Technical Seminar", code: "ME505", desc: "Research paper presentation and technical communication." }
+            ],
+            "6": [
+                { name: "CNC & Automation", code: "ME601", desc: "G-code, M-code, PLC programming and automation." },
+                { name: "Composite Materials", code: "ME602", desc: "Types, manufacturing, testing and applications." },
+                { name: "Energy Conservation", code: "ME603", desc: "Energy audit, waste heat recovery and efficiency." },
+                { name: "Quality Control", code: "ME604", desc: "SPC, Six Sigma, TQM and reliability engineering." },
+                { name: "Major Project", code: "ME605", desc: "Capstone project with documentation and presentation." }
+            ]
+        }
+    },
+    "CE": {
+        name: "Civil Engineering",
+        icon: "&#127959;",
+        subjects: {
+            "1": [
+                { name: "Engineering Mathematics - I", code: "MA101", desc: "Algebra, trigonometry, calculus and coordinate geometry." },
+                { name: "Engineering Physics", code: "PH101", desc: "Optics, thermodynamics, quantum mechanics." },
+                { name: "Engineering Drawing", code: "CE101", desc: "Orthographic projections, isometric views and sections." },
+                { name: "Building Materials", code: "CE102", desc: "Bricks, cement, concrete, steel and timber." },
+                { name: "Communication Skills", code: "HS101", desc: "Technical writing, presentation and soft skills." }
+            ],
+            "2": [
+                { name: "Engineering Mathematics - II", code: "MA201", desc: "Differential equations, linear algebra and Laplace transforms." },
+                { name: "Surveying - I", code: "CE201", desc: "Chain surveying, compass surveying and leveling." },
+                { name: "Strength of Materials", code: "CE202", desc: "Stress, strain, bending moment and deflection." },
+                { name: "Fluid Mechanics", code: "CE203", desc: "Fluid properties, Bernoulli equation and pipe flow." },
+                { name: "Environmental Science", code: "HS201", desc: "Ecosystems, pollution and sustainability." }
+            ],
+            "3": [
+                { name: "Surveying - II", code: "CE301", desc: "Theodolite, tachometry, curves and GPS survey." },
+                { name: "Structural Analysis - I", code: "CE302", desc: "Analysis of trusses, beams and frames." },
+                { name: "Geotechnical Engineering", code: "CE303", desc: "Soil properties, compaction, consolidation and shear strength." },
+                { name: "Construction Technology", code: "CE304", desc: "Construction methods, scaffolding and formwork." },
+                { name: "Estimation & Costing", code: "CE305", desc: "Quantity estimation, rate analysis and bills." }
+            ],
+            "4": [
+                { name: "Structural Analysis - II", code: "CE401", desc: "Influence lines, arches, cables and space frames." },
+                { name: "Concrete Technology", code: "CE402", desc: "Mix design, testing, admixtures and quality control." },
+                { name: "Hydraulics & Hydraulic Machines", code: "CE403", desc: "Open channel flow, pumps and turbines." },
+                { name: "Transportation Engineering", code: "CE404", desc: "Highway design, traffic engineering and pavements." },
+                { name: "Water Supply Engineering", code: "CE405", desc: "Water quality, treatment and distribution systems." }
+            ],
+            "5": [
+                { name: "Design of Steel Structures", code: "CE501", desc: "Connections, tension members, beams and columns." },
+                { name: "Design of RCC Structures", code: "CE502", desc: "Beams, slabs, columns and footings." },
+                { name: "Foundation Engineering", code: "CE503", desc: "Shallow and deep foundations, pile foundations." },
+                { name: "Environmental Engineering", code: "CE504", desc: "Sewage treatment, solid waste management." },
+                { name: "Technical Seminar", code: "CE505", desc: "Research paper presentation and technical communication." }
+            ],
+            "6": [
+                { name: "Earthquake Engineering", code: "CE601", desc: "Seismic analysis, retrofitting and disaster management." },
+                { name: "Construction Management", code: "CE602", desc: "Project planning, CPM, PERT and tendering." },
+                { name: "Remote Sensing & GIS", code: "CE603", desc: "Satellite imagery, spatial analysis and applications." },
+                { name: "Advanced Concrete Technology", code: "CE604", desc: "Fiber reinforced, self-compacting and Geo polymers." },
+                { name: "Major Project", code: "CE605", desc: "Capstone project with documentation and presentation." }
+            ]
+        }
+    },
+    "EE": {
+        name: "Electrical Engineering",
+        icon: "&#9889;",
+        subjects: {
+            "1": [
+                { name: "Engineering Mathematics - I", code: "MA101", desc: "Algebra, trigonometry, calculus and coordinate geometry." },
+                { name: "Engineering Physics", code: "PH101", desc: "Optics, thermodynamics, quantum mechanics." },
+                { name: "Basic Electrical Engineering", code: "EE101", desc: "DC/AC circuits, transformers and electrical laws." },
+                { name: "Workshop Practice", code: "EE102", desc: "Wiring, soldering and basic electrical installations." },
+                { name: "Communication Skills", code: "HS101", desc: "Technical writing, presentation and soft skills." }
+            ],
+            "2": [
+                { name: "Engineering Mathematics - II", code: "MA201", desc: "Differential equations, linear algebra and Laplace transforms." },
+                { name: "Network Analysis", code: "EE201", desc: "KVL/KCL, Thevenin, Norton, mesh and nodal analysis." },
+                { name: "Electromechanical Energy Conversion", code: "EE202", desc: "DC and AC machines, transformers and torque-speed." },
+                { name: "Electrical Measurements", code: "EE203", desc: "Measuring instruments, bridges and transducers." },
+                { name: "Environmental Science", code: "HS201", desc: "Ecosystems, pollution and sustainability." }
+            ],
+            "3": [
+                { name: "Power Systems - I", code: "EE301", desc: "Generation, transmission lines and parameters." },
+                { name: "Analog Electronics", code: "EE302", desc: "Diodes, transistors, amplifiers and oscillators." },
+                { name: "Control Systems", code: "EE303", desc: "Transfer functions, block diagrams and stability." },
+                { name: "Electrical Machines - I", code: "EE304", desc: "Transformers, DC machines and testing methods." },
+                { name: "Numerical Methods", code: "MA301", desc: "Root finding, interpolation, numerical integration." }
+            ],
+            "4": [
+                { name: "Power Systems - II", code: "EE401", desc: "Load flow, fault analysis, stability and protection." },
+                { name: "Electrical Machines - II", code: "EE402", desc: "Induction motors, synchronous machines and steppers." },
+                { name: "Power Electronics", code: "EE403", desc: "Rectifiers, inverters, choppers and converters." },
+                { name: "Microprocessors & Controllers", code: "EE404", desc: "8085, 8051 architecture and interfacing." },
+                { name: "Switchgear & Protection", code: "EE405", desc: "Circuit breakers, relays and protection schemes." }
+            ],
+            "5": [
+                { name: "High Voltage Engineering", code: "EE501", desc: "Breakdown mechanisms, testing and overvoltages." },
+                { name: "Electric Drives", code: "EE502", desc: "DC and AC drive controllers and speed control." },
+                { name: "Renewable Energy Systems", code: "EE503", desc: "Solar, wind, biomass and hybrid energy systems." },
+                { name: "SCADA & Automation", code: "EE504", desc: "PLC, SCADA systems and industrial automation." },
+                { name: "Technical Seminar", code: "EE505", desc: "Research paper presentation and technical communication." }
+            ],
+            "6": [
+                { name: "Smart Grid Technology", code: "EE601", desc: "Grid modernization, demand response and energy storage." },
+                { name: "Electric Vehicles", code: "EE602", desc: "EV components, battery management and charging systems." },
+                { name: "Power Quality", code: "EE603", desc: "Harmonics, flicker, sag/swell and compensation." },
+                { name: "FACTS Devices", code: "EE604", desc: "Flexible AC transmission and reactive power compensation." },
+                { name: "Major Project", code: "EE605", desc: "Capstone project with documentation and presentation." }
+            ]
+        }
+    }
+};
+
+function renderBranches() {
+    var grid = document.getElementById('branchGrid');
+    var keys = Object.keys(syllabusData);
+    keys.forEach(function(k) {
+        var d = syllabusData[k];
+        var card = document.createElement('div');
+        card.className = 'branch-card';
+        card.setAttribute('data-branch', k);
+        card.innerHTML = '<div class="branch-icon">' + d.icon + '</div><h3>' + k + '</h3>';
+        card.onclick = function() { selectBranch(k); };
+        grid.appendChild(card);
+    });
+}
+
+function selectBranch(key) {
+    currentBranch = key;
+    currentSem = '';
+    document.querySelectorAll('.branch-card').forEach(function(c) {
+        c.classList.toggle('active', c.getAttribute('data-branch') === key);
+    });
+    document.getElementById('semSection').style.display = 'block';
+    document.getElementById('subjectsSection').style.display = 'none';
+    document.getElementById('semTitle').textContent = syllabusData[key].name + ' - Select Semester';
+    renderSemesters(key);
+}
+
+function renderSemesters(branch) {
+    var tabs = document.getElementById('semTabs');
+    tabs.innerHTML = '';
+    var sems = Object.keys(syllabusData[branch].subjects);
+    sems.forEach(function(s) {
+        var btn = document.createElement('button');
+        btn.className = 'sem-tab';
+        btn.textContent = 'Semester ' + s;
+        btn.onclick = function() { selectSem(branch, s); };
+        tabs.appendChild(btn);
+    });
+}
+
+function selectSem(branch, sem) {
+    currentSem = sem;
+    document.querySelectorAll('.sem-tab').forEach(function(t) {
+        t.classList.toggle('active', t.textContent === 'Semester ' + sem);
+    });
+    document.getElementById('subjectsSection').style.display = 'block';
+    document.getElementById('subjectTitle').textContent = syllabusData[branch].name + ' - Semester ' + sem;
+    renderSubjects(branch, sem, '');
+}
+
+function renderSubjects(branch, sem, query) {
+    var grid = document.getElementById('subjectsGrid');
+    grid.innerHTML = '';
+    var subs = syllabusData[branch].subjects[sem] || [];
+    var filtered = subs.filter(function(s) {
+        if (!query) return true;
+        var q = query.toLowerCase();
+        return s.name.toLowerCase().indexOf(q) !== -1 || s.code.toLowerCase().indexOf(q) !== -1;
+    });
+    if (filtered.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128214;</div><h3>No subjects found</h3><p>Try a different search term.</p></div>';
+        return;
+    }
+    filtered.forEach(function(s) {
+        var card = document.createElement('div');
+        card.className = 'subject-card';
+        card.innerHTML =
+            '<div class="subject-top">' +
+                '<div class="subject-info"><h3>' + s.name + '</h3></div>' +
+                '<span class="subject-code">' + s.code + '</span>' +
+            '</div>' +
+            '<p>' + s.desc + '</p>' +
+            '<div class="subject-actions">' +
+                '<button class="btn-view">View Syllabus</button>' +
+                '<button class="btn-download">Download PDF</button>' +
+            '</div>';
+        grid.appendChild(card);
+    });
+}
+
+function searchSubjects() {
+    var q = document.getElementById('searchInput').value.trim();
+    if (currentBranch && currentSem) {
+        renderSubjects(currentBranch, currentSem, q);
+    } else if (currentBranch && !currentSem && q) {
+        document.getElementById('subjectsSection').style.display = 'block';
+        document.getElementById('subjectTitle').textContent = 'Search Results for "' + q + '"';
+        var grid = document.getElementById('subjectsGrid');
+        grid.innerHTML = '';
+        var sems = Object.keys(syllabusData[currentBranch].subjects);
+        var found = 0;
+        sems.forEach(function(sem) {
+            syllabusData[currentBranch].subjects[sem].forEach(function(s) {
+                var ql = q.toLowerCase();
+                if (s.name.toLowerCase().indexOf(ql) !== -1 || s.code.toLowerCase().indexOf(ql) !== -1) {
+                    found++;
+                    var card = document.createElement('div');
+                    card.className = 'subject-card';
+                    card.innerHTML =
+                        '<div class="subject-top">' +
+                            '<div class="subject-info"><h3>' + s.name + '</h3></div>' +
+                            '<span class="subject-code">' + s.code + ' &middot; Sem ' + sem + '</span>' +
+                        '</div>' +
+                        '<p>' + s.desc + '</p>' +
+                        '<div class="subject-actions">' +
+                            '<button class="btn-view">View Syllabus</button>' +
+                            '<button class="btn-download">Download PDF</button>' +
+                        '</div>';
+                    grid.appendChild(card);
+                }
+            });
+        });
+        if (found === 0) {
+            grid.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128270;</div><h3>No results found</h3><p>Try different keywords.</p></div>';
+        }
+    }
+}
+
+renderBranches();
+</script>
+
 </body>
 </html>
