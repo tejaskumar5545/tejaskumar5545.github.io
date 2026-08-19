@@ -2,72 +2,632 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="theme-color" content="#0d2240">
-    <title>Practical Files - EngiHub</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <title>Practical & Lab Resources - EngiHub</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fb; color: #111827; }
+        a { text-decoration: none; color: inherit; }
+
+        /* NAVBAR */
+        .navbar { width: 100%; height: 70px; background: white; display: flex; align-items: center; justify-content: space-between; padding: 0 6%; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 28px; font-weight: bold; color: #2563eb; }
+        .logo span { color: #111827; }
+        .nav-links { display: flex; gap: 25px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover { color: #2563eb; }
+        .nav-links a.active { color: #2563eb; font-weight: 700; }
+        .login-btn { background: #2563eb; color: white !important; padding: 10px 20px; border-radius: 8px; }
+        .login-btn:hover { background: #1d4ed8; }
+        .menu-toggle { display: none; background: none; border: none; font-size: 28px; cursor: pointer; color: #111827; }
+
+        /* PAGE HEADER */
+        .page-header { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); color: white; padding: 60px 6% 50px; text-align: center; }
+        .page-header h1 { font-size: 40px; font-weight: 800; margin-bottom: 10px; }
+        .page-header p { font-size: 17px; opacity: 0.85; max-width: 560px; margin: 0 auto; }
+
+        /* CATEGORY TABS */
+        .category-section { padding: 36px 6% 0; max-width: 1100px; margin: 0 auto; }
+        .category-tabs { display: flex; gap: 0; background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+        .cat-tab {
+            flex: 1; padding: 18px 16px; text-align: center; font-size: 15px; font-weight: 600;
+            color: #6b7280; background: white; border: none; cursor: pointer; font-family: inherit;
+            transition: all 0.3s; border-bottom: 3px solid transparent; display: flex;
+            align-items: center; justify-content: center; gap: 8px;
+        }
+        .cat-tab:hover { color: #2563eb; background: #f9fafb; }
+        .cat-tab.active { color: #2563eb; border-bottom-color: #2563eb; background: #eff6ff; }
+        .cat-tab .tab-icon { font-size: 18px; }
+
+        /* FILTERS */
+        .filters-section { padding: 28px 6% 0; max-width: 1100px; margin: 0 auto; }
+        .filters-bar { display: flex; gap: 14px; align-items: flex-end; flex-wrap: wrap; }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; min-width: 180px; }
+        .filter-group label { font-size: 12px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; }
+        .filter-group select {
+            padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px;
+            font-size: 14px; font-family: inherit; color: #374151; background: white;
+            cursor: pointer; outline: none; transition: border-color 0.2s; appearance: auto;
+        }
+        .filter-group select:focus { border-color: #2563eb; }
+
+        /* RESULTS INFO */
+        .results-info { padding: 28px 6% 0; max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .results-info h2 { font-size: 20px; color: #111827; }
+        .results-count { font-size: 14px; color: #6b7280; background: #eff6ff; padding: 6px 14px; border-radius: 8px; font-weight: 600; margin-left: 10px; }
+        .clear-btn { font-size: 13px; color: #ef4444; background: none; border: 1px solid #fecaca; padding: 7px 14px; border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.2s; }
+        .clear-btn:hover { background: #fef2f2; }
+
+        /* CARDS */
+        .cards-section { padding: 20px 6% 40px; max-width: 1100px; margin: 0 auto; }
+        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+
+        .exp-card {
+            background: white; border-radius: 14px; border: 1px solid #e5e7eb;
+            overflow: hidden; transition: all 0.3s; display: flex; flex-direction: column;
+        }
+        .exp-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); border-color: #2563eb; }
+
+        .exp-top { padding: 20px 20px 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+        .exp-number {
+            font-size: 11px; font-weight: 700; color: #2563eb; background: #eff6ff;
+            padding: 4px 10px; border-radius: 6px; white-space: nowrap; flex-shrink: 0;
+        }
+        .exp-subject { font-size: 11px; font-weight: 600; color: #7c3aed; background: #f5f3ff; padding: 4px 10px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; }
+
+        .exp-title { padding: 12px 20px 0; font-size: 16px; font-weight: 700; color: #111827; line-height: 1.4; }
+
+        .exp-tags { padding: 10px 20px 0; display: flex; gap: 6px; flex-wrap: wrap; }
+        .tag { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
+        .tag-branch { color: #2563eb; background: #eff6ff; }
+        .tag-sem { color: #b45309; background: #fef3c7; }
+        .tag-type { color: #059669; background: #ecfdf5; }
+
+        .exp-desc { padding: 12px 20px 0; font-size: 13px; color: #6b7280; line-height: 1.6; flex: 1; }
+
+        .exp-actions { padding: 16px 20px 20px; display: flex; gap: 8px; }
+        .btn-view {
+            flex: 1; padding: 10px 14px; background: #2563eb; color: white; border-radius: 8px;
+            font-size: 13px; font-weight: 600; border: none; cursor: pointer; font-family: inherit;
+            transition: background 0.2s; text-align: center;
+        }
+        .btn-view:hover { background: #1d4ed8; }
+        .btn-download {
+            flex: 1; padding: 10px 14px; background: #f3f4f6; color: #374151; border-radius: 8px;
+            font-size: 13px; font-weight: 600; border: 1px solid #e5e7eb; cursor: pointer;
+            font-family: inherit; transition: all 0.2s; text-align: center;
+        }
+        .btn-download:hover { background: #e5e7eb; }
+
+        /* VIVA CARDS */
+        .viva-card {
+            background: white; border-radius: 14px; border: 1px solid #e5e7eb;
+            overflow: hidden; transition: all 0.3s; display: flex; flex-direction: column;
+        }
+        .viva-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); border-color: #2563eb; }
+        .viva-top { padding: 20px 20px 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+        .viva-subject { font-size: 16px; font-weight: 700; color: #111827; line-height: 1.4; }
+        .viva-count { font-size: 11px; font-weight: 700; color: #059669; background: #ecfdf5; padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
+        .viva-tags { padding: 10px 20px 0; display: flex; gap: 6px; flex-wrap: wrap; }
+        .viva-questions { padding: 14px 20px 0; }
+        .viva-q {
+            padding: 10px 14px; background: #f9fafb; border-radius: 8px; margin-bottom: 6px;
+            font-size: 13px; color: #374151; line-height: 1.5; border-left: 3px solid #2563eb;
+        }
+        .viva-q span { font-weight: 700; color: #2563eb; }
+        .viva-actions { padding: 16px 20px 20px; display: flex; gap: 8px; }
+
+        /* EMPTY */
+        .empty-state { text-align: center; padding: 60px 20px; grid-column: 1 / -1; }
+        .empty-icon { font-size: 64px; margin-bottom: 14px; }
+        .empty-state h3 { font-size: 22px; color: #374151; margin-bottom: 8px; }
+        .empty-state p { font-size: 15px; color: #9ca3af; max-width: 380px; margin: 0 auto; line-height: 1.6; }
+
+        /* FOOTER */
+        .footer { background: #111827; color: white; padding: 50px 6% 0; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; }
+        .footer-brand h3 { font-size: 24px; margin-bottom: 12px; }
+        .footer-brand h3 span { color: #2563eb; }
+        .footer-brand p { font-size: 14px; color: #9ca3af; line-height: 1.7; }
+        .footer-col h4 { font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a { font-size: 14px; color: #9ca3af; transition: color 0.2s; }
+        .footer-col ul li a:hover { color: #2563eb; }
+        .footer-bottom { border-top: 1px solid #1f2937; padding: 18px 0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        .footer-bottom p { font-size: 13px; color: #6b7280; }
+
+        /* WHATSAPP */
+        .whatsapp-float { position: fixed; bottom: 28px; right: 28px; width: 56px; height: 56px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); z-index: 99; transition: transform 0.3s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+        .whatsapp-float svg { width: 30px; height: 30px; fill: white; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .navbar { height: 60px; padding: 0 20px; }
+            .logo { font-size: 23px; }
+            .nav-links { display: none; position: absolute; top: 60px; left: 0; right: 0; background: white; flex-direction: column; padding: 16px 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); gap: 0; }
+            .nav-links.open { display: flex; }
+            .nav-links a { padding: 14px 0; border-bottom: 1px solid #f3f4f6; }
+            .menu-toggle { display: block; }
+            .page-header { padding: 40px 6% 36px; }
+            .page-header h1 { font-size: 28px; }
+            .category-tabs { flex-direction: column; }
+            .cat-tab { border-bottom: none; border-right: 3px solid transparent; }
+            .cat-tab.active { border-right-color: #2563eb; border-bottom-color: transparent; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+    </style>
 </head>
 <body>
 
-<header>
-    <a href="index.html" class="logo">
-        <img src="images/logo.jpg" alt="EngiHub" class="logo-img">
-        EngiHub
-    </a>
-    <button class="menu-toggle">&#9776;</button>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="notes.html">Notes</a>
-        <a href="syllabus.html">Syllabus</a>
-        <a href="pyq.html">PYQ</a>
-        <a href="practical.html" class="active">Practical</a>
-        <a href="coding.html">Coding</a>
-        <a href="projects.html">Projects</a>
-        <a href="placement.html">Placement</a>
-        <a href="notices.html">Notices</a>
-        <a href="exams.html">Online Test</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact Us</a>
-        <a href="login.html">Admin Login</a>
-        <a href="student_login.html">Student Login</a>
-        <a href="register.html">Register</a>
-    </nav>
-</header>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">Engi<span>Hub</span></div>
+    <button class="menu-toggle" id="menuToggle">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="notes.html">Notes</a></li>
+        <li><a href="syllabus.html">Syllabus</a></li>
+        <li><a href="pyq.html">PYQ</a></li>
+        <li><a href="practical.html" class="active">Practical</a></li>
+        <li><a href="coding.html">Coding</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="placement.html">Placement</a></li>
+        <li><a href="login.html" class="login-btn">Login</a></li>
+    </ul>
+</nav>
 
-<div class="container">
-    <h2 style="font-size:28px;font-weight:700;margin-bottom:8px;color:var(--white);">Practical Files</h2>
-    <p style="color:var(--gray-700);font-size:15px;margin-bottom:28px;">Download practical lists and lab manuals for your branch and semester.</p>
+<!-- PAGE HEADER -->
+<section class="page-header">
+    <h1>Practical & Lab Resources</h1>
+    <p>Experiment guides, lab manuals and viva questions — everything for your lab exams.</p>
+</section>
 
-    <form>
-        <div class="filter-bar">
-            <input type="text" name="search" placeholder="Search by title or subject...">
-            <select name="semester">
-                <option value="">All Semesters</option>
-                <option value="Semester 1">Semester 1</option>
-                <option value="Semester 2">Semester 2</option>
-                <option value="Semester 3">Semester 3</option>
-                <option value="Semester 4">Semester 4</option>
-                <option value="Semester 5">Semester 5</option>
-                <option value="Semester 6">Semester 6</option>
-            </select>
-            <select name="branch">
-                <option value="">All Branches</option>
-            </select>
-            <button type="submit" class="btn-filter">Filter</button>
-        </div>
-    </form>
-
-    <div class="empty-state">
-        <div class="empty-icon">&#128196;</div>
-        <h3>No practical files found</h3>
-        <p>Try adjusting your filters or check back later.</p>
+<!-- CATEGORY TABS -->
+<div class="category-section">
+    <div class="category-tabs">
+        <button class="cat-tab active" data-tab="practical" onclick="switchTab('practical')">
+            <span class="tab-icon">&#128295;</span> Practical File
+        </button>
+        <button class="cat-tab" data-tab="manual" onclick="switchTab('manual')">
+            <span class="tab-icon">&#128214;</span> Lab Manual
+        </button>
+        <button class="cat-tab" data-tab="viva" onclick="switchTab('viva')">
+            <span class="tab-icon">&#128172;</span> Viva Questions
+        </button>
     </div>
 </div>
 
-<footer><p>&copy; 2026 EngiHub Portal</p></footer>
-<a href="https://wa.me/918860695666?text=Hi%20EngiHub%2C%20I%20have%20a%20question" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+<!-- FILTERS -->
+<div class="filters-section">
+    <div class="filters-bar" id="filtersBar">
+        <div class="filter-group">
+            <label>Branch</label>
+            <select id="filterBranch" onchange="applyFilters()">
+                <option value="">All Branches</option>
+                <option value="CSE">CSE</option>
+                <option value="ECE">ECE</option>
+                <option value="ME">Mechanical</option>
+                <option value="CE">Civil</option>
+                <option value="EE">Electrical</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Semester</label>
+            <select id="filterSem" onchange="applyFilters()">
+                <option value="">All Semesters</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- RESULTS INFO -->
+<div class="results-info" id="resultsInfo" style="display:none;">
+    <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">
+        <h2 id="resultsTitle">Practicals</h2>
+        <span class="results-count" id="resultsCount">0 items</span>
+    </div>
+    <button class="clear-btn" onclick="clearFilters()">Clear Filters</button>
+</div>
+
+<!-- CARDS -->
+<div class="cards-section">
+    <div class="cards-grid" id="cardsGrid"></div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h3>Engi<span>Hub</span></h3>
+            <p>Everything an Engineering Student Needs. Your one-stop platform for notes, syllabus, PYQ, practicals, coding, projects and placement preparation.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="syllabus.html">Syllabus</a></li>
+                <li><a href="pyq.html">PYQ Papers</a></li>
+                <li><a href="practical.html">Practicals</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Resources</h4>
+            <ul>
+                <li><a href="coding.html">Coding Practice</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="placement.html">Placement</a></li>
+                <li><a href="exams.html">Online Tests</a></li>
+                <li><a href="notices.html">Notices</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Account</h4>
+            <ul>
+                <li><a href="login.html">Admin Login</a></li>
+                <li><a href="student_login.html">Student Login</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 EngiHub. All rights reserved.</p>
+        <p>Built for engineering students, by engineering students.</p>
+    </div>
+</footer>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/918860695666?text=Hi%20EngiHub%2C%20I%20have%20a%20question" class="whatsapp-float" target="_blank" rel="noopener">
     <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.132 6.744 3.058 9.374L1.054 31.2l6.064-1.97A15.912 15.912 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.31 22.608c-.39 1.096-1.932 2.01-3.162 2.274-.844.18-1.946.322-5.656-1.216-4.746-1.966-7.798-6.79-8.036-7.108-.23-.318-1.9-2.524-1.9-4.814 0-2.29 1.204-3.416 1.63-3.884.39-.428.924-.57 1.23-.57.31 0 .618.004.886.016.284.012.664-.106 1.036.79.39.932 1.33 3.24 1.446 3.478.116.238.194.516.038.834-.156.318-.232.516-.462.794-.23.278-.484.62-.692.832-.23.238-.47.496-.2.972.27.476 1.2 1.98 2.578 3.208 1.77 1.58 3.26 2.07 3.736 2.298.374.18.792.136 1.086-.23.374-.476.836-1.262 1.304-2.02.334-.542.756-.61 1.276-.414.53.196 3.364 1.586 3.94 1.87.576.284.96.428 1.102.664.14.236.14 1.37-.25 2.464z"/></svg>
 </a>
-<script src="js/main.js"></script>
+
+<script>
+document.getElementById('menuToggle').addEventListener('click', function() {
+    document.getElementById('navLinks').classList.toggle('open');
+});
+
+var currentTab = 'practical';
+
+var branchNames = { CSE: "CSE", ECE: "ECE", ME: "Mechanical", CE: "Civil", EE: "Electrical" };
+
+var practicals = [
+    { title: "Program to Reverse a Number", subject: "Programming in C", code: "CS101", num: "Exp 1", branch: "CSE", sem: "1", desc: "Write a C program to reverse a given integer using a while loop and arithmetic operations." },
+    { title: "Program to Check Palindrome", subject: "Programming in C", code: "CS101", num: "Exp 2", branch: "CSE", sem: "1", desc: "Write a C program to check whether a given number or string is a palindrome." },
+    { title: "Program to Find Factorial", subject: "Programming in C", code: "CS101", num: "Exp 3", branch: "CSE", sem: "1", desc: "Write a C program to calculate the factorial of a number using recursion and iteration." },
+    { title: "Program to Print Fibonacci Series", subject: "Programming in C", code: "CS101", num: "Exp 4", branch: "CSE", sem: "1", desc: "Write a C program to generate the Fibonacci series up to n terms." },
+    { title: "Program to Swap Two Numbers", subject: "Programming in C", code: "CS101", num: "Exp 5", branch: "CSE", sem: "1", desc: "Write a C program to swap two numbers without using a temporary variable." },
+    { title: "Program to Check Prime Number", subject: "Programming in C", code: "CS101", num: "Exp 6", branch: "CSE", sem: "1", desc: "Write a C program to check if a number is prime or not using optimized approach." },
+
+    { title: "Implement Stack using Arrays", subject: "Data Structures", code: "CS201", num: "Exp 1", branch: "CSE", sem: "2", desc: "Implement push, pop, peek and display operations on a stack using arrays in C." },
+    { title: "Implement Queue using Linked List", subject: "Data Structures", code: "CS201", num: "Exp 2", branch: "CSE", sem: "2", desc: "Implement a queue using a singly linked list with enqueue and dequeue operations." },
+    { title: "Binary Search Tree Operations", subject: "Data Structures", code: "CS201", num: "Exp 3", branch: "CSE", sem: "2", desc: "Implement BST with insert, search, inorder, preorder and postorder traversals." },
+    { title: "Implement Hash Table", subject: "Data Structures", code: "CS201", num: "Exp 4", branch: "CSE", sem: "2", desc: "Implement a hash table with separate chaining for collision resolution." },
+    { title: "Bubble Sort and Quick Sort", subject: "Data Structures", code: "CS201", num: "Exp 5", branch: "CSE", sem: "2", desc: "Implement bubble sort and quick sort algorithms, compare their time complexity." },
+
+    { title: "SQL DDL and DML Commands", subject: "Database Management Systems", code: "CS301", num: "Exp 1", branch: "CSE", sem: "3", desc: "Create tables with constraints and perform INSERT, UPDATE and DELETE operations." },
+    { title: "Joins and Subqueries", subject: "Database Management Systems", code: "CS301", num: "Exp 2", branch: "CSE", sem: "3", desc: "Practice INNER JOIN, LEFT JOIN, RIGHT JOIN and nested subqueries in SQL." },
+    { title: "PL/SQL Procedures and Functions", subject: "Database Management Systems", code: "CS301", num: "Exp 3", branch: "CSE", sem: "3", desc: "Write stored procedures and functions with cursors and exception handling." },
+    { title: "Normalization Exercises", subject: "Database Management Systems", code: "CS301", num: "Exp 4", branch: "CSE", sem: "3", desc: "Normalize relations from UNF to 3NF, identify functional dependencies." },
+
+    { title: "Implement Sorting Algorithms", subject: "Algorithm Design", code: "CS401", num: "Exp 1", branch: "CSE", sem: "4", desc: "Implement merge sort, heap sort and counting sort with complexity analysis." },
+    { title: "Graph Traversal BFS & DFS", subject: "Algorithm Design", code: "CS401", num: "Exp 2", branch: "CSE", sem: "4", desc: "Implement BFS and DFS on graphs, find shortest path using Dijkstra's algorithm." },
+    { title: "Dynamic Programming Problems", subject: "Algorithm Design", code: "CS401", num: "Exp 3", branch: "CSE", sem: "4", desc: "Solve knapsack, LCS and matrix chain multiplication using dynamic programming." },
+
+    { title: "Linear Regression from Scratch", subject: "Machine Learning", code: "CS501", num: "Exp 1", branch: "CSE", sem: "5", desc: "Implement linear regression using gradient descent without using sklearn." },
+    { title: "Classification using KNN", subject: "Machine Learning", code: "CS501", num: "Exp 2", branch: "CSE", sem: "5", desc: "Build a K-Nearest Neighbors classifier and evaluate using confusion matrix." },
+    { title: "Decision Tree & Random Forest", subject: "Machine Learning", code: "CS501", num: "Exp 3", branch: "CSE", sem: "5", desc: "Train decision tree and random forest models, compare accuracy and F1 scores." },
+
+    { title: "Basic Circuit Laws Verification", subject: "Basic Electrical Engineering", code: "EE101", num: "Exp 1", branch: "EE", sem: "1", desc: "Verify KVL and KCL on resistive circuits using breadboard and multimeter." },
+    { title: "Ohm's Law and Power Measurement", subject: "Basic Electrical Engineering", code: "EE101", num: "Exp 2", branch: "EE", sem: "1", desc: "Measure voltage, current and power for different resistance values." },
+    { title: "RL and RC Circuit Analysis", subject: "Basic Electrical Engineering", code: "EE101", num: "Exp 3", branch: "EE", sem: "1", desc: "Analyze transient response of RL and RC circuits using CRO." },
+    { title: "Single Phase Transformer Testing", subject: "Basic Electrical Engineering", code: "EE101", num: "Exp 4", branch: "EE", sem: "1", desc: "Perform open circuit and short circuit tests on a single phase transformer." },
+
+    { title: "Norton's and Thevenin's Theorem", subject: "Network Analysis", code: "EE201", num: "Exp 1", branch: "EE", sem: "2", desc: "Verify Norton's and Thevenin's equivalent circuits experimentally." },
+    { title: "Maximum Power Transfer Theorem", subject: "Network Analysis", code: "EE201", num: "Exp 2", branch: "EE", sem: "2", desc: "Verify maximum power transfer theorem for AC and DC circuits." },
+    { title: "Superposition Theorem Verification", subject: "Network Analysis", code: "EE201", num: "Exp 3", branch: "EE", sem: "2", desc: "Verify superposition theorem on a multi-source linear network." },
+
+    { title: "PN Junction Diode Characteristics", subject: "Basic Electronics", code: "EC101", num: "Exp 1", branch: "ECE", sem: "1", desc: "Plot V-I characteristics of PN junction diode in forward and reverse bias." },
+    { title: "Zener Diode Voltage Regulator", subject: "Basic Electronics", code: "EC101", num: "Exp 2", branch: "ECE", sem: "1", desc: "Design and test a Zener diode based voltage regulator circuit." },
+    { title: "CE Amplifier Characteristics", subject: "Basic Electronics", code: "EC101", num: "Exp 3", branch: "ECE", sem: "1", desc: "Determine voltage gain, input and output impedance of CE amplifier." },
+
+    { title: "Soldering and PCB Design", subject: "Basic Electronics", code: "EC101", num: "Exp 4", branch: "ECE", sem: "1", desc: "Practice soldering techniques and design a simple PCB layout." },
+
+    { title: "Half Adder and Full Adder", subject: "Digital Logic Design", code: "CS202", num: "Exp 1", branch: "CSE", sem: "2", desc: "Design and verify half adder and full adder using logic gates." },
+    { title: "Multiplexer and Demultiplexer", subject: "Digital Logic Design", code: "CS202", num: "Exp 2", branch: "CSE", sem: "2", desc: "Implement 4:1 MUX and 1:4 DEMUX using IC 74151 and IC 74139." },
+    { title: "Counter Design using Flip-Flops", subject: "Digital Logic Design", code: "CS202", num: "Exp 3", branch: "CSE", sem: "2", desc: "Design synchronous up/down counter using JK and D flip-flops." },
+
+    { title: "Surveying with Total Station", subject: "Surveying - I", code: "CE201", num: "Exp 1", branch: "CE", sem: "2", desc: "Perform leveling and contour survey using Total Station instrument." },
+    { title: "Chain and Compass Survey", subject: "Surveying - I", code: "CE201", num: "Exp 2", branch: "CE", sem: "2", desc: "Conduct chain survey and compass survey, prepare field sketches." },
+    { title: "Curve Setting Operations", subject: "Surveying - I", code: "CE201", num: "Exp 3", branch: "CE", sem: "2", desc: "Set out simple and compound curves using offset from chord method." },
+
+    { title: "Tensile and Compression Testing", subject: "Strength of Materials", code: "ME202", num: "Exp 1", branch: "ME", sem: "2", desc: "Perform tensile and compression tests on UTM, determine Young's modulus." },
+    { title: "Bending Moment and Shear Force", subject: "Strength of Materials", code: "ME202", num: "Exp 2", branch: "ME", sem: "2", desc: "Determine bending moment and shear force diagrams for loaded beams." },
+    { title: "Torsion Testing", subject: "Strength of Materials", code: "ME202", num: "Exp 3", branch: "ME", sem: "2", desc: "Perform torsion test on steel specimen, calculate shear modulus." },
+
+    { title: "Milling Operations", subject: "Manufacturing Processes", code: "ME203", num: "Exp 1", branch: "ME", sem: "2", desc: "Perform plain milling and slab milling operations on milling machine." },
+    { title: "Lathe Machine Operations", subject: "Manufacturing Processes", code: "ME203", num: "Exp 2", branch: "ME", sem: "2", desc: "Perform turning, facing, threading and knurling on center lathe." },
+    { title: "Welding Techniques", subject: "Manufacturing Processes", code: "ME203", num: "Exp 3", branch: "ME", sem: "2", desc: "Practice arc welding and gas welding, prepare butt and lap joints." },
+
+    { title: "Speed Control of DC Motor", subject: "Electrical Machines - I", code: "EE304", num: "Exp 1", branch: "EE", sem: "3", desc: "Perform speed control of DC shunt motor using armature and field control." },
+    { title: "Open Circuit and Short Circuit Test", subject: "Electrical Machines - I", code: "EE304", num: "Exp 2", branch: "EE", sem: "3", desc: "Determine equivalent circuit parameters of transformer from OC and SC tests." },
+    { title: "Synchronous Motor Starting", subject: "Electrical Machines - I", code: "EE304", num: "Exp 3", branch: "EE", sem: "3", desc: "Start synchronous motor using pony motor method and study V-curves." },
+
+    { title: "Antenna Radiation Pattern", subject: "Electromagnetic Theory", code: "EC302", num: "Exp 1", branch: "ECE", sem: "3", desc: "Plot radiation pattern of dipole and Yagi-Uda antenna in E and H planes." },
+    { title: "Smith Chart Applications", subject: "Electromagnetic Theory", code: "EC302", num: "Exp 2", branch: "ECE", sem: "3", desc: "Perform impedance matching and stub tuning using Smith chart." },
+
+    { title: "Microprocessor 8085 Programming", subject: "Microprocessors", code: "EC303", num: "Exp 1", branch: "ECE", sem: "3", desc: "Write assembly programs for arithmetic operations using 8085 kit." },
+    { title: "Interfacing ADC and DAC", subject: "Microprocessors", code: "EC303", num: "Exp 2", branch: "ECE", sem: "3", desc: "Interface ADC 0808 and DAC 0808 with 8085 microprocessor." }
+];
+
+var labManuals = [
+    { title: "C Programming Lab Manual", subject: "Programming in C", code: "CS101", branch: "CSE", sem: "1", desc: "Complete lab manual with 15 programs, expected output and viva questions for C programming laboratory." },
+    { title: "Data Structures Lab Manual", subject: "Data Structures", code: "CS201", branch: "CSE", sem: "2", desc: "Comprehensive manual covering arrays, linked lists, trees, graphs and hashing experiments." },
+    { title: "DBMS Lab Manual", subject: "Database Management Systems", code: "CS301", branch: "CSE", sem: "3", desc: "SQL queries, PL/SQL blocks, triggers and procedure lab exercises with expected outputs." },
+    { title: "Algorithm Lab Manual", subject: "Algorithm Design", code: "CS401", branch: "CSE", sem: "4", desc: "Experiment guide for sorting, searching, graph and DP algorithm implementations." },
+    { title: "Machine Learning Lab Manual", subject: "Machine Learning", code: "CS501", branch: "CSE", sem: "5", desc: "Step-by-step guide for regression, classification, clustering and neural network experiments." },
+    { title: "Electrical Lab Manual", subject: "Basic Electrical Engineering", code: "EE101", branch: "EE", sem: "1", desc: "Complete lab manual for circuit experiments, transformer testing and motor characteristics." },
+    { title: "Network Analysis Lab Manual", subject: "Network Analysis", code: "EE201", branch: "EE", sem: "2", desc: "Thevenin, Norton, superposition theorem experiments with circuit diagrams." },
+    { title: "Electronics Lab Manual", subject: "Basic Electronics", code: "EC101", branch: "ECE", sem: "1", desc: "Diode, transistor and amplifier experiment procedures with waveform observations." },
+    { title: "Digital Electronics Lab Manual", subject: "Digital Logic Design", code: "CS202", branch: "CSE", sem: "2", desc: "IC-based experiments for gates, mux, flip-flops and counters with pin diagrams." },
+    { title: "Surveying Lab Manual", subject: "Surveying - I", code: "CE201", branch: "CE", sem: "2", desc: "Field procedures for chain, compass, leveling and theodolite survey exercises." },
+    { title: "Manufacturing Lab Manual", subject: "Manufacturing Processes", code: "ME203", branch: "ME", sem: "2", desc: "Workshop practice manual covering lathe, milling, welding and casting procedures." },
+    { title: "SOM Lab Manual", subject: "Strength of Materials", code: "ME202", branch: "ME", sem: "2", desc: "Experimental procedures for tension, compression, hardness and impact tests." }
+];
+
+var vivaQuestions = [
+    { subject: "Programming in C", code: "CS101", branch: "CSE", sem: "1", count: 30, questions: [
+        "What is the difference between while and do-while loop?",
+        "Explain the concept of recursion with an example.",
+        "What are pointers and why are they used in C?",
+        "What is the difference between array and linked list?"
+    ]},
+    { subject: "Data Structures", code: "CS201", branch: "CSE", sem: "2", count: 35, questions: [
+        "What is the difference between stack and queue?",
+        "Explain the time complexity of quicksort in best and worst case.",
+        "What are the applications of a binary search tree?",
+        "How does a hash table handle collisions?"
+    ]},
+    { subject: "Database Management Systems", code: "CS301", branch: "CSE", sem: "3", count: 40, questions: [
+        "What is normalization? Explain 1NF, 2NF and 3NF.",
+        "What is the difference between DELETE and TRUNCATE?",
+        "Explain ACID properties of a transaction.",
+        "What are indexes and how do they improve query performance?"
+    ]},
+    { subject: "Algorithm Design", code: "CS401", branch: "CSE", sem: "4", count: 35, questions: [
+        "What is the difference between BFS and DFS?",
+        "Explain dynamic programming with the knapsack example.",
+        "What is a greedy algorithm? Give an example.",
+        "What is the time complexity of Dijkstra's algorithm?"
+    ]},
+    { subject: "Machine Learning", code: "CS501", branch: "CSE", sem: "5", count: 30, questions: [
+        "What is the difference between supervised and unsupervised learning?",
+        "Explain overfitting and how to prevent it.",
+        "What is gradient descent and its variants?",
+        "How does a random forest classifier work?"
+    ]},
+    { subject: "Basic Electrical Engineering", code: "EE101", branch: "EE", sem: "1", count: 30, questions: [
+        "State Kirchhoff's Voltage Law and Current Law.",
+        "What is the difference between AC and DC?",
+        "How does a transformer work? What is turns ratio?",
+        "What is power factor and why is it important?"
+    ]},
+    { subject: "Network Analysis", code: "EE201", branch: "EE", sem: "2", count: 25, questions: [
+        "State Thevenin's theorem and its steps.",
+        "What is the maximum power transfer theorem?",
+        "Explain superposition theorem with an example.",
+        "What is the difference between mesh and nodal analysis?"
+    ]},
+    { subject: "Basic Electronics", code: "EC101", branch: "ECE", sem: "1", count: 30, questions: [
+        "What is the difference between a diode and a transistor?",
+        "Explain the working of a Zener diode as a voltage regulator.",
+        "What is biasing? Why is it needed for transistors?",
+        "Draw the V-I characteristics of a PN junction diode."
+    ]},
+    { subject: "Electromagnetic Theory", code: "EC302", branch: "ECE", sem: "3", count: 25, questions: [
+        "State Maxwell's equations in point form.",
+        "What is the difference between conductor, insulator and semiconductor?",
+        "Explain skin effect and its significance.",
+        "What is impedance matching? Why is it needed?"
+    ]},
+    { subject: "Strength of Materials", code: "ME202", branch: "ME", sem: "2", count: 28, questions: [
+        "What is the difference between stress and strain?",
+        "Define Young's modulus and its significance.",
+        "Explain the concept of bending moment.",
+        "What is Poisson's ratio?"
+    ]},
+    { subject: "Manufacturing Processes", code: "ME203", branch: "ME", sem: "2", count: 25, questions: [
+        "What is the difference between casting and forging?",
+        "Explain the working principle of a lathe machine.",
+        "What are the types of welding joints?",
+        "What is the difference between UP milling and DOWN milling?"
+    ]},
+    { subject: "Surveying - I", code: "CE201", branch: "CE", sem: "2", count: 22, questions: [
+        "What is the difference between chain surveying and compass surveying?",
+        "Explain the principle of leveling.",
+        "What is a contour? What are its characteristics?",
+        "What is the purpose of a theodolite?"
+    ]}
+];
+
+function switchTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.cat-tab').forEach(function(t) {
+        t.classList.toggle('active', t.getAttribute('data-tab') === tab);
+    });
+    document.getElementById('filterBranch').value = '';
+    document.getElementById('filterSem').value = '';
+    applyFilters();
+}
+
+function applyFilters() {
+    var branch = document.getElementById('filterBranch').value;
+    var sem = document.getElementById('filterSem').value;
+
+    if (currentTab === 'practical') {
+        var filtered = practicals.filter(function(p) {
+            if (branch && p.branch !== branch) return false;
+            if (sem && p.sem !== sem) return false;
+            return true;
+        });
+        renderPracticals(filtered);
+    } else if (currentTab === 'manual') {
+        var filtered = labManuals.filter(function(m) {
+            if (branch && m.branch !== branch) return false;
+            if (sem && m.sem !== sem) return false;
+            return true;
+        });
+        renderManuals(filtered);
+    } else {
+        var filtered = vivaQuestions.filter(function(v) {
+            if (branch && v.branch !== branch) return false;
+            if (sem && v.sem !== sem) return false;
+            return true;
+        });
+        renderViva(filtered);
+    }
+}
+
+function renderPracticals(items) {
+    var grid = document.getElementById('cardsGrid');
+    var info = document.getElementById('resultsInfo');
+    var title = document.getElementById('resultsTitle');
+    grid.innerHTML = '';
+    title.textContent = 'Practicals';
+    info.style.display = 'flex';
+
+    if (items.length === 0) {
+        document.getElementById('resultsCount').textContent = '0 experiments';
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128295;</div><h3>No Practicals Found</h3><p>Change the branch or semester filters to find experiments.</p></div>';
+        return;
+    }
+
+    document.getElementById('resultsCount').textContent = items.length + ' experiment' + (items.length !== 1 ? 's' : '');
+
+    items.forEach(function(p) {
+        var card = document.createElement('div');
+        card.className = 'exp-card';
+        card.innerHTML =
+            '<div class="exp-top">' +
+                '<span class="exp-number">' + p.num + '</span>' +
+                '<span class="exp-subject">' + p.code + '</span>' +
+            '</div>' +
+            '<div class="exp-title">' + p.title + '</div>' +
+            '<div class="exp-tags">' +
+                '<span class="tag tag-branch">' + (branchNames[p.branch] || p.branch) + '</span>' +
+                '<span class="tag tag-sem">Sem ' + p.sem + '</span>' +
+                '<span class="tag tag-type">' + p.subject + '</span>' +
+            '</div>' +
+            '<div class="exp-desc">' + p.desc + '</div>' +
+            '<div class="exp-actions">' +
+                '<button class="btn-view">View Practical</button>' +
+                '<button class="btn-download">Download PDF</button>' +
+            '</div>';
+        grid.appendChild(card);
+    });
+}
+
+function renderManuals(items) {
+    var grid = document.getElementById('cardsGrid');
+    var info = document.getElementById('resultsInfo');
+    var title = document.getElementById('resultsTitle');
+    grid.innerHTML = '';
+    title.textContent = 'Lab Manuals';
+    info.style.display = 'flex';
+
+    if (items.length === 0) {
+        document.getElementById('resultsCount').textContent = '0 manuals';
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128214;</div><h3>No Lab Manuals Found</h3><p>Change the branch or semester filters to find manuals.</p></div>';
+        return;
+    }
+
+    document.getElementById('resultsCount').textContent = items.length + ' manual' + (items.length !== 1 ? 's' : '');
+
+    items.forEach(function(m) {
+        var card = document.createElement('div');
+        card.className = 'exp-card';
+        card.innerHTML =
+            '<div class="exp-top">' +
+                '<span class="exp-subject">' + m.code + '</span>' +
+            '</div>' +
+            '<div class="exp-title">' + m.title + '</div>' +
+            '<div class="exp-tags">' +
+                '<span class="tag tag-branch">' + (branchNames[m.branch] || m.branch) + '</span>' +
+                '<span class="tag tag-sem">Sem ' + m.sem + '</span>' +
+                '<span class="tag tag-type">' + m.subject + '</span>' +
+            '</div>' +
+            '<div class="exp-desc">' + m.desc + '</div>' +
+            '<div class="exp-actions">' +
+                '<button class="btn-view">View Manual</button>' +
+                '<button class="btn-download">Download PDF</button>' +
+            '</div>';
+        grid.appendChild(card);
+    });
+}
+
+function renderViva(items) {
+    var grid = document.getElementById('cardsGrid');
+    var info = document.getElementById('resultsInfo');
+    var title = document.getElementById('resultsTitle');
+    grid.innerHTML = '';
+    title.textContent = 'Viva Questions';
+    info.style.display = 'flex';
+
+    if (items.length === 0) {
+        document.getElementById('resultsCount').textContent = '0 subjects';
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128172;</div><h3>No Viva Questions Found</h3><p>Change the branch or semester filters to find viva questions.</p></div>';
+        return;
+    }
+
+    document.getElementById('resultsCount').textContent = items.length + ' subject' + (items.length !== 1 ? 's' : '');
+
+    items.forEach(function(v) {
+        var card = document.createElement('div');
+        card.className = 'viva-card';
+
+        var questionsHtml = '';
+        v.questions.forEach(function(q, i) {
+            questionsHtml += '<div class="viva-q"><span>Q' + (i + 1) + ':</span> ' + q + '</div>';
+        });
+
+        card.innerHTML =
+            '<div class="viva-top">' +
+                '<div class="viva-subject">' + v.subject + '</div>' +
+                '<span class="viva-count">' + v.count + ' Questions</span>' +
+            '</div>' +
+            '<div class="viva-tags">' +
+                '<span class="tag tag-branch">' + (branchNames[v.branch] || v.branch) + '</span>' +
+                '<span class="tag tag-sem">Sem ' + v.sem + '</span>' +
+                '<span class="tag tag-type">' + v.code + '</span>' +
+            '</div>' +
+            '<div class="viva-questions">' + questionsHtml + '</div>' +
+            '<div class="viva-actions">' +
+                '<button class="btn-view">View All Questions</button>' +
+                '<button class="btn-download">Download PDF</button>' +
+            '</div>';
+        grid.appendChild(card);
+    });
+}
+
+function clearFilters() {
+    document.getElementById('filterBranch').value = '';
+    document.getElementById('filterSem').value = '';
+    applyFilters();
+}
+
+applyFilters();
+</script>
+
 </body>
 </html>

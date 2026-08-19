@@ -2,75 +2,502 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="theme-color" content="#0d2240">
-    <title>Previous Year Questions - EngiHub</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <title>Previous Year Question Papers - EngiHub</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fb; color: #111827; }
+        a { text-decoration: none; color: inherit; }
+
+        /* NAVBAR */
+        .navbar { width: 100%; height: 70px; background: white; display: flex; align-items: center; justify-content: space-between; padding: 0 6%; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 28px; font-weight: bold; color: #2563eb; }
+        .logo span { color: #111827; }
+        .nav-links { display: flex; gap: 25px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover { color: #2563eb; }
+        .nav-links a.active { color: #2563eb; font-weight: 700; }
+        .login-btn { background: #2563eb; color: white !important; padding: 10px 20px; border-radius: 8px; }
+        .login-btn:hover { background: #1d4ed8; }
+        .menu-toggle { display: none; background: none; border: none; font-size: 28px; cursor: pointer; color: #111827; }
+
+        /* PAGE HEADER */
+        .page-header { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); color: white; padding: 60px 6% 50px; text-align: center; }
+        .page-header h1 { font-size: 40px; font-weight: 800; margin-bottom: 10px; }
+        .page-header p { font-size: 17px; opacity: 0.85; max-width: 550px; margin: 0 auto; }
+
+        /* SEARCH */
+        .search-section { max-width: 650px; margin: -28px auto 0; padding: 0 6%; position: relative; z-index: 10; }
+        .search-box { background: white; border-radius: 14px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); display: flex; overflow: hidden; }
+        .search-box input { flex: 1; border: none; padding: 18px 24px; font-size: 16px; font-family: inherit; outline: none; }
+        .search-box input::placeholder { color: #9ca3af; }
+        .search-box button { background: #2563eb; color: white; border: none; padding: 18px 30px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.2s; }
+        .search-box button:hover { background: #1d4ed8; }
+
+        /* FILTERS */
+        .filters-section { padding: 36px 6% 0; max-width: 1100px; margin: 0 auto; }
+        .filters-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; background: white; padding: 24px; border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
+        .filter-group label { display: block; font-size: 12px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .filter-group select {
+            width: 100%; padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px;
+            font-size: 14px; font-family: inherit; color: #374151; background: #f9fafb; cursor: pointer;
+            outline: none; transition: border-color 0.2s; appearance: auto;
+        }
+        .filter-group select:focus { border-color: #2563eb; }
+
+        /* RESULTS INFO */
+        .results-info { padding: 28px 6% 0; max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .results-info h2 { font-size: 20px; color: #111827; }
+        .results-count { font-size: 14px; color: #6b7280; background: #eff6ff; padding: 6px 14px; border-radius: 8px; font-weight: 600; }
+        .clear-btn { font-size: 13px; color: #ef4444; background: none; border: 1px solid #fecaca; padding: 7px 14px; border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.2s; }
+        .clear-btn:hover { background: #fef2f2; }
+
+        /* PAPER CARDS */
+        .papers-section { padding: 20px 6% 40px; max-width: 1100px; margin: 0 auto; }
+        .papers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+
+        .paper-card {
+            background: white; border-radius: 14px; border: 1px solid #e5e7eb;
+            overflow: hidden; transition: all 0.3s; display: flex; flex-direction: column;
+        }
+        .paper-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); border-color: #2563eb; }
+
+        .paper-header { padding: 20px 20px 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+        .paper-subject { font-size: 16px; font-weight: 700; color: #111827; line-height: 1.4; }
+        .year-badge { font-size: 12px; font-weight: 700; color: #b45309; background: #fef3c7; padding: 4px 10px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; }
+
+        .paper-tags { padding: 12px 20px 0; display: flex; gap: 6px; flex-wrap: wrap; }
+        .tag { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
+        .tag-branch { color: #2563eb; background: #eff6ff; }
+        .tag-sem { color: #7c3aed; background: #f5f3ff; }
+        .tag-type { color: #059669; background: #ecfdf5; }
+
+        .paper-meta { padding: 14px 20px 0; display: flex; gap: 16px; flex-wrap: wrap; }
+        .meta-item { display: flex; align-items: center; gap: 5px; font-size: 13px; color: #6b7280; }
+        .meta-icon { font-size: 14px; }
+
+        .paper-actions { padding: 16px 20px 20px; display: flex; gap: 8px; margin-top: auto; }
+        .btn-view {
+            flex: 1; padding: 10px 14px; background: #2563eb; color: white; border-radius: 8px;
+            font-size: 13px; font-weight: 600; border: none; cursor: pointer; font-family: inherit;
+            transition: background 0.2s; text-align: center;
+        }
+        .btn-view:hover { background: #1d4ed8; }
+        .btn-download {
+            flex: 1; padding: 10px 14px; background: #f3f4f6; color: #374151; border-radius: 8px;
+            font-size: 13px; font-weight: 600; border: 1px solid #e5e7eb; cursor: pointer;
+            font-family: inherit; transition: all 0.2s; text-align: center;
+        }
+        .btn-download:hover { background: #e5e7eb; }
+
+        /* EMPTY STATE */
+        .empty-state { text-align: center; padding: 60px 20px; grid-column: 1 / -1; }
+        .empty-icon { font-size: 64px; margin-bottom: 14px; }
+        .empty-state h3 { font-size: 22px; color: #374151; margin-bottom: 8px; }
+        .empty-state p { font-size: 15px; color: #9ca3af; max-width: 380px; margin: 0 auto; line-height: 1.6; }
+
+        /* FOOTER */
+        .footer { background: #111827; color: white; padding: 50px 6% 0; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; }
+        .footer-brand h3 { font-size: 24px; margin-bottom: 12px; }
+        .footer-brand h3 span { color: #2563eb; }
+        .footer-brand p { font-size: 14px; color: #9ca3af; line-height: 1.7; }
+        .footer-col h4 { font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a { font-size: 14px; color: #9ca3af; transition: color 0.2s; }
+        .footer-col ul li a:hover { color: #2563eb; }
+        .footer-bottom { border-top: 1px solid #1f2937; padding: 18px 0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        .footer-bottom p { font-size: 13px; color: #6b7280; }
+
+        /* WHATSAPP */
+        .whatsapp-float { position: fixed; bottom: 28px; right: 28px; width: 56px; height: 56px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); z-index: 99; transition: transform 0.3s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+        .whatsapp-float svg { width: 30px; height: 30px; fill: white; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .navbar { height: 60px; padding: 0 20px; }
+            .logo { font-size: 23px; }
+            .nav-links { display: none; position: absolute; top: 60px; left: 0; right: 0; background: white; flex-direction: column; padding: 16px 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); gap: 0; }
+            .nav-links.open { display: flex; }
+            .nav-links a { padding: 14px 0; border-bottom: 1px solid #f3f4f6; }
+            .menu-toggle { display: block; }
+            .page-header { padding: 40px 6% 36px; }
+            .page-header h1 { font-size: 28px; }
+            .search-box { flex-direction: column; }
+            .search-box button { padding: 14px; }
+            .filters-grid { grid-template-columns: 1fr 1fr; }
+            .papers-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+        @media (max-width: 450px) {
+            .filters-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
-<header>
-    <a href="index.html" class="logo">
-        <img src="images/logo.jpg" alt="EngiHub" class="logo-img">
-        EngiHub
-    </a>
-    <button class="menu-toggle">&#9776;</button>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="notes.html">Notes</a>
-        <a href="syllabus.html">Syllabus</a>
-        <a href="pyq.html" class="active">PYQ</a>
-        <a href="practical.html">Practical</a>
-        <a href="coding.html">Coding</a>
-        <a href="projects.html">Projects</a>
-        <a href="placement.html">Placement</a>
-        <a href="notices.html">Notices</a>
-        <a href="exams.html">Online Test</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact Us</a>
-        <a href="login.html">Admin Login</a>
-        <a href="student_login.html">Student Login</a>
-        <a href="register.html">Register</a>
-    </nav>
-</header>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">Engi<span>Hub</span></div>
+    <button class="menu-toggle" id="menuToggle">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="notes.html">Notes</a></li>
+        <li><a href="syllabus.html">Syllabus</a></li>
+        <li><a href="pyq.html" class="active">PYQ</a></li>
+        <li><a href="practical.html">Practical</a></li>
+        <li><a href="coding.html">Coding</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="placement.html">Placement</a></li>
+        <li><a href="login.html" class="login-btn">Login</a></li>
+    </ul>
+</nav>
 
-<div class="container">
-    <h2 style="font-size:28px;font-weight:700;margin-bottom:8px;color:var(--white);">Previous Year Questions</h2>
-    <p style="color:var(--gray-700);font-size:15px;margin-bottom:28px;">Practice with previous year exam papers for your branch and semester.</p>
+<!-- PAGE HEADER -->
+<section class="page-header">
+    <h1>Previous Year Question Papers</h1>
+    <p>Access past exam papers to prepare smarter and score better.</p>
+</section>
 
-    <form>
-        <div class="filter-bar">
-            <input type="text" name="search" placeholder="Search by title or subject...">
-            <select name="semester">
-                <option value="">All Semesters</option>
-                <option value="Semester 1">Semester 1</option>
-                <option value="Semester 2">Semester 2</option>
-                <option value="Semester 3">Semester 3</option>
-                <option value="Semester 4">Semester 4</option>
-                <option value="Semester 5">Semester 5</option>
-                <option value="Semester 6">Semester 6</option>
-            </select>
-            <select name="branch">
-                <option value="">All Branches</option>
-            </select>
-            <select name="year">
-                <option value="">All Years</option>
-            </select>
-            <button type="submit" class="btn-filter">Filter</button>
-        </div>
-    </form>
-
-    <div class="empty-state">
-        <div class="empty-icon">&#128218;</div>
-        <h3>No question papers found</h3>
-        <p>Try adjusting your filters or check back later.</p>
+<!-- SEARCH -->
+<div class="search-section">
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search by subject name or code..." oninput="applyFilters()">
+        <button onclick="applyFilters()">Search</button>
     </div>
 </div>
 
-<footer><p>&copy; 2026 EngiHub Portal</p></footer>
-<a href="https://wa.me/918860695666?text=Hi%20EngiHub%2C%20I%20have%20a%20question" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+<!-- FILTERS -->
+<div class="filters-section">
+    <div class="filters-grid">
+        <div class="filter-group">
+            <label>Branch</label>
+            <select id="filterBranch" onchange="applyFilters()">
+                <option value="">All Branches</option>
+                <option value="CSE">CSE</option>
+                <option value="ECE">ECE</option>
+                <option value="ME">Mechanical</option>
+                <option value="CE">Civil</option>
+                <option value="EE">Electrical</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Semester</label>
+            <select id="filterSem" onchange="applyFilters()">
+                <option value="">All Semesters</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Exam Year</label>
+            <select id="filterYear" onchange="applyFilters()">
+                <option value="">All Years</option>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Subject</label>
+            <select id="filterSubject" onchange="applyFilters()">
+                <option value="">All Subjects</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- RESULTS INFO -->
+<div class="results-info" id="resultsInfo" style="display:none;">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <h2>Question Papers</h2>
+        <span class="results-count" id="resultsCount">0 papers</span>
+    </div>
+    <button class="clear-btn" onclick="clearFilters()">Clear All Filters</button>
+</div>
+
+<!-- PAPER CARDS -->
+<div class="papers-section">
+    <div class="papers-grid" id="papersGrid"></div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h3>Engi<span>Hub</span></h3>
+            <p>Everything an Engineering Student Needs. Your one-stop platform for notes, syllabus, PYQ, practicals, coding, projects and placement preparation.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="syllabus.html">Syllabus</a></li>
+                <li><a href="pyq.html">PYQ Papers</a></li>
+                <li><a href="practical.html">Practicals</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Resources</h4>
+            <ul>
+                <li><a href="coding.html">Coding Practice</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="placement.html">Placement</a></li>
+                <li><a href="exams.html">Online Tests</a></li>
+                <li><a href="notices.html">Notices</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Account</h4>
+            <ul>
+                <li><a href="login.html">Admin Login</a></li>
+                <li><a href="student_login.html">Student Login</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 EngiHub. All rights reserved.</p>
+        <p>Built for engineering students, by engineering students.</p>
+    </div>
+</footer>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/918860695666?text=Hi%20EngiHub%2C%20I%20have%20a%20question" class="whatsapp-float" target="_blank" rel="noopener">
     <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.132 6.744 3.058 9.374L1.054 31.2l6.064-1.97A15.912 15.912 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.31 22.608c-.39 1.096-1.932 2.01-3.162 2.274-.844.18-1.946.322-5.656-1.216-4.746-1.966-7.798-6.79-8.036-7.108-.23-.318-1.9-2.524-1.9-4.814 0-2.29 1.204-3.416 1.63-3.884.39-.428.924-.57 1.23-.57.31 0 .618.004.886.016.284.012.664-.106 1.036.79.39.932 1.33 3.24 1.446 3.478.116.238.194.516.038.834-.156.318-.232.516-.462.794-.23.278-.484.62-.692.832-.23.238-.47.496-.2.972.27.476 1.2 1.98 2.578 3.208 1.77 1.58 3.26 2.07 3.736 2.298.374.18.792.136 1.086-.23.374-.476.836-1.262 1.304-2.02.334-.542.756-.61 1.276-.414.53.196 3.364 1.586 3.94 1.87.576.284.96.428 1.102.664.14.236.14 1.37-.25 2.464z"/></svg>
 </a>
-<script src="js/main.js"></script>
+
+<script>
+document.getElementById('menuToggle').addEventListener('click', function() {
+    document.getElementById('navLinks').classList.toggle('open');
+});
+
+var allPapers = [
+    { subject: "Engineering Mathematics - I", code: "MA101", branch: "CSE", sem: "1", year: "2025", type: "Mid-Term" },
+    { subject: "Engineering Mathematics - I", code: "MA101", branch: "CSE", sem: "1", year: "2024", type: "End-Sem" },
+    { subject: "Engineering Mathematics - I", code: "MA101", branch: "CSE", sem: "1", year: "2023", type: "End-Sem" },
+    { subject: "Programming in C", code: "CS101", branch: "CSE", sem: "1", year: "2025", type: "Mid-Term" },
+    { subject: "Programming in C", code: "CS101", branch: "CSE", sem: "1", year: "2024", type: "End-Sem" },
+    { subject: "Engineering Physics", code: "PH101", branch: "CSE", sem: "1", year: "2024", type: "End-Sem" },
+    { subject: "Engineering Physics", code: "PH101", branch: "ECE", sem: "1", year: "2025", type: "Mid-Term" },
+    { subject: "Basic Electronics", code: "EC101", branch: "CSE", sem: "1", year: "2023", type: "End-Sem" },
+    { subject: "Communication Skills", code: "HS101", branch: "CSE", sem: "1", year: "2025", type: "End-Sem" },
+
+    { subject: "Engineering Mathematics - II", code: "MA201", branch: "CSE", sem: "2", year: "2025", type: "End-Sem" },
+    { subject: "Engineering Mathematics - II", code: "MA201", branch: "CSE", sem: "2", year: "2024", type: "End-Sem" },
+    { subject: "Data Structures", code: "CS201", branch: "CSE", sem: "2", year: "2025", type: "Mid-Term" },
+    { subject: "Data Structures", code: "CS201", branch: "CSE", sem: "2", year: "2024", type: "End-Sem" },
+    { subject: "Data Structures", code: "CS201", branch: "CSE", sem: "2", year: "2023", type: "End-Sem" },
+    { subject: "Digital Logic Design", code: "CS202", branch: "CSE", sem: "2", year: "2025", type: "End-Sem" },
+    { subject: "Object Oriented Programming", code: "CS203", branch: "CSE", sem: "2", year: "2024", type: "End-Sem" },
+
+    { subject: "Database Management Systems", code: "CS301", branch: "CSE", sem: "3", year: "2025", type: "Mid-Term" },
+    { subject: "Database Management Systems", code: "CS301", branch: "CSE", sem: "3", year: "2024", type: "End-Sem" },
+    { subject: "Database Management Systems", code: "CS301", branch: "CSE", sem: "3", year: "2023", type: "End-Sem" },
+    { subject: "Computer Organization", code: "CS302", branch: "CSE", sem: "3", year: "2024", type: "End-Sem" },
+    { subject: "Operating Systems", code: "CS303", branch: "CSE", sem: "3", year: "2025", type: "End-Sem" },
+    { subject: "Operating Systems", code: "CS303", branch: "CSE", sem: "3", year: "2023", type: "End-Sem" },
+    { subject: "Discrete Mathematics", code: "MA301", branch: "CSE", sem: "3", year: "2024", type: "End-Sem" },
+
+    { subject: "Algorithm Design", code: "CS401", branch: "CSE", sem: "4", year: "2025", type: "Mid-Term" },
+    { subject: "Algorithm Design", code: "CS401", branch: "CSE", sem: "4", year: "2024", type: "End-Sem" },
+    { subject: "Computer Networks", code: "CS402", branch: "CSE", sem: "4", year: "2025", type: "End-Sem" },
+    { subject: "Computer Networks", code: "CS402", branch: "CSE", sem: "4", year: "2023", type: "End-Sem" },
+    { subject: "Software Engineering", code: "CS403", branch: "CSE", sem: "4", year: "2024", type: "End-Sem" },
+    { subject: "Theory of Computation", code: "CS404", branch: "CSE", sem: "4", year: "2024", type: "End-Sem" },
+
+    { subject: "Machine Learning", code: "CS501", branch: "CSE", sem: "5", year: "2025", type: "End-Sem" },
+    { subject: "Machine Learning", code: "CS501", branch: "CSE", sem: "5", year: "2024", type: "Mid-Term" },
+    { subject: "Cloud Computing", code: "CS502", branch: "CSE", sem: "5", year: "2024", type: "End-Sem" },
+    { subject: "Cyber Security", code: "CS503", branch: "CSE", sem: "5", year: "2023", type: "End-Sem" },
+
+    { subject: "Deep Learning", code: "CS601", branch: "CSE", sem: "6", year: "2025", type: "Mid-Term" },
+    { subject: "Deep Learning", code: "CS601", branch: "CSE", sem: "6", year: "2024", type: "End-Sem" },
+    { subject: "DevOps & CI/CD", code: "CS602", branch: "CSE", sem: "6", year: "2024", type: "End-Sem" },
+    { subject: "Full Stack Development", code: "CS604", branch: "CSE", sem: "6", year: "2025", type: "End-Sem" },
+
+    { subject: "Network Analysis", code: "EC201", branch: "ECE", sem: "2", year: "2025", type: "End-Sem" },
+    { subject: "Network Analysis", code: "EC201", branch: "ECE", sem: "2", year: "2024", type: "End-Sem" },
+    { subject: "Analog Electronics", code: "EC202", branch: "ECE", sem: "2", year: "2024", type: "Mid-Term" },
+    { subject: "Signals & Systems", code: "EC203", branch: "ECE", sem: "2", year: "2025", type: "End-Sem" },
+    { subject: "Signals & Systems", code: "EC203", branch: "ECE", sem: "2", year: "2023", type: "End-Sem" },
+
+    { subject: "Digital Electronics", code: "EC301", branch: "ECE", sem: "3", year: "2025", type: "End-Sem" },
+    { subject: "Electromagnetic Theory", code: "EC302", branch: "ECE", sem: "3", year: "2024", type: "End-Sem" },
+    { subject: "Microprocessors", code: "EC303", branch: "ECE", sem: "3", year: "2024", type: "Mid-Term" },
+    { subject: "Control Systems", code: "EC304", branch: "ECE", sem: "3", year: "2025", type: "End-Sem" },
+
+    { subject: "Communication Systems", code: "EC401", branch: "ECE", sem: "4", year: "2025", type: "End-Sem" },
+    { subject: "Communication Systems", code: "EC401", branch: "ECE", sem: "4", year: "2023", type: "End-Sem" },
+    { subject: "VLSI Design", code: "EC402", branch: "ECE", sem: "4", year: "2024", type: "End-Sem" },
+    { subject: "Embedded Systems", code: "EC403", branch: "ECE", sem: "4", year: "2024", type: "Mid-Term" },
+    { subject: "Digital Signal Processing", code: "EC404", branch: "ECE", sem: "4", year: "2025", type: "End-Sem" },
+
+    { subject: "Wireless Communication", code: "EC501", branch: "ECE", sem: "5", year: "2024", type: "End-Sem" },
+    { subject: "Image Processing", code: "EC502", branch: "ECE", sem: "5", year: "2025", type: "End-Sem" },
+    { subject: "Optical Communication", code: "EC504", branch: "ECE", sem: "5", year: "2024", type: "Mid-Term" },
+
+    { subject: "IoT & Edge Computing", code: "EC601", branch: "ECE", sem: "6", year: "2025", type: "End-Sem" },
+    { subject: "Machine Learning for ECE", code: "EC602", branch: "ECE", sem: "6", year: "2024", type: "End-Sem" },
+
+    { subject: "Thermodynamics", code: "ME201", branch: "ME", sem: "2", year: "2025", type: "End-Sem" },
+    { subject: "Thermodynamics", code: "ME201", branch: "ME", sem: "2", year: "2023", type: "End-Sem" },
+    { subject: "Strength of Materials", code: "ME202", branch: "ME", sem: "2", year: "2024", type: "End-Sem" },
+    { subject: "Manufacturing Processes", code: "ME203", branch: "ME", sem: "2", year: "2024", type: "Mid-Term" },
+
+    { subject: "Fluid Mechanics", code: "ME301", branch: "ME", sem: "3", year: "2025", type: "End-Sem" },
+    { subject: "Fluid Mechanics", code: "ME301", branch: "ME", sem: "3", year: "2024", type: "End-Sem" },
+    { subject: "Theory of Machines", code: "ME303", branch: "ME", sem: "3", year: "2025", type: "Mid-Term" },
+    { subject: "Machine Design - I", code: "ME302", branch: "ME", sem: "3", year: "2024", type: "End-Sem" },
+
+    { subject: "Heat & Mass Transfer", code: "ME401", branch: "ME", sem: "4", year: "2025", type: "End-Sem" },
+    { subject: "Automobile Engineering", code: "ME403", branch: "ME", sem: "4", year: "2024", type: "End-Sem" },
+    { subject: "Machine Design - II", code: "ME402", branch: "ME", sem: "4", year: "2024", type: "Mid-Term" },
+
+    { subject: "Refrigeration & AC", code: "ME501", branch: "ME", sem: "5", year: "2024", type: "End-Sem" },
+    { subject: "Finite Element Analysis", code: "ME503", branch: "ME", sem: "5", year: "2025", type: "End-Sem" },
+
+    { subject: "CNC & Automation", code: "ME601", branch: "ME", sem: "6", year: "2024", type: "End-Sem" },
+
+    { subject: "Surveying - I", code: "CE201", branch: "CE", sem: "2", year: "2025", type: "End-Sem" },
+    { subject: "Surveying - I", code: "CE201", branch: "CE", sem: "2", year: "2024", type: "End-Sem" },
+    { subject: "Strength of Materials", code: "CE202", branch: "CE", sem: "2", year: "2025", type: "Mid-Term" },
+    { subject: "Fluid Mechanics", code: "CE203", branch: "CE", sem: "2", year: "2024", type: "End-Sem" },
+
+    { subject: "Surveying - II", code: "CE301", branch: "CE", sem: "3", year: "2025", type: "End-Sem" },
+    { subject: "Structural Analysis - I", code: "CE302", branch: "CE", sem: "3", year: "2024", type: "End-Sem" },
+    { subject: "Geotechnical Engineering", code: "CE303", branch: "CE", sem: "3", year: "2024", type: "Mid-Term" },
+
+    { subject: "Structural Analysis - II", code: "CE401", branch: "CE", sem: "4", year: "2025", type: "End-Sem" },
+    { subject: "Concrete Technology", code: "CE402", branch: "CE", sem: "4", year: "2024", type: "End-Sem" },
+    { subject: "Transportation Engineering", code: "CE404", branch: "CE", sem: "4", year: "2024", type: "Mid-Term" },
+
+    { subject: "Design of RCC Structures", code: "CE502", branch: "CE", sem: "5", year: "2024", type: "End-Sem" },
+    { subject: "Foundation Engineering", code: "CE503", branch: "CE", sem: "5", year: "2025", type: "End-Sem" },
+
+    { subject: "Basic Electrical Engineering", code: "EE101", branch: "EE", sem: "1", year: "2025", type: "End-Sem" },
+    { subject: "Basic Electrical Engineering", code: "EE101", branch: "EE", sem: "1", year: "2024", type: "End-Sem" },
+
+    { subject: "Network Analysis", code: "EE201", branch: "EE", sem: "2", year: "2025", type: "End-Sem" },
+    { subject: "Electrical Measurements", code: "EE203", branch: "EE", sem: "2", year: "2024", type: "End-Sem" },
+    { subject: "Electromechanical Energy Conversion", code: "EE202", branch: "EE", sem: "2", year: "2024", type: "Mid-Term" },
+
+    { subject: "Power Systems - I", code: "EE301", branch: "EE", sem: "3", year: "2025", type: "End-Sem" },
+    { subject: "Control Systems", code: "EE303", branch: "EE", sem: "3", year: "2024", type: "End-Sem" },
+    { subject: "Electrical Machines - I", code: "EE304", branch: "EE", sem: "3", year: "2024", type: "Mid-Term" },
+
+    { subject: "Power Systems - II", code: "EE401", branch: "EE", sem: "4", year: "2025", type: "End-Sem" },
+    { subject: "Electrical Machines - II", code: "EE402", branch: "EE", sem: "4", year: "2024", type: "End-Sem" },
+    { subject: "Power Electronics", code: "EE403", branch: "EE", sem: "4", year: "2024", type: "Mid-Term" },
+
+    { subject: "Electric Drives", code: "EE502", branch: "EE", sem: "5", year: "2024", type: "End-Sem" },
+    { subject: "Renewable Energy Systems", code: "EE503", branch: "EE", sem: "5", year: "2025", type: "End-Sem" },
+
+    { subject: "Smart Grid Technology", code: "EE601", branch: "EE", sem: "6", year: "2024", type: "End-Sem" },
+    { subject: "Electric Vehicles", code: "EE602", branch: "EE", sem: "6", year: "2025", type: "End-Sem" }
+];
+
+var branchNames = { CSE: "CSE", ECE: "ECE", ME: "Mechanical", CE: "Civil", EE: "Electrical" };
+
+function populateSubjectFilter() {
+    var subjects = {};
+    allPapers.forEach(function(p) { subjects[p.code] = p.subject; });
+    var sel = document.getElementById('filterSubject');
+    Object.keys(subjects).sort().forEach(function(code) {
+        var opt = document.createElement('option');
+        opt.value = code;
+        opt.textContent = subjects[code] + ' (' + code + ')';
+        sel.appendChild(opt);
+    });
+}
+
+function applyFilters() {
+    var branch = document.getElementById('filterBranch').value;
+    var sem = document.getElementById('filterSem').value;
+    var year = document.getElementById('filterYear').value;
+    var subject = document.getElementById('filterSubject').value;
+    var query = document.getElementById('searchInput').value.trim().toLowerCase();
+
+    var filtered = allPapers.filter(function(p) {
+        if (branch && p.branch !== branch) return false;
+        if (sem && p.sem !== sem) return false;
+        if (year && p.year !== year) return false;
+        if (subject && p.code !== subject) return false;
+        if (query) {
+            var s = (p.subject + ' ' + p.code).toLowerCase();
+            if (s.indexOf(query) === -1) return false;
+        }
+        return true;
+    });
+
+    renderPapers(filtered);
+}
+
+function renderPapers(papers) {
+    var grid = document.getElementById('papersGrid');
+    var info = document.getElementById('resultsInfo');
+    grid.innerHTML = '';
+
+    if (papers.length === 0) {
+        info.style.display = 'flex';
+        document.getElementById('resultsCount').textContent = '0 papers';
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128196;</div><h3>No Question Papers Found</h3><p>Try changing the filters or search with a different keyword. New papers are added regularly.</p></div>';
+        return;
+    }
+
+    info.style.display = 'flex';
+    document.getElementById('resultsCount').textContent = papers.length + ' paper' + (papers.length !== 1 ? 's' : '');
+
+    papers.forEach(function(p) {
+        var card = document.createElement('div');
+        card.className = 'paper-card';
+        card.innerHTML =
+            '<div class="paper-header">' +
+                '<div class="paper-subject">' + p.subject + '</div>' +
+                '<span class="year-badge">' + p.year + '</span>' +
+            '</div>' +
+            '<div class="paper-tags">' +
+                '<span class="tag tag-branch">' + (branchNames[p.branch] || p.branch) + '</span>' +
+                '<span class="tag tag-sem">Sem ' + p.sem + '</span>' +
+                '<span class="tag tag-type">' + p.type + '</span>' +
+            '</div>' +
+            '<div class="paper-meta">' +
+                '<span class="meta-item"><span class="meta-icon">&#128196;</span> ' + p.code + '</span>' +
+                '<span class="meta-item"><span class="meta-icon">&#128197;</span> ' + p.year + '</span>' +
+            '</div>' +
+            '<div class="paper-actions">' +
+                '<button class="btn-view">View PDF</button>' +
+                '<button class="btn-download">Download</button>' +
+            '</div>';
+        grid.appendChild(card);
+    });
+}
+
+function clearFilters() {
+    document.getElementById('filterBranch').value = '';
+    document.getElementById('filterSem').value = '';
+    document.getElementById('filterYear').value = '';
+    document.getElementById('filterSubject').value = '';
+    document.getElementById('searchInput').value = '';
+    applyFilters();
+}
+
+populateSubjectFilter();
+applyFilters();
+</script>
+
 </body>
 </html>
