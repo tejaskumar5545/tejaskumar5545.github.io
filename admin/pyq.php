@@ -89,7 +89,7 @@ $items = $conn->query("SELECT * FROM pyq ORDER BY year DESC, upload_date DESC");
     <nav>
         <a href="index.php">&#127968; Dashboard</a><a href="notes.php">&#128218; Manage Notes</a><a href="syllabus.php">&#128218; Manage Syllabus</a><a href="pyq.php" class="active">&#128196; Manage PYQ</a><a href="practicals.php">&#128295; Manage Practicals</a><a href="students.php">&#127891; Students</a><a href="notices.php">&#128227; Notices</a>
     </nav>
-    <div class="sidebar-footer"><a href="../logout.php" style="color:#ef4444;text-decoration:none;font-weight:600">Logout</a></div>
+    <div class="sidebar-footer"><a href="logout.php" style="color:#ef4444;text-decoration:none;font-weight:600">Logout</a></div>
 </div>
 <div class="main">
     <?php if ($msg): ?><div class="alert alert-success"><?php echo $msg; ?></div><?php endif; ?>

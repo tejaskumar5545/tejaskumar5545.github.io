@@ -47,7 +47,7 @@ if($r){while($row=$r->fetch_assoc())$settings[$row['setting_key']]=$row['setting
 <div class="nl">Communication</div><a href="notices.php"><span class="ni">&#128227;</span>Notices</a><a href="messages.php"><span class="ni">&#128172;</span>Messages</a>
 <div class="nl">System</div><a href="settings.php" class="active"><span class="ni">&#9881;</span>Settings</a><a href="profile.php"><span class="ni">&#128100;</span>Profile</a>
 </nav>
-<footer><a href="../logout.php" style="color:#ef4444;font-size:13px;font-weight:600">&#10148; Logout</a></footer>
+<footer><a href="logout.php" style="color:#ef4444;font-size:13px;font-weight:600">&#10148; Logout</a></footer>
 </div>
 <div class="main">
 <?php if($msg):?><div class="alert alert-success">&#10003; <?php echo $msg;?></div><?php endif;?>

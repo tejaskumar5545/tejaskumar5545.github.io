@@ -229,7 +229,7 @@ tr:hover td{background:#f9fafb}
 <a href="profile.php"><span class="nav-icon">&#128100;</span>Admin Profile</a>
 </nav>
 <div class="sidebar-footer">
-<a href="../logout.php">&#10148; Logout</a>
+<a href="logout.php">&#10148; Logout</a>
 </div>
 </aside>
 
@@ -254,7 +254,7 @@ tr:hover td{background:#f9fafb}
 <a href="profile.php">&#128100; My Profile</a>
 <a href="settings.php">&#9881; Settings</a>
 <div class="dd-div"></div>
-<a href="../logout.php" style="color:#ef4444">&#10148; Logout</a>
+<a href="logout.php" style="color:#ef4444">&#10148; Logout</a>
 </div>
 </header>
 </header>
