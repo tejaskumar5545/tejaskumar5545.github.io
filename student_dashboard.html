@@ -20,8 +20,16 @@
         .stats-section{background:white;padding:40px 6%;box-shadow:0 2px 10px rgba(0,0,0,.04)}
         .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:900px;margin:0 auto}
         .stat-item{text-align:center}.stat-item .number{font-size:36px;font-weight:800;color:#2563eb}.stat-item .label{font-size:14px;color:#6b7280;margin-top:4px}
-        .footer{background:#111827;color:white;padding:30px 6%;text-align:center;margin-top:auto}.footer p{font-size:13px;color:#6b7280}
-        @media(max-width:768px){.navbar{height:60px;padding:0 20px}.logo{font-size:23px}.nav-links{display:none;position:absolute;top:60px;left:0;right:0;background:white;flex-direction:column;padding:16px 20px;box-shadow:0 8px 24px rgba(0,0,0,.1);gap:0}.nav-links.open{display:flex}.nav-links a{padding:14px 0;border-bottom:1px solid #f3f4f6}.menu-toggle{display:block}.stats-grid{grid-template-columns:1fr 1fr}.hero h1{font-size:26px}.section{padding:30px 16px}}
+        .footer{background:#111827;color:white;padding:50px 7% 0;margin-top:auto}
+        .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px}
+        .footer-brand h3{font-size:24px;margin-bottom:12px}.footer-brand h3 span{color:#2563eb}
+        .footer-brand p{font-size:14px;color:#9ca3af;line-height:1.7}
+        .footer-col h4{font-size:15px;font-weight:700;margin-bottom:16px}
+        .footer-col ul{list-style:none}.footer-col ul li{margin-bottom:10px}
+        .footer-col ul li a{font-size:14px;color:#9ca3af;transition:color .2s}.footer-col ul li a:hover{color:#2563eb}
+        .footer-bottom{border-top:1px solid #1f2937;padding:18px 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+        .footer-bottom p{font-size:13px;color:#6b7280}
+        @media(max-width:768px){.navbar{height:60px;padding:0 20px}.logo{font-size:23px}.nav-links{display:none;position:absolute;top:60px;left:0;right:0;background:white;flex-direction:column;padding:16px 20px;box-shadow:0 8px 24px rgba(0,0,0,.1);gap:0}.nav-links.open{display:flex}.nav-links a{padding:14px 0;border-bottom:1px solid #f3f4f6}.menu-toggle{display:block}.stats-grid{grid-template-columns:1fr 1fr}.hero h1{font-size:26px}.section{padding:30px 16px}.footer-grid{grid-template-columns:1fr;gap:28px}.footer-bottom{flex-direction:column;text-align:center}}
     
         /* ================= MOBILE NAV FIX ================= */
 
@@ -85,9 +93,9 @@
         <li><a href="coding.html">Coding</a></li>
         <li><a href="projects.html">Projects</a></li>
         <li><a href="placement.html">Placement</a></li>
-        <li><a href="register.php">Register</a></li>
+        <li><a href="register.html">Register</a></li>
         <li>
-            <a href="login.php" class="login-btn">Login</a>
+            <a href="login.html" class="login-btn">Login</a>
         </li>
     </ul>
 </nav>
@@ -117,21 +125,21 @@
                 <p>View semester-wise syllabus for your branch with subject codes and descriptions</p>
             </div>
         </a>
-        <a href="notes.php" style="text-decoration:none;color:inherit">
+        <a href="notes.html" style="text-decoration:none;color:inherit">
             <div class="feature-card">
                 <div class="icon">&#128221;</div>
                 <h3>Study Notes</h3>
                 <p>Download subject-wise notes uploaded by toppers and faculty members</p>
             </div>
         </a>
-        <a href="pyq.php" style="text-decoration:none;color:inherit">
+        <a href="pyq.html" style="text-decoration:none;color:inherit">
             <div class="feature-card">
                 <div class="icon">&#128196;</div>
                 <h3>Previous Year Papers</h3>
                 <p>Practice with real exam papers from 2018 to 2025 for all branches</p>
             </div>
         </a>
-        <a href="practical.php" style="text-decoration:none;color:inherit">
+        <a href="practical.html" style="text-decoration:none;color:inherit">
             <div class="feature-card">
                 <div class="icon">&#128295;</div>
                 <h3>Practical Files</h3>
@@ -159,18 +167,61 @@
                 <p>Aptitude, coding tests, interview questions, and company-wise preparation</p>
             </div>
         </a>
-        <a href="login.php" style="text-decoration:none;color:inherit">
+        <a href="login.html" style="text-decoration:none;color:inherit">
             <div class="feature-card">
                 <div class="icon">&#128100;</div>
                 <h3>Your Account</h3>
                 <p>Login to track your downloads, manage your profile, and access personalized content</p>
             </div>
         </a>
+        <a href="notices.html" style="text-decoration:none;color:inherit">
+            <div class="feature-card">
+                <div class="icon">&#128227;</div>
+                <h3>Notices</h3>
+                <p>Stay updated with the latest college notices, exam schedules, and important announcements</p>
+            </div>
+        </a>
     </div>
 </div>
 
 <footer class="footer">
-    <p>&copy; 2026 EngiHub. All rights reserved. Built for engineering students.</p>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h3>Engi<span>Hub</span></h3>
+            <p>Everything an Engineering Student Needs. Your one-stop platform for notes, syllabus, PYQ, practicals, coding, projects and placement preparation.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="syllabus.html">Syllabus</a></li>
+                <li><a href="pyq.html">PYQ Papers</a></li>
+                <li><a href="practical.html">Practicals</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Resources</h4>
+            <ul>
+                <li><a href="coding.html">Coding Practice</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="placement.html">Placement</a></li>
+                <li><a href="notices.html">Notices</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Account</h4>
+            <ul>
+                <li><a href="admission.html">Admissions</a></li>
+                <li><a href="login.html">Student Login</a></li>
+                <li><a href="register.html">Create Account</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 EngiHub. All rights reserved.</p>
+        <p>Built for engineering students, by engineering students.</p>
+    </div>
 </footer>
 
 <script>
