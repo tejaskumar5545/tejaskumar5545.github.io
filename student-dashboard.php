@@ -361,7 +361,7 @@ $overallPct = $progDivisor > 0 ? min(100, round(($overallProgress / $progDivisor
     <nav class="sidebar-nav">
         <div class="nav-section-title">Main</div>
         <a href="#dashboard" class="active"><span class="nav-icon">&#127968;</span>Dashboard</a>
-        <a href="#profile"><span class="nav-icon">&#128100;</span>My Profile</a>
+        <a href="profile.php"><span class="nav-icon">&#128100;</span>My Profile</a>
         <a href="notes.html"><span class="nav-icon">&#128218;</span>Notes</a>
         <a href="syllabus.html"><span class="nav-icon">&#128209;</span>Syllabus</a>
         <a href="pyq.html"><span class="nav-icon">&#128196;</span>Previous Year Questions</a>
@@ -445,7 +445,7 @@ $overallPct = $progDivisor > 0 ? min(100, round(($overallProgress / $progDivisor
 
         <div class="profile-dropdown" id="profileDropdown">
             <div class="dd-label">Account</div>
-            <a href="#profile">&#128100; My Profile</a>
+            <a href="profile.php">&#128100; My Profile</a>
             <a href="#saved">&#128278; Saved Resources</a>
             <a href="#downloads">&#11015; Download History</a>
             <div class="dd-divider"></div>
@@ -722,7 +722,7 @@ $overallPct = $progDivisor > 0 ? min(100, round(($overallProgress / $progDivisor
                 <div class="pcc-pct"><?php echo $profileComplete; ?>% complete</div>
             </div>
             <div class="pcc-right">
-                <a href="profile.html" class="pcc-btn">Complete Profile</a>
+                <a href="profile.php" class="pcc-btn">Complete Profile</a>
             </div>
         </div>
     </div>
